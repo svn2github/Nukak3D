@@ -1,0 +1,158 @@
+# @file CmakeList.txt
+# @brief Archivo de configuracion del proyecto.
+# @details Archivo para configurar los makefiles correspondientes para cada Sistema Operativo.
+# Especialmente diseñado para el nukak3d.
+# @author Alexander Pinzon Fernandez
+# @version 2.0
+# @date 18/11/2007 12:22 a.m.
+PROJECT(nukak3d)
+
+IF(WIN32)
+	SET(SISTOPER win)
+ELSE(WIN32)
+	IF(APPLE)
+		SET(SISTOPER mac)
+	ELSE(APPLE)
+		SET(SISTOPER unix)
+	ENDIF(APPLE)
+ENDIF(WIN32)
+
+# Configurar el directorio donde se pondra los archivos binarios una ves compilados.
+SET(EXECUTABLE_OUTPUT_PATH ${nukak3d_BINARY_DIR}/bin/${SISTOPER}
+ CACHE PATH "Directorio de salida de archivos ejecutables."
+)
+
+# Configurar el directorio donde se pondra las librerias generadas.
+SET(LIBRARY_OUTPUT_PATH ${nukak3d_BINARY_DIR}/lib/${SISTOPER}
+ CACHE PATH "Directorio de salida de las librerias generadas."
+)
+
+# Configurar el directorio de los archivos de busqueda para las librerias de wx.
+SET(CMAKE_MODULE_PATH ${nukak3d_SOURCE_DIR}/CMakeModules)
+
+SET(nukak3d_VERSION_MAJOR 4)
+SET(nukak3d_VERSION_MINOR 5)
+SET(nukak3d_VERSION_BUILD 0)
+SET(nukak3d_VERSION "${nukak3d_VERSION_MAJOR}.${nukak3d_VERSION_MINOR}.${nukak3d_VERSION_BUILD}")
+
+#INCLUDE(${nukak3d_SOURCE_DIR}/extern/${SISTOPER}/vtk/lib/vtk-5.0/UseVTK.cmake)
+FIND_PACKAGE(VTK REQUIRED)
+INCLUDE(${VTK_USE_FILE})
+
+SET(nukak3d_REQUIRED_C_FLAGS    "${nukak3d_REQUIRED_C_FLAGS}    -DVTK_MAJOR_VERSION=${VTK_MAJOR_VERSION}")
+SET(nukak3d_REQUIRED_CXX_FLAGS  "${nukak3d_REQUIRED_CXX_FLAGS}  -DVTK_MAJOR_VERSION=${VTK_MAJOR_VERSION}")
+SET(nukak3d_REQUIRED_C_FLAGS    "${nukak3d_REQUIRED_C_FLAGS}    -DVTK_MINOR_VERSION=${VTK_MINOR_VERSION}")
+SET(nukak3d_REQUIRED_CXX_FLAGS  "${nukak3d_REQUIRED_CXX_FLAGS}  -DVTK_MINOR_VERSION=${VTK_MINOR_VERSION}")
+
+INCLUDE("${VTK_CMAKE_DIR}/vtkWrapTcl.cmake")
+
+IF("${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}" EQUAL "5.0")
+  IF(VTK_INSTALL_PREFIX)
+    IF(NOT EXISTS "${VTK_CMAKE_DIR}/vtkWrapperInit.data.in")
+      MESSAGE("Vtk requerido.")
+    ENDIF(NOT EXISTS "${VTK_CMAKE_DIR}/vtkWrapperInit.data.in")
+  ELSE(VTK_INSTALL_PREFIX)
+    SET(VTK_WRAP_TCL3_INIT_DIR "${VTK_SOURCE_DIR}/Wrapping")
+    SET(VTK_WRAP_PYTHON3_INIT_DIR "${VTK_SOURCE_DIR}/Wrapping")
+  ENDIF(VTK_INSTALL_PREFIX)
+ENDIF("${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}" EQUAL "5.0")
+
+#--------------
+# Librerias dinamicas
+IF( VTK_BUILD_SHARED_LIBS )
+  ADD_DEFINITIONS(-Dnukak3d_EXPORTS)
+  SET(nukak3d_LIBS_STYLE "SHARED")
+ELSE( VTK_BUILD_SHARED_LIBS )
+  REMOVE_DEFINITIONS(-Dnukak3d_EXPORTS)
+  SET(nukak3d_LIBS_STYLE "STATIC")
+ENDIF( VTK_BUILD_SHARED_LIBS )
+
+SET(nukak3d_BUILD_SHARED_LIBS "${VTK_BUILD_SHARED_LIBS}")
+
+#INCLUDE(${nukak3d_SOURCE_DIR}/extern/${SISTOPER}/itk/lib/InsightToolkit/UseITK.cmake)
+FIND_PACKAGE(ITK)
+INCLUDE(${ITK_USE_FILE})		
+SET(nukak3d_REQUIRED_C_FLAGS    "${nukak3d_REQUIRED_C_FLAGS}    -Dnukak3d_USE_ITK")
+SET(nukak3d_REQUIRED_CXX_FLAGS  "${nukak3d_REQUIRED_CXX_FLAGS}  -Dnukak3d_USE_ITK")
+
+FIND_PACKAGE(vtkINRIA3D)
+INCLUDE(${vtkINRIA3D_USE_FILE})		
+SET(nukak3d_REQUIRED_C_FLAGS    "${nukak3d_REQUIRED_C_FLAGS}    -Dnukak3d_USE_vtkINRIA3D")
+SET(nukak3d_REQUIRED_CXX_FLAGS  "${nukak3d_REQUIRED_CXX_FLAGS}  -Dnukak3d_USE_vtkINRIA3D")
+
+IF(WIN32)
+	SET(wxWidgets_USE_LIBS base core adv aui xrc xml html)
+ELSE(WIN32)
+	SET(wxWidgets_USE_LIBS base core gl adv aui xrc xml html)
+ENDIF(WIN32)
+   
+FIND_PACKAGE(wxWidgets2) 
+IF(wxWidgets_FOUND)
+	INCLUDE(${wxWidgets_USE_FILE})
+	OPTION(wxWidgets_SHARED "Libreris dinamicas de wx Widgets?" OFF)
+	IF( wxWidgets_SHARED )
+		SET( wxWidgets_BUILD_SHARED_LIBS "ON" )      
+		SET( wxWidgets_LIBS_STYLE "SHARED")
+		ADD_DEFINITIONS(-DWXMAKINGDLL_ADDON)
+	ELSE ( wxWidgets_SHARED )
+		SET( wxWidgets_BUILD_SHARED_LIBS "OFF")      
+		SET( wxWidgets_LIBS_STYLE "STATIC")
+		REMOVE_DEFINITIONS(-DWXMAKINGDLL_ADDON)
+	ENDIF( wxWidgets_SHARED )
+
+	IF(UNIX AND NOT APPLE)
+		FIND_PACKAGE(GTK-2 REQUIRED)     
+			LINK_DIRECTORIES(${GTK_LINK_DIRS})
+	ENDIF(UNIX AND NOT APPLE)
+
+	ELSE(wxWidgets_FOUND)
+		MESSAGE(ERROR " wxWidgets requerido.")
+ENDIF(wxWidgets_FOUND)  
+
+SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}    ${nukak3d_REQUIRED_C_FLAGS}")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  ${nukak3d_REQUIRED_CXX_FLAGS}")
+
+CONFIGURE_FILE (
+   ${PROJECT_SOURCE_DIR}/doc/doxygen.config.in
+   ${PROJECT_BINARY_DIR}/doxygen.config IMMEDIATE @ONLY
+)
+
+FIND_PACKAGE(Doxygen)
+IF (DOXYGEN)
+ ADD_CUSTOM_TARGET(doc
+   ${DOXYGEN}
+   ${PROJECT_BINARY_DIR}/doxygen.config
+ )
+ENDIF(DOXYGEN) 
+
+SUBDIRS(
+include
+src
+resources
+doc
+)
+
+SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Nukak3d")
+SET(CPACK_PACKAGE_VENDOR "Bioingenium Research Group, Universidad Nacional de Colombia.")
+SET(CPACK_PACKAGE_VERSION_MAJOR "${nukak3d_VERSION_MAJOR}")
+SET(CPACK_PACKAGE_VERSION_MINOR "${nukak3d_VERSION_MINOR}")
+SET(CPACK_PACKAGE_VERSION_PATCH "${nukak3d_VERSION_BUILD}")
+SET(CPACK_PACKAGE_INSTALL_DIRECTORY "nukak3d ${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}")
+SET(CPACK_SOURCE_PACKAGE_FILE_NAME
+"nukak3d-${CPACK_PACKAGE_VERSION_MAJOR}.${CPACK_PACKAGE_VERSION_MINOR}.${CPACK_PACKAGE_VERSION_PATCH}")
+SET(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_CURRENT_SOURCE_DIR}/doc/Copyright.txt")
+SET(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/doc/Readme.txt")
+SET(CPACK_RESOURCE_FILE_README "${CMAKE_CURRENT_SOURCE_DIR}/doc/Readme.txt")
+SET(CPACK_RESOURCE_FILE_WELCOME "${CMAKE_CURRENT_SOURCE_DIR}/doc/Readme.txt")
+IF(WIN32)
+  SET(CPACK_PACKAGE_ICON "${CMAKE_CURRENT_SOURCE_DIR}/resources\\\\nukak3d.ico")
+  SET(CPACK_NSIS_DISPLAY_NAME "${CPACK_PACKAGE_INSTALL_DIRECTORY}")
+  SET(CPACK_NSIS_HELP_LINK "http://www.bioingenium.unal.edu.co")
+  SET(CPACK_NSIS_URL_INFO_ABOUT "http://www.bioingenium.unal.edu.co")
+  SET(CPACK_NSIS_CONTACT "apinzonf@unal.edu.co")
+  SET(CPACK_PACKAGE_EXECUTABLES "${SISTOPER}\\\\nukak3d" "Nukak3D")
+ELSE(WIN32)
+  SET(CPACK_PACKAGE_EXECUTABLES "${SISTOPER}//nukak3d" "Nukak3D")
+ENDIF(WIN32)
+
+INCLUDE(CPack)

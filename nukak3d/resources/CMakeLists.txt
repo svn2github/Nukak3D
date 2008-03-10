@@ -1,0 +1,1 @@
+INSTALL_FILES(/include FILES nukak3d.rc)
