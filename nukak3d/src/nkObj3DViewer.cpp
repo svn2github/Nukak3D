@@ -327,7 +327,7 @@ void nkObj3DViewer::PolyDecimate( )
 	// Captura de parametros
 	wxString etiquetas[100];
 	const int num_datos=1;
-	etiquetas[0] = wxT("Porcentaje de reducción"); 
+	etiquetas[0] = wxT("Porcentaje de reduccion"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
@@ -444,7 +444,7 @@ void nkObj3DViewer::PolyNormals( )
 	// Captura de parametros
 	wxString etiquetas[100];
 	const int num_datos=1;
-	etiquetas[0] = wxT("Valor que define un ángulo agudo"); 
+	etiquetas[0] = wxT("Valor que define un angulo agudo"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
