@@ -1,9 +1,7 @@
 # @file CmakeList.txt
-# @brief Archivo de configuracion del proyecto.
-# @details Archivo para configurar los makefiles correspondientes para cada Sistema Operativo.
-# Especialmente diseñado para el nukak3d.
+# @brief Project configuration file.
 # @author Alexander Pinzon Fernandez
-# @version 2.0
+# @version 3.0
 # @date 18/11/2007 12:22 a.m.
 PROJECT(nukak3d)
 
@@ -17,22 +15,22 @@ ELSE(WIN32)
 	ENDIF(APPLE)
 ENDIF(WIN32)
 
-# Configurar el directorio donde se pondra los archivos binarios una ves compilados.
+# Define binary path
 SET(EXECUTABLE_OUTPUT_PATH ${nukak3d_BINARY_DIR}/bin/${SISTOPER}
- CACHE PATH "Directorio de salida de archivos ejecutables."
+ CACHE PATH "Output directory for building executable."
 )
 
-# Configurar el directorio donde se pondra las librerias generadas.
+# Define library path
 SET(LIBRARY_OUTPUT_PATH ${nukak3d_BINARY_DIR}/lib/${SISTOPER}
- CACHE PATH "Directorio de salida de las librerias generadas."
+ CACHE PATH "Output directory for building libraries."
 )
 
-# Configurar el directorio de los archivos de busqueda para las librerias de wx.
+# Define CMakeModules path
 SET(CMAKE_MODULE_PATH ${nukak3d_SOURCE_DIR}/CMakeModules)
 
 SET(nukak3d_VERSION_MAJOR 4)
 SET(nukak3d_VERSION_MINOR 5)
-SET(nukak3d_VERSION_BUILD 0)
+SET(nukak3d_VERSION_BUILD 3)
 SET(nukak3d_VERSION "${nukak3d_VERSION_MAJOR}.${nukak3d_VERSION_MINOR}.${nukak3d_VERSION_BUILD}")
 
 #INCLUDE(${nukak3d_SOURCE_DIR}/extern/${SISTOPER}/vtk/lib/vtk-5.0/UseVTK.cmake)
@@ -58,7 +56,7 @@ IF("${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}" EQUAL "5.0")
 ENDIF("${VTK_MAJOR_VERSION}.${VTK_MINOR_VERSION}" EQUAL "5.0")
 
 #--------------
-# Librerias dinamicas
+# Shared libraries
 IF( VTK_BUILD_SHARED_LIBS )
   ADD_DEFINITIONS(-Dnukak3d_EXPORTS)
   SET(nukak3d_LIBS_STYLE "SHARED")
@@ -89,7 +87,7 @@ ENDIF(WIN32)
 FIND_PACKAGE(wxWidgets2) 
 IF(wxWidgets_FOUND)
 	INCLUDE(${wxWidgets_USE_FILE})
-	OPTION(wxWidgets_SHARED "Libreris dinamicas de wx Widgets?" OFF)
+	OPTION(wxWidgets_SHARED "wxWidgets build with Shared libraries?" OFF)
 	IF( wxWidgets_SHARED )
 		SET( wxWidgets_BUILD_SHARED_LIBS "ON" )      
 		SET( wxWidgets_LIBS_STYLE "SHARED")
@@ -106,7 +104,7 @@ IF(wxWidgets_FOUND)
 	ENDIF(UNIX AND NOT APPLE)
 
 	ELSE(wxWidgets_FOUND)
-		MESSAGE(ERROR " wxWidgets requerido.")
+		MESSAGE(ERROR " wxWidgets not found.")
 ENDIF(wxWidgets_FOUND)  
 
 SET(CMAKE_C_FLAGS   "${CMAKE_C_FLAGS}    ${nukak3d_REQUIRED_C_FLAGS}")

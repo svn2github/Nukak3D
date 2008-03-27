@@ -1,8 +1,10 @@
-Nukak3D 4.5.0
+Nukak3D 4.5.3
 ---------------
 
-Welcome to Nukak3D, a sophisticated Cross-platform software, 
-for display 3d medical images.
+3D medical image platform for visualization and image processing. 
+Segmentation with Levels sets. 
+Surface reconstruction with marching Cubes, texture Mapping and Raycasting. 
+Integration environment for VTK, ITK and vtkInria3D under wxWidgets..
 
 Licence information
 -------------------
@@ -28,5 +30,5 @@ The Nukak3D Team:
   Eduardo Romero
   William Sarmiento
 
-Bogota D.C. - Colombia Febrary 2008
+Bogota D.C. - Colombia March 2008
 
