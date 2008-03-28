@@ -1,8 +1,6 @@
 /** 
  * @file nkMain.h
- * @brief Aplicación nukak3d.
- * @details Clase para la creacion de la aplicación.
- * Incluye splash screen.
+ * @brief nukak3d Application.
  * @author Alexander Pinzon Fernandez.
  * @version 0.1
  * @date 18/10/2007 02:50 p.m.
@@ -24,14 +22,12 @@
 #include <wx/splash.h>
 
 /** 
- * @brief Aplicación nukak3d.
- * @details Clase para la creacion de la aplicación.
- * Incluye splash screen.
+ * @brief nukak3d Application.
  */
 class nkMain : public wxApp{
 public:
 	/**
-     * @brief Método donde se llama a la ventana principal
+     * @brief Init method of application
 	 * @return bool
 	 */
 	virtual bool OnInit ( void );  

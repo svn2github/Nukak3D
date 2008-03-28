@@ -1,8 +1,7 @@
 /** 
  * @file nkToolbar.cpp
- * @brief Toolbar de nukak3d.
- * @details Clase para la creacion de un toolbar vertical.
- * Especialmente diseñado para el nukak3d.
+ * @brief Toolbar OF nukak3d.
+ * @details Class for creation of toolbar.
  * @author Alexander Pinzon Fernandez
  * @version 0.1
  * @date 18/10/2007 02:50 p.m.
@@ -79,7 +78,7 @@ void nkMenuTool::crearMenu(void){
 		wxBitmap(wxBitmap(icon_menu_mas_xpm).
 			ConvertToImage().
 			Scale(nkTool::LARGO_X_ANCHO_ICONO.GetWidth(), nkTool::LARGO_X_ANCHO_ICONO.GetHeight())),
-		wxString("Click en ") + prv_nombreMenu + wxString(" para desplegar el menu"),
+		wxString("Click in ") + prv_nombreMenu + wxString(" for display items"),
 		wxITEM_NORMAL);
 }
 

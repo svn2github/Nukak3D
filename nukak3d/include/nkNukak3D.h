@@ -1,7 +1,7 @@
 /** 
  * @file nkNukak3D.h
- * @brief Ventana principal de Nukak3D.
- * @details Implementa la interfaz gráfica 
+ * @brief Main window.
+ * @details Gui implementation 
  * @author Alexander Pinzón Fernandez, Byron Pérez
  * @version 0.2
  * @date 27/12/2007 03:37 p.m.
@@ -47,77 +47,77 @@
 //#ifdef __WXMAC__
 #ifdef __WIN32__
 	#include "nkToolBar.h"
-#else // mac o unix
+#else // mac or unix
 	#include "nkToolBarMac.h"
 #endif //__WIN32__
 
 #define mensajes 1
 
 /**
- * @brief Ventana principal de Nukak3D.
- * @details Implementa la interfaz gráfica.
+ * @brief Main window.
+ * @details Gui implementation 
 */
 class nkNukak3D: public wxFrame{
 public:
 
 	/** 
-	 * Identificadores de los eventos.
+	 * Event identifier.
 	*/
 	enum{
-		ID_ABRIR_ARCHIVO = wxID_HIGHEST + 1500, /**< Abrir archivo. */
-		ID_ABRIR_ARCHIVO_DICOM,			/**< Abrir pila de imagenes Dicom. */
-		ID_ABRIR_ARCHIVO_MALLA3D,		/**< Abrir objeto 3D. */
-		ID_ABRIR_ARCHIVO_VOL,			/**< Abrir archivo vol. */
-		ID_ACERCA_DE,					/**< Mostrar Dialogo Acerca De. */
-		ID_ACERCA_DE_MAC,				/**< Mostrar Dialodo Acerca De (Menu unicamente para Mac ) . */
-		ID_ARBOL,						/**< Evento lanazado del nkToolBarMac. */
-		ID_AREA,						/**< Calcular area de una region y mostrarla. */
-		ID_CERRAR,						/**< Cerrar la aplicacion. */
-		ID_CERRAR_TODO,					/**< Cerrar la apliacion. */
-		ID_COLDET,						/**< Deteccion de colisiones. */
-		ID_ENDOCAM,						/**< Habilitar el endoscopio virtual. */
-		ID_FILPOLYDECIMATE,				/**< Reducir del numero poligonos. */
-		ID_FILPOLYDEFORM,				/**< Deformar una malla. */
-		ID_FILPOLYNORMALS,				/**< Recalcular las normales de una malla. */
-		ID_FILPOLYSMOOTH,				/**< Suavizar una malla de poligonos. */
-		ID_FILPOLYTRIANGLE,				/**< Triangular una malla de poligonos. */
-		ID_FILVOLGAUSSIAN,				/**< Aplicar Filtro Gaussiana a una pila de imagenes. */
-		ID_FILVOLGRADIENT,				/**< Aplicar Filtro Gradiente a una pila de imagenes. */
-		ID_FILVOLMEDIAN,				/**< Aplicar Filtro Mediana a una pila de imagenes. */
-		ID_FILVOLTHRESHOLD,				/**< Aplicar  Filtro umbral a una pila de imagenes. */
-		ID_GUARDARMALLA3D,				/**< Guardar un objeto 3d. */
-		ID_GUARDARVOL,					/**< Guardar una pila de imagenes en un archivo unico 3d. */
-		ID_JOYSTICK,					/**< Dispositicvo de entrada joystick. */
-		ID_LSLEVELSETSCOMPLETO,			/**< Ejecutar algoritmo LevelSets. */
-		ID_MARCHING_CUBES,				/**< Ejecutar algoritmo Marching Cubes. */
-		ID_NAVFLIGHT,					/**< Estilo de navegacion de la camara a estilo flotante. */
-		ID_NAVJOYSTICK,					/**< Estilo de navegacion de la camara a Joystick. */
-		ID_NAVRESET,					/**< Estilo de navegacion de la camara por defecto. */
-		ID_NAVTRACKBALL,				/**< Estilo de navegacion de la camara a TrackBall. */
-		ID_NAVUNICAM,					/**< Estilo de navegacion de la camara a estilo objeto. */
-		ID_PALETA_COLOR,				/**< Estilo de navegacion de la camara a Joystick. */
-		ID_PARIMAGE,					/**< Informacion de la pila de imagenes. */
-		ID_PARPOLYGON,					/**< Informacion del objeto 3d. */
-		ID_PARVIDEO,					/**< Informacion de la tarjeta de video. */
-		ID_REINICIAR_PALETA,			/**< Reiniciar la paleta de colores. */
-		ID_SALIR,						/**< Salir de la aplicacion. */
-		ID_SNAPSHOT3D,					/**< Capturar la ventana 3D. */
-		ID_SNAPSHOTAXIAL,				/**< Capturar la vista Axial. */
-		ID_SNAPSHOTCORONAL,				/**< Capturar la vista Coronal. */
-		ID_SNAPSHOTSAGITAL,				/**< Capturar la vista Sagital. */
-		ID_STACTIVO,					/**< Activar visualizacion estero. */
-		ID_STAUMENTAR,					/**< Aumentar separacion en visualizacion estereo. */
-		ID_STDISMINUIR,					/**< Disminuir separacion en visualizacion estereo. */
+		ID_ABRIR_ARCHIVO = wxID_HIGHEST + 1500, /**< Open file. */
+		ID_ABRIR_ARCHIVO_DICOM,			/**< Open stack of image Dicom. */
+		ID_ABRIR_ARCHIVO_MALLA3D,		/**< Open object 3D. */
+		ID_ABRIR_ARCHIVO_VOL,			/**< Open file vol. */
+		ID_ACERCA_DE,					/**< Show Dialog About Nukak3d. */
+		ID_ACERCA_DE_MAC,				/**< Show Dialog About Nukak3d (Only for Mac ) . */
+		ID_ARBOL,						/**< Event launch by nkToolBarMac. */
+		ID_AREA,						/**< Calc area . */
+		ID_CERRAR,						/**< Close application. */
+		ID_CERRAR_TODO,					/**< Close application. */
+		ID_COLDET,						/**< Collision detection. */
+		ID_ENDOCAM,						/**< Enable Virtual endoscopy. */
+		ID_FILPOLYDECIMATE,				/**< To reduce numbers of polygon. */
+		ID_FILPOLYDEFORM,				/**< Deform Mesh. */
+		ID_FILPOLYNORMALS,				/**< Recalc normals of faces. */
+		ID_FILPOLYSMOOTH,				/**< Smooth mesh. */
+		ID_FILPOLYTRIANGLE,				/**< Triangle mesh. */
+		ID_FILVOLGAUSSIAN,				/**< Gaussian filter. */
+		ID_FILVOLGRADIENT,				/**< Gradient filter. */
+		ID_FILVOLMEDIAN,				/**< Median filter. */
+		ID_FILVOLTHRESHOLD,				/**< Threshold filter. */
+		ID_GUARDARMALLA3D,				/**< Save object 3D. */
+		ID_GUARDARVOL,					/**< Save vol. */
+		ID_JOYSTICK,					/**< Input device to Joystick. */
+		ID_LSLEVELSETSCOMPLETO,			/**< Level sets. */
+		ID_MARCHING_CUBES,				/**< Surface reconstruction with Marching Cubes. */
+		ID_NAVFLIGHT,					/**< Flight Camera. */
+		ID_NAVJOYSTICK,					/**< Joystick Camera. */
+		ID_NAVRESET,					/**< Reset camera position and orientation. */
+		ID_NAVTRACKBALL,				/**< Trackball Camera. */
+		ID_NAVUNICAM,					/**< Unicam Camera. */
+		ID_PALETA_COLOR,				/**< lookup table. */
+		ID_PARIMAGE,					/**< Image information. */
+		ID_PARPOLYGON,					/**< Object 3D information. */
+		ID_PARVIDEO,					/**< VideoCard information. */
+		ID_REINICIAR_PALETA,			/**< Reset window and level. */
+		ID_SALIR,						/**< Close application. */
+		ID_SNAPSHOT3D,					/**< Snapshot canvas 3D. */
+		ID_SNAPSHOTAXIAL,				/**< Snapshot axial view. */
+		ID_SNAPSHOTCORONAL,				/**< Snapshot coronal view. */
+		ID_SNAPSHOTSAGITAL,				/**< Snapshot sagital view. */
+		ID_STACTIVO,					/**< Enable stereoscopic vision. */
+		ID_STAUMENTAR,					/**< Stereoscopic vision more separation. */
+		ID_STDISMINUIR,					/**< Stereoscopic vision less separation. */
 		ID_STPASIVO,					/**< Activar desactivar visualizacion estereoscopica. */
-		ID_VOLVIEWER_RENDERING_ESCALAR,	/**< Visualizacion del volumen con 3 planos . */
-		ID_VOLVIEWER_RENDERING_MRC,		/**< Visualizacion del volumen con renderizacion por trazado de rayos . */
-		ID_VOLVIEWER_RENDERING_TEXTURA,	/**< Visualizacion del volumen con renderizacion de textura. */
-		ID_ULTIMO = wxID_HIGHEST+3000	/**< Eventos para los items de la paleta de colores. */
+		ID_VOLVIEWER_RENDERING_ESCALAR,	/**< Ortogonal planes view. */
+		ID_VOLVIEWER_RENDERING_MRC,		/**< Ray cast rendering. */
+		ID_VOLVIEWER_RENDERING_TEXTURA,	/**< Texture mpping rendering. */
+		ID_ULTIMO = wxID_HIGHEST+3000	/**< Event's for lookup table. */
 	};
 
 	/**
-	 * @brief Constructor de la clase.
-	 * @details Ventana principal de Nukak3D.
+	 * @brief Class constructor.
+	 * @details Main window.
 	*/
 	nkNukak3D(wxWindow* parent, int id=-1,
 		const wxString& title=wxT(""),
@@ -125,257 +125,255 @@ public:
         const wxSize& size=wxDefaultSize,
         long style=wxDEFAULT_FRAME_STYLE);
 	/**
-	 * @brief Destructor de la clase
+	 * @brief Class destructor.
 	*/
 	~nkNukak3D();
 
 	/**
-	 * @brief Insertar barra de herramientas lateral
-	 * @param window nkToolBar a insertar
-	 * @param un_nombre Nombre para identificar este toolbar
-	 * @param una_etiqueta Etiqueta para mostrar en el panel que contiene este toolbar
+	 * @brief Insert Toolbar Botton.
+	 * @param window nkToolbar to insert.
+	 * @param un_nombre nkToolbar title.
+	 * @param una_etiqueta Label for this control.
 	*/
 	void insertarToolBar(wxWindow* window, wxString un_nombre, wxString una_etiqueta);
 
 	/**
-	 * @brief Abre una pila de imágenes) contenidas en un solo archivo
+	 * @brief Open volume of images store in unique file.
 	*/
 	void eventoAbrirVolumen(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Abre una pila de imagenes Dicom
+	 * @brief Open Dicom directories.
 	*/
 	void eventoAbrirVolumenDicom(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Abre una malla poligonal 3D con formato vtk structured grid
+	 * @brief Open object 3D (vtk structured grid).
 	*/
 	void eventoAbrirMalla3D(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Ventana "Acerca de"
+	 * @brief Open about nkNukak3D.
 	*/
 	void eventoAcercaDe(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Ventana "Acerca de" para MAC unicamente
+	 * @brief Open about nkNukak3D for Mac.
 	*/
 	void eventoAcercaDeMAC(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Para manejar los eventos de un nkToolbar en Mac o en sistemas Unix, no en Windows
+	 * @brief .nkToolbar event's for Mac and unix systems.
 	*/
 	void eventoArbol(wxTreeEvent& event);
 
 	/**
-	 * @brief Guarda una pila de imágenes en un unico archivo en formato HDR
+	 * @brief Save volume.
 	*/
 	void eventoGuardarVol(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Guarda una malla poligonal con formato vtk structured grid
+	 * @brief Save object 3D in vtk structured grid file.
 	*/
 	void eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Cambia la paleta de color(Look Up Table) de un volumen 3D para la visualizacion de una pila de imagenes
+	 * @brief Change lookup table for rendering volume.
 	*/
 	void eventoPaletaColor(wxCommandEvent& event);
 
 	/**
-	 * @brief Reinicia la paleta de color(Look Up Table) de un volumen 3D con los valores predeterminados de la ventana (width and level)
+	 * @brief Reset window and level.
 	*/
 	void eventoReiniciarPaleta(wxCommandEvent& WXUNUSED(event));
 	
 	/**
-	 * @brief Salir de la aplicación
+	 * @brief Close application.
 	*/
 	void eventoSalir(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Visualiza el volumen 3D utilizando tres planos ortogonales
+	 * @brief View ortogonal planes rendering.
 	*/
 	void eventoVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Visualiza el volumen 3D usando precesamiento de textura.
-	 * La opacidad se cambia variando la ventana (width and level) de la imagen
+	 * @brief Texture maping rendering.
 	*/
 	void eventoVolViewerRenderingTextura(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Visualiza el volumen 3D usando el algoritmo ray casting.
-	 * La opacidad se cambia variando la ventana (width and level) de la imagen
+	 * @brief Ray cast rendering.
 	*/
 	void eventoVolViewerRenderingMRC(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Genera isocontornos con el algoritmo Marching Cubes
+	 * @brief Marching cubes event.
 	*/
 	void eventoMarchingCubes(wxCommandEvent& WXUNUSED(event));
 	
 	/**
-	 * @brief Segmentación del volumen usando el algoritmo de levelsets
+	 * @brief Segmentation with levelsets
 	*/
 	void eventolsLevelsetsCompleto(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Calcula el área de la imagen axial sobre los pixeles con valor mayor que cero
+	 * @brief Event for calc area.
 	*/
 	void eventoArea(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Resetear la cámara de la vista 3D
+	 * @brief Reset position and orientatio camera.
 	*/
 	void eventoNavResetCamara(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Navegación con el modo trackball. 
-	 * @details Modo de navegación por defecto
+	 * @brief Trackball camera.
+	 * @details Navigation by default.
 	*/
 	void eventoNavTrackball(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Navegación con el modo joystick
+	 * @brief Joystick camera.
 	*/
 	void eventoNavJoystick(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Navegación con el modo flight
+	 * @brief Flight camera.
 	*/
 	void eventoNavFlight(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Navegación con el modo unicam
+	 * @brief Unicam camera.
 	*/
 	void eventoNavUnicam(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Activar/desactivar visión estéreo activa
+	 * @brief Enable/Disable stereoscopic vision.
 	*/
 	void eventoStActivo(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Activar/desactivar visión estéreo pasiva
+	 * @brief Enable/Disable passive stereo.
 	*/
 	void eventoStPasivo(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Aumentar separación entre ojos en el modo estéreo
+	 * @brief More separation for images in stereoscopic vision.
 	*/
 	void eventoStAumentar(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Disminuir separación entre ojos en el modo estéreo
+	 * @brief Less separation for images in stereoscopic vision.
 	*/
 	void eventoStDisminuir(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Filtro gaussiano para un volumen 3D
+	 * @brief Gaussian filter.
 	*/
 	void eventoFilVolGaussian(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Filtro mediana para un volumen 3D
+	 * @brief Median filter.
 	*/
 	void eventoFilVolMedian(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Filtro gradiente para un volumen 3D
+	 * @brief Gradient filter.
 	*/
 	void eventoFilVolGradient(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Filtro umbral para un volumen 3D
+	 * @brief Threshold filter.
 	*/
 	void eventoFilVolThreshold(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Procesar triangulado de una malla poligonal
+	 * @brief Triangle mesh.
 	*/
 	void eventoFilPolyTriangle(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Procesar decimado de una malla poligonal
+	 * @brief Decimate mesh.
 	*/
 	void eventoFilPolyDecimate(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Procesar suavizado de una malla poligonal
+	 * @brief Smooth mesh.
 	*/
 	void eventoFilPolySmooth(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Procesar normales de una malla poligonal
+	 * @brief Recalc normals.
 	*/
 	void eventoFilPolyNormals(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Deformación de una malla poligonal
+	 * @brief Deform mesh.
 	*/
 	void eventoFilPolyDeform(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Capturar pantalla vista 3D
+	 * @brief Snapshot 3d view.
 	*/
 	void eventoSnapshot3D(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Capturar pantalla vista axial
+	 * @brief Snapshot axial view.
 	*/
 	void eventoSnapshotAxial(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Capturar pantalla vista sagital
+	 * @brief Snapshot axial sagital.
 	*/
 	void eventoSnapshotSagital(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Capturar  pantalla vista coronal
+	 * @brief Snapshot axial coronal.
 	*/
 	void eventoSnapshotCoronal(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Mostrar parámetros del volumen 3D
+	 * @brief Show information of volume.
 	*/
 	void eventoParImage(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Mostrar parámetros de la malla poligonal
+	 * @brief Show information of mesh.
 	*/
 	void eventoParPolygon(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Mostrar parámetros de la tarjeta de video
+	 * @brief Show information of video card.
 	*/
 	void eventoParVideo(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Obtiene el notebook para que otra clase pueda crear otra página
+	 * @brief Get notebok to make other pages.
 	 * @return wxAuiNotebook *
 	*/
 	wxAuiNotebook * getNkNotebook(void);
 
 private:
-	wxAuiNotebook * prv_libro;		//! notebook de la interfaz gráfica	
-	wxAuiManager prv_auiManager;	//! Administrador de la interfaz gráfica avanzada (aui)
-	nkToolBar *  mi_nkHerramientas;	//! Barra de herramientas lateral Herramientas
-	nkToolBar *  mi_nkImageViewer;	//! Barra de herramientas lateral Configuración
+	wxAuiNotebook * prv_libro;		//! notebook for manage pages.
+	wxAuiManager prv_auiManager;	//! Administrator for Aui.
+	nkToolBar *  mi_nkHerramientas;	//! nkToolBar for tools.
+	nkToolBar *  mi_nkImageViewer;	//! nkToolBar for image tools.
         
 	// Joystick values
-	wxJoystick* m_stick;			//! Joystick/Gamepad
-    int     m_minX;					//! Valor máximo/mínimo del Joystick/Gamepad
-    int     m_minY;					//! Valor máximo/mínimo del Joystick/Gamepad
-	int     m_minZ;					//! Valor máximo/mínimo del Joystick/Gamepad
-    int     m_maxX;					//! Valor máximo/mínimo del Joystick/Gamepad
-    int     m_maxY;					//! Valor máximo/mínimo del Joystick/Gamepad
-	int     m_maxZ;					//! Valor máximo/mínimo del Joystick/Gamepad
-	int		nButtons;				//! Número de botones del Joystick/Gamepad
-	int		nAxis;					//! Número de ejesdel Joystick/Gamepad
-	unsigned int xpos;				//! Posición actual del Joystick/Gamepad
-	unsigned int ypos;				//! Posición actual del Joystick/Gamepad
+	wxJoystick* m_stick;			//! Joystick/Gamepad.
+    int     m_minX;					//! Min value x of Joystick/Gamepad.
+    int     m_minY;					//! Min value y of Joystick/Gamepad.
+	int     m_minZ;					//! Min value z of Joystick/Gamepad.
+    int     m_maxX;					//! Max value x of Joystick/Gamepad.
+    int     m_maxY;					//! Max value y of Joystick/Gamepad.
+	int     m_maxZ;					//! Max value z of Joystick/Gamepad.
+	int		nButtons;				//! numbers of buttons of Joystick/Gamepad.
+	int		nAxis;					//! numbers of axes of Joystick/Gamepad.
+	unsigned int xpos;				//! Actual position of Joystick/Gamepad.
+	unsigned int ypos;				//! Actual position of Joystick/Gamepad.
 
-	DECLARE_EVENT_TABLE()			//! Declaración de la tabla de eventos
+	DECLARE_EVENT_TABLE()			//! Call macro for declaration of events.
 };
 
 

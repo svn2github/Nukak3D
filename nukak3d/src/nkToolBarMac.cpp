@@ -1,8 +1,7 @@
 /** 
  * @file nkToolbarMac.cpp
- * @brief Toolbar de nukak3d.
- * @details Clase para la creacion de un toolbar vertical.
- * Especialmente diseÒado para el nukak3d para Mac.
+ * @brief Toolbar of nukak3d.
+ * @details Class for Toolbar in unix and Mac systems
  * @author Alexander Pinzon Fernandez
  * @version 1.0
  * @date 7/12/2007 04:56 p.m.

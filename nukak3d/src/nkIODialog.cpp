@@ -1,6 +1,6 @@
 /** 
  * @file nkIODialog.cpp
- * @brief Dialogo genérico para ver o capturar información del Nukak3D.
+ * @brief Generic dialog for input, output information.
  * @author  Byron Pérez, Alexander Pinzon
  * @version 0.3
  * @date 27/12/2007 03:37 p.m.

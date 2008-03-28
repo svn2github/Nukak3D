@@ -1,8 +1,6 @@
 /** 
  * @file nkToolbarMac.h
- * @brief Toolbar de nukak3d.
- * @details Clases para la creacion de un toolbar vertical.
- * Especialmente diseñado para el nukak3d Para Mac.
+ * @brief Toolbar of nukak3d.
  * @author Alexander Pinzon Fernandez.
  * @version 1.0
  * @date 7/12/2007 04:56 p.m.
@@ -25,14 +23,13 @@
 #include <wx/imaglist.h>
 
 /**
- * @brief Item de un menu.
- * @details Clase para la generacion de una item(tool), para un ToolBar.
+ * @brief Item of menu.
+ * @details Class for generate item for toolbar.
 */
 class nkTool{
 public:
 	/**
-	 * @brief Constructor de Clase.
-	 * @details Datos necesarios para la generacion de un nkTool.
+	 * @brief Class constructor.
 	*/
 	nkTool(int toolId, 
 		const wxString& label, 
@@ -40,39 +37,38 @@ public:
 		const wxString& shortHelpString = "", 
 		wxItemKind kind = wxITEM_NORMAL);
 	/**
-	 * @brief Destructor de clase.
+	 * @brief Class destructor.
 	*/
 	~nkTool();
 	/**
-	 * @brief Funcion para la generacion y adicion de un tool en un wxToolBar.
-	 * @param un_tool wxToolBar al cual le adicionaremos este nkTool.
+	 * @brief Generation and insertion of tool in wxToolBar.
+	 * @param un_tool wxToolBar to insert.
 	*/
 	wxToolBarToolBase* getTool(wxToolBar * un_tool);
 	/**
-	 * @brief Tamaño: ancho y alto del icono en un item del menu.
+	 * @brief Size: Widh and Height of item of menu.
 	*/
 	static wxSize LARGO_X_ANCHO_ICONO;
-	/** ID del evento de este item.*/
+	/** ID of his control.*/
 	int prv_toolId;
-	/** Etiquete que se mostrara en el item.*/
+	/** Label for this control.*/
 	wxString prv_label;
-	/** Icono del item.*/
+	/** Icon.*/
 	wxBitmap prv_bitmap1;
-	/** Texto de ayuda que se mostrara cuando el mouse ubique encima de este control.*/
+	/** Help text for this control.*/
 	wxString prv_shortHelpString;
-	/** Congiuracion de este item como (Normal, Toogle, Radio) Boton.*/
+	/** Configuration of this item (Normal, Toogle, Radio) .*/
 	wxItemKind prv_kind;
 };
 
 /**
- * @brief Menu de items.
- * @details Clase para la creacion de un menu con items dentro del ToolBar.
+ * @brief Menu of items.
+ * @details Class for creation menu in Toolbar.
 */
 class nkMenuTool{
 public:
 	/**
-	 * @brief Constructor de Clase.
-	 * @details Parametros necesarios para incializar un wxPanel.
+	 * @brief Class constructor.
 	*/
 	nkMenuTool(wxWindow* parent, 
 		wxWindowID id, 
@@ -81,51 +77,49 @@ public:
 		const wxSize& size = wxDefaultSize, 
 		long style = wxNO_BORDER);
 	/**
-	 * @brief Destructor de clase.
-	 * @details Se borraran los elementos de la lista de nkTools.
+	 * @brief Class destructor.
+	 * @details Delete list.
 	*/
 	~nkMenuTool();
 
-	/** Ancho del menu*/
+	/** Widht of menu*/
 	static int ANCHO_TOOLBAR;
 
 	/**
-	 * @brief Insercion de un item en el menu
+	 * @brief Insert item in menu.
 	*/
 	void insertarTool(nkTool* un_tool);
 	/**
-	 * @brief Retorna si el menu esta desplegado(true) o no(falso).
+	 * @brief Is display menu.
 	*/
 	bool estaDeplegado(void);
 	/**
-	 * @brief Funcion para desplegar los items del menu.
+	 * @brief Function for dropdown menu.
 	*/
 	void desplegarMenu(void);
 	/**
-	 * @brief Funcion para replegar los items del menu.
+	 * @brief Function for hide tools in menu.
 	*/
 	void replegarMenu(void);
 public:
 	wxTreeCtrl * prv_Arbol;
 	wxTreeItemId prv_TreeItemId;
-	/** Etiqueta de este menu.*/
+	/** Label for this menu.*/
 	wxString prv_nombreMenu;
-	/** Variable que representa el estado del menu [desplegado:true, replegado:false].*/
+	/** State of menu.*/
 	bool prv_desplegado;
 };
 
 /**
- * @brief Agrupacion de menus.
- * @details Clase para la creacion de un panel con menus
+ * @brief Toolbar for Menus.
 */
 class nkToolBar: public wxTreeCtrl{
 public:
-	/** Tamaño de las margenes o espacios en este control.*/
+	/** Margins size for this control.*/
 	static int ALINEACION;
 	/**
-     * @brief Constructor de clase.
-     * @details Constructor derivado de la clase wxScrolledWindow.
-    */
+	* @brief Class constructor.
+	*/
 	nkToolBar(wxWindow* parent, 
 		wxWindowID id = -1, 
 		const wxPoint& pos = wxDefaultPosition, 
@@ -133,29 +127,28 @@ public:
 		long style = wxTR_HAS_BUTTONS|wxTR_HIDE_ROOT|wxTR_FULL_ROW_HIGHLIGHT, 
 		const wxString& name = "scrolledWindow");
 	/**
-     * @brief Destructor.
+     * @brief Class destructor.
     */
 	~nkToolBar(void);
 
 	/**
-	 * @brief Procedimiento para la creacion de un menu en esta clase
-	 * @param id Identificacion del control.
-	 * @param nombreMenu Etiqueta del menu que se mostrara, por defecto "Menu".
+	 * @brief Procedure for create menu.
+	 * @param id for this control.
+	 * @param nombreMenu label for this control.
 	*/
 	nkMenuTool* insertarMenu(long id, const wxString& nombreMenu = "Menu");
 	/**
-	 * @brief Funcion que invoca la funcion desplegar() de la clase nkMenuTool.
-	 * @param un_menu Menu que sera deplegado.
+	 * @brief Function for dropdown menu.
+	 * @param un_menu for dropdown.
 	*/
 	void desplegarMenu(nkMenuTool* un_menu);
 	/**
-	 * @brief Funcion que invoca la funcion replegar() de la clase nkMenuTool.
-	 * @param un_menu Menu que sera replegado.
+	 * @brief Function for hide items of menu.
+	 * @param un_menu to hide.
 	*/
 	void replegarMenu(nkMenuTool* un_menu);
 	/**
-	 * @brief Funcion que invoca la funcion replegar() de la clase nkMenuTool.
-	 * @details Todos los menus seran replegados.
+	 * @brief Func for hide all items of all menus.
 	*/
 	void replegarMenus(void);
 };

@@ -1,8 +1,7 @@
 /** 
  * @file nkVolViewer.h
- * @brief Clase para visualizar volúmenes 3D (pila de imágenes)
- * @details Implementa todas las funciones para visualización de
- * volúmenes 3D y filtros
+ * @brief Class for view volume 3D.
+ * @details Implement all fucntions for manage image.
  * @author Alexander Pinzón Fernandez, Byron Pérez
  * @version 0.2
  * @date 27/12/2007 03:37 p.m.
@@ -75,15 +74,13 @@
 #define mensajes 1
 
 /** 
- * @brief Clase para visualizar volúmenes 3D (pila de imágenes)
- * @details Implementa todas las funciones para visualización de
- * volúmenes 3D y filtros
+ * @brief Class for view volume 3D.
  */
 class nkVolViewer: public wxPanel{
  public:
 
 	/**
-	 * @brief Constructor de la clase
+	 * @brief Class Constructor.
 	*/
 	nkVolViewer(wxWindow* parent, 
 		wxWindowID id = wxID_ANY, 
@@ -93,25 +90,25 @@ class nkVolViewer: public wxPanel{
 		const wxString& name = "nkVolViewer");
 
 	/**
-	 * @brief Destructor de la clase
+	 * @brief Class destructor.
 	*/	
 	~nkVolViewer();
 
 	/**
-	 * @brief Establece el nombre del archivo
+	 * @brief Set name of file.
 	 * @param nombreArchivo
 	*/
 	void setNombreArchivo(wxString nombreArchivo);
 
 	/**
-	 * @brief Obtener el nombre del archivo
-	 * @return wxString con el nombre de archivo
+	 * @brief Get name of file.
+	 * @return wxString Name of file.
 	*/
 	wxString getNombreArchivo(void);
 
 	/**
-	 * @brief Establecer volumen 3D (imagen itk)
-	 * @param una_imagen itk::Image<unsigned short,3>::Pointer apuntador a la imagen
+	 * @brief Set volume.
+	 * @param una_imagen itk::Image<unsigned short,3>::Pointer pointer to image.
 	*/
 	void setImagen(itk::Image<unsigned short,3>::Pointer  una_imagen);
 
@@ -122,184 +119,184 @@ class nkVolViewer: public wxPanel{
 	itk::Image<unsigned short,3>::Pointer getImagen(void);
 
 	/**
-	 * @brief Obtener volumen 3D (imagen vtk)
-	 * @return vtkImageData* apuntador a la imagen
+	 * @brief Get volume.
+	 * @return vtkImageData* pointer to image.
 	*/
 	vtkImageData* getVtkImagen(void);
 
 	/**
-	 * @brief Configurar vistas del volumen 3D
+	 * @brief Configure views.
 	*/
 	void Configurar(void);
 
 	/**
-	 * @brief Configurar volumen 3D (imagen itk)
-	 * @param un_nombreArchivo wxString con el nombre y ruta del archivo
-	 * @param una_imagen itk::Image<unsigned short,3>::Pointer apuntador a la imagen
+	 * @brief Configure volume.
+	 * @param un_nombreArchivo wxString Filepath of archive.
+	 * @param una_imagen itk::Image<unsigned short,3>::Pointer pointer to image.
 	*/
 	void configurarITKimage(wxString un_nombreArchivo, itk::Image<unsigned short,3>::Pointer una_imagen);
 
 	/**
-	 * @brief Abrir archivo de volumen 3D
-	 * @param nombreArchivo wxString con el nombre y ruta del archivo
+	 * @brief Open volumen.
+	 * @param nombreArchivo wxString filepath of archive.
 	*/
 	void abrirArchivo(wxString nombreArchivo);
 
 	/**
-	 * @brief Abrir archivo de volumen 3D en formato .vol
-	 * @param nombreArchivo wxString con el nombre y ruta del archivo
+	 * @brief Open file of volume 3D in format .vol.
+	 * @param nombreArchivo wxString Filepath of archive.
 	*/
 	void abrirArchivo_vol(wxString nombreArchivo);
 
 	/**
-	 * @brief Abrir archivo de volumen 3D en formato DICOM
-	 * @param nombreArchivo wxString con el nombre y ruta del archivo
-	 * @param myimporter apuntador del asistente de importación DICOM
-	 * @param un_index numero de la serie DICOM que se quiere abrir
+	 * @brief Open directory Dicom.
+	 * @param nombreArchivo wxString Filepath of archive.
+	 * @param myimporter pointer to wizard for Dicom images.
+	 * @param un_index number of dicom series.
 	*/
 	void abrirArchivo_dicom(wxString nombreArchivo, wxVtkDICOMImporter* myimporter, int un_index);
 
 	/**
-	 * @brief Guardar archivo de volumen 3D
-	 * @param nombreArchivo wxString con el nombre y ruta del archivo
+	 * @brief Save file.
+	 * @param nombreArchivo wxString Filepath of archive.
 	*/
 	void guardarArchivo(wxString nombreArchivo);
 
 	/**
-	 * @brief Cambiar la paleta de color (Look Up Table) del volumen 3D
-	 * @param una_paleta vtkLookupTable* con la paleta de color seleccionada
+	 * @brief Change Lookup Table.
+	 * @param una_paleta vtkLookupTable* Lookup Table to change.
 	*/
 	void cambiarPaletaColor(vtkLookupTable* una_paleta);
 
 	/**
-	 * @brief Cambiar el modo de visualización del volumen 3D
-	 * @param un_modo Modo de visualización planos ortogonales o render de volumen
-	 * @param textura_o_mrc Modo render de volumen: textura o raycasting
+	 * @brief Change rendering mode.
+	 * @param un_modo Mode of rendering
+	 * @param textura_o_mrc If mode of rendering is texture choose texture mapping or ray cast.
 	*/
 	void cambiarFormaDeProcesamiento (int un_modo, int textura_o_mrc = 0);
 	
 	/**
-	 * @brief Reiniciar la paleta de color (Look Up Table) del volumen 3D con los valores por defecto
+	 * @brief Reset Look Up Table.
 	*/
 	void reiniciarNiveleseDePaleta(void);
 
 	/**
-	 * @brief Segmentación con levelsets
-	 * @param p_libro wxAuiNotebook* para crear páginas con la función de velocidad y la imagen segmentada
+	 * @brief Sementation with levelsets
+	 * @param p_libro wxAuiNotebook* for make pages.
 	*/
 	void lsLevelsetsCompleto( wxAuiNotebook * p_libro );
 
 	/**
-	 * @brief Calcular el área de la imagen axial con pixeles mayores que cero
+	 * @brief Calc area.
 	*/
 	void Area(void);
 
 	/**
-	 * @brief Obtener el valor del voxel seleccionado
-	 * @return double con el valor de intesidad
+	 * @brief Get value of select voxel.
+	 * @return double value of voxel.
 	*/
 	double obtenerValorActualDeContorno(void);
 
 	/**
-	 * @brief Activar/Desactivar estéreo activo
+	 * @brief Enable/Disable Stereoscopy vision.
 	*/
 	void StActivo(void);
 
 	/**
-	 * @brief Activar/Desactivar estéreo pasivo
+	 * @brief Enable/Disable passive stereo.
 	*/
 	void StPasivo(void);
 
 	/**
-	 * @brief Aumentar distancia entre ojos para el modo estéreo
+	 * @brief More distance between image in Stereoscopy vision.
 	*/
 	void StAumentar(void);
 
 	/**
-	 * @brief Disminuir distancia entre ojos para el modo estéreo
+	 * @brief Less distance between image in Stereoscopy vision.
 	*/
 	void StDisminuir(void);
 
 	/**
-	 * @brief Resetear posición de la cámara
+	 * @brief Reset position and orientation of camera
 	*/
 	void NavResetCamara(void);
 
 	/**
-	 * @brief Modo de navegación trackball
+	 * @brief Tracball camera.
 	*/
 	void NavTrackball(void);
 
 	/**
-	 * @brief Modo de navegación joystick
+	 * @brief Joystick Camera.
 	*/
 	void NavJoystick(void);
 
 	/**
-	 * @brief Modo de navegación flight
+	 * @brief Flight camera.
 	*/
 	void NavFlight(void);
 
 	/**
-	 * @brief Modo de navegación unicam
+	 * @brief Unicam camera.
 	*/
 	void NavUnicam(void);
 
 	/**
-	 * @brief Filtro gaussiano
-	 * @param p_libro wxAuiNotebook* para crear página con la imagen filtrada
+	 * @brief Gaussian filter.
+	 * @param p_libro wxAuiNotebook* for make pages.
 	*/
 	void FilVolGaussian(wxAuiNotebook * p_libro);
 
 	/**
-	 * @brief Filtro mediana
-	 * @param p_libro wxAuiNotebook* para crear página con la imagen filtrada
+	 * @brief Median filter.
+	 * @param p_libro wxAuiNotebook* for make pages.
 	*/
 	void FilVolMedian(wxAuiNotebook * p_libro);
 
 	/**
-	 * @brief Filtro gradiente
-	 * @warning no implementado aún
+	 * @brief Gradient filter.
+	 * @warning Not define.
 	*/
 	void FilVolGradient(void);
 
 	/**
-	 * @brief Filtro umbral
-	 * @warning no implementado aún
+	 * @brief Threshold filter.
+	 * @warning Not define.
 	*/
 	void FilVolThreshold(void);
 
 	/**
-	 * @brief Captura de pantalla
-	 * @param p_screen selección de la vista 3D, axial, coronal o sagital
+	 * @brief Capture Screen.
+	 * @param p_screen Choose view (3d, axial, coronal, sagital).
 	*/
 	vtkWindowToImageFilter* Snapshot(int p_screen);	
 
 	/**
-	 * @brief Información tarjeta de video
-	 * @return wxString
+	 * @brief Video card information.
+	 * @return wxString.
 	*/
 	wxString VideoCard(void);	
 
 private:
-	wxString					prv_nombreArchivo;	//! Nombre del archivo
-	wxAuiManager				prv_auiManager;		//! Administrador de la interfaz de usuario
-	vtkViewImage2DWithTracer*	prv_vistaAxial;		//! Vista Axial
-	vtkViewImage2DWithTracer*	prv_vistaCoronal;	//! Vista Coronal
-	vtkViewImage2DWithTracer*	prv_vistaSagital;	//! Vista Sagital
-	vtkViewImage3D*				prv_vista3D;		//! Vista 3D
+	wxString					prv_nombreArchivo;	//! Name of file.
+	wxAuiManager				prv_auiManager;		//! Administrator of Aui.
+	vtkViewImage2DWithTracer*	prv_vistaAxial;		//! View Axial.
+	vtkViewImage2DWithTracer*	prv_vistaCoronal;	//! View Coronal.
+	vtkViewImage2DWithTracer*	prv_vistaSagital;	//! View Sagital.
+	vtkViewImage3D*				prv_vista3D;		//! View 3D.
 
-	wxVTKRenderWindowInteractor* prv_wxVtkVistaAxial;	//! wxVTKInteractor de la Vista Axial
-	wxVTKRenderWindowInteractor* prv_wxVtkVistaCoronal;	//! wxVTKInteractor de la Vista Coronal
-	wxVTKRenderWindowInteractor* prv_wxVtkVistaSagital;	//! wxVTKInteractor de la Vista Sagital
-	wxVTKRenderWindowInteractor* prv_wxVtkVista3D;		//! wxVTKInteractor de la Vista 3D
+	wxVTKRenderWindowInteractor* prv_wxVtkVistaAxial;	//! wxVTKInteractor of view Axial.
+	wxVTKRenderWindowInteractor* prv_wxVtkVistaCoronal;	//! wxVTKInteractor of view Coronal.
+	wxVTKRenderWindowInteractor* prv_wxVtkVistaSagital;	//! wxVTKInteractor of view Sagital.
+	wxVTKRenderWindowInteractor* prv_wxVtkVista3D;		//! wxVTKInteractor of view 3D.
 
-	vtkRenderer* mi_render3D;		//! Renderer de la vista 3D
-	vtkCamera*	prv_camera;			//! Cámara de la vista 3D
+	vtkRenderer* mi_render3D;		//! Render of view  3D.
+	vtkCamera*	prv_camera;			//! Camera of view 3D.
 
-	typedef unsigned short PixelType;	//! Tipo de dato de la imagen
-	typedef itk::Image<unsigned short,3> ImageType;	//! Tipo de imagen
-	ImageType::Pointer  prv_imagen;		//! Apuntador a la imagen
+	typedef unsigned short PixelType;	//! Pixel data type.
+	typedef itk::Image<unsigned short,3> ImageType;	//! Image data type.
+	ImageType::Pointer  prv_imagen;		//! Pointer to image.
 	
 };
 

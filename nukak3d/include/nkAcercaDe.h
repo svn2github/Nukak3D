@@ -1,7 +1,6 @@
 /** 
  * @file nkAcercaDe.h
- * @brief Acerca De nukak3d.
- * @details Información acerca del diseño y desarrollo del nukak3D.
+ * @brief About Nukak3D.
  * @author Alexander Pinzon Fernandez.
  * @version 0.1
  * @date 12/02/2007 03:52 p.m.
@@ -24,17 +23,15 @@
 #include "logo_bioingenium.xpm"
 
 /**
- * @brief Dialogo Acerca De.
- * @details Información acerca del diseño y desarrollo del nukak3D.
+ * @brief About Dialog.
 */
 class nkAcercaDe: public wxDialog
 {
 public:
 	/**
-	 * @brief Constructor de Clase.
-	 * @details Datos necesarios para la generacion del dialogo Acerca De.
+	 * @brief Class constructor.
 	*/
-	nkAcercaDe(wxWindow* parent): wxDialog(parent, -1, "Nukak3D: Acerca De", wxDefaultPosition, wxSize(450,440))
+	nkAcercaDe(wxWindow* parent): wxDialog(parent, -1, "Nukak3D: About", wxDefaultPosition, wxSize(450,440))
 	{
 		new wxStaticBitmap(this, 
 			wxID_ANY,
@@ -43,14 +40,14 @@ public:
 		new wxStaticText(this, 
 			wxID_ANY,
 			wxT("\nNukak3D 2007 ")
-			wxT("\nVersión 4.0 Revisión 3104.")
-			wxT("\n(c) 2007 Grupo Bioingenium")
-			wxT("\n\nEste proyecto ha sido desarrollado dentro de la línea de investigación")
-			wxT("\nde computación gráfica del grupo Bioingenium.")
+			wxT("\nVersion 4.0 Revision 3104.")
+			wxT("\n(c) 2007 Bioingenium Research Group.")
+			wxT("\n\nThis project has been developed within the research")
+			wxT("\nof computer graphics group Bioingenium.")
 			wxT("\n")
 			wxT("\n")
 			wxT("\n")
-			wxT("\nDesarrollado por:")
+			wxT("\nDeveloped By:")
 			wxT("\n")
 			wxT("\nAlexander Pinzón")
 			wxT("\nByron Pérez")
@@ -62,10 +59,10 @@ public:
 			wxPoint(20,130), 
 			wxDefaultSize);
 
-		new wxButton(this, wxID_OK, wxT("Aceptar"),wxPoint(200,370));	
+		new wxButton(this, wxID_OK, wxT("Ok"),wxPoint(200,370));	
 	}
 	/**
-	 * @brief Destructor de clase.
+	 * @brief Class destructor.
 	*/
 	~nkAcercaDe(){}
 };

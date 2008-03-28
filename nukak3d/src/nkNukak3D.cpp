@@ -1,7 +1,7 @@
 /** 
  * @file nkNukak3D.cpp
- * @brief Ventana principal de Nukak3D.
- * @details Implementa la interfaz grafica 
+ * @brief Main windiw of Nukak3D.
+ * @details Implementation of gui.
  * @author Alexander Pinzon Fernandez, Byron Perez
  * @version 0.2
  * @date 27/12/2007 03:37 p.m.
@@ -43,227 +43,225 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	#endif // wxUSE_STATUSBAR
 	
 	/////////////////////////
-	// Barra de menu -> superior
+	// Menu Bar -> Botton
 	wxMenuBar * mi_wxMBMenu = new wxMenuBar();
 	SetMenuBar(mi_wxMBMenu);
 	
-	// Menu archivo -> superior
+	// File Menu Bar -> Botton
 	wxMenu * mi_wxMenuArchivo = new wxMenu(_T(""), wxMENU_TEAROFF);
-	mi_wxMenuArchivo->Append(nkNukak3D::ID_SALIR, _T("S&alir\tAlt-X"), _T("Salir del programa"));
-	mi_wxMBMenu->Append(mi_wxMenuArchivo, _T("&Archivo"));
+	mi_wxMenuArchivo->Append(nkNukak3D::ID_SALIR, _T("E&xit\tAlt-X"), _T("Close application."));
+	mi_wxMBMenu->Append(mi_wxMenuArchivo, _T("&File"));
 
-	// Menu ayuda superior
+	// Help Menu Bar -> Botton
 	wxMenu * mi_wxMenuAyuda = new wxMenu;  
-	mi_wxMenuAyuda->Append(nkNukak3D::ID_ACERCA_DE, _T("&Acerca De...\tCtrl-A"), _T("Mostrar informacion de los autores."));
-	mi_wxMBMenu->Append(mi_wxMenuAyuda, _T("Ayuda"));
+	mi_wxMenuAyuda->Append(nkNukak3D::ID_ACERCA_DE, _T("&About Nukak3D...\tCtrl-A"), _T("Show information of authors."));
+	mi_wxMBMenu->Append(mi_wxMenuAyuda, _T("Help"));
 
 	//////////////////////////////////
-	// Barra Menu "herramientas"  lateral
+	// ToolBar Tools, // Menu Open
 	mi_nkHerramientas = new nkToolBar(this, nkNukak3D::ID_ARBOL, wxDefaultPosition, wxDefaultSize);
 
-	// Menu grupo "herramientas" -> Abir volumen de imagenes -> lateral
-	nkMenuTool * mi_nkMenuVolume = mi_nkHerramientas->insertarMenu(-1, "Abrir Volumen de Imagenes");
-	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO,wxT("Volumen"), wxT(wxNullBitmap), wxT("Abrir un volumen de  imagenes")));
-	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO_DICOM,wxT("Imagenes Dicom"), wxNullBitmap, wxT("Abrir un volumen de imagenes Dicom")));
+	nkMenuTool * mi_nkMenuVolume = mi_nkHerramientas->insertarMenu(-1, "Open volume images.");
+	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO,wxT("Volume"), wxT(wxNullBitmap), wxT("Open a single file.")));
+	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO_DICOM,wxT("Dicom Directory"), wxNullBitmap, wxT("Open directory with Dicom images.")));
 
-	// Menu grupo "herramientas" -> Abir objeto 3D -> lateral
-	nkMenuTool * mi_nkMenuObj3D = mi_nkHerramientas->insertarMenu(-1, "Abrir Malla poligonal 3D");
-	mi_nkMenuObj3D->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO_MALLA3D,wxT("Malla Poligonal 3D"), wxNullBitmap, wxT("Abrir una malla poligonal 3D de un archivo vtk")));
+	nkMenuTool * mi_nkMenuObj3D = mi_nkHerramientas->insertarMenu(-1, "Open Mesh 3D");
+	mi_nkMenuObj3D->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO_MALLA3D,wxT("Polygon Mesh"), wxNullBitmap, wxT("Open file vtk.")));
 
-	// Menu grupo "herramientas" -> Guardar -> lateral
-	nkMenuTool * mi_nkMenuGuardar = mi_nkHerramientas->insertarMenu(-1, "Guardar");
-	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_GUARDARVOL,wxT("Guardar Volumen de Imagenes"), wxNullBitmap, wxT("Guardar un volumen de imagenes")));
-	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_GUARDARMALLA3D,wxT("Guardar Malla Poligonal 3D"), wxNullBitmap, wxT("Guardar una malla poligonal 3D")));
+	// Menu Save
+	nkMenuTool * mi_nkMenuGuardar = mi_nkHerramientas->insertarMenu(-1, "Save");
+	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_GUARDARVOL,wxT("Save Volume"), wxNullBitmap, wxT("Save volume of images.")));
+	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_GUARDARMALLA3D,wxT("Save Mesh 3D."), wxNullBitmap, wxT("Save mesh 3D in vtk file format.")));
 
-	// Menu grupo "herramientas" -> Captura de pantalla -> lateral
-	nkMenuTool * mi_nkMenuCaptura = mi_nkHerramientas->insertarMenu(-1, "Captura de pantalla");
-	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOT3D,wxT("Guardar vista 3D"), wxNullBitmap, wxT("Guardar captura de pantalla de la vista 3D")));
-	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTAXIAL,wxT("Guardar vista axial"), wxNullBitmap, wxT("Guardar captura de pantalla de la vista axial")));
-	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTSAGITAL,wxT("Guardar vista sagital"), wxNullBitmap, wxT("Guardar captura de pantalla de la vista sagital")));
-	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTCORONAL,wxT("Guardar vista coronal"), wxNullBitmap, wxT("Guardar captura de pantalla de la vista coronal")));
+	// Menu capture screen
+	nkMenuTool * mi_nkMenuCaptura = mi_nkHerramientas->insertarMenu(-1, "Capture Screen");
+	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOT3D,wxT("Save 3D View"), wxNullBitmap, wxT("Save snapshot of 3d view.")));
+	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTAXIAL,wxT("Save Axial View"), wxNullBitmap, wxT("Save snapshot of axial view.")));
+	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTSAGITAL,wxT("Save Sagital View"), wxNullBitmap, wxT("Save snapshot of sagital view.")));
+	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTCORONAL,wxT("Save Coronal View"), wxNullBitmap, wxT("Save snapshot of coronal view.")));
 
-	// Menu grupo "herramientas" -> Informacion -> lateral
-	nkMenuTool * mi_nkMenuInfo = mi_nkHerramientas->insertarMenu(-1, "Informacion");
-	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARIMAGE,wxT("Volumen 3D"), wxNullBitmap, wxT("Informacion del volumen 3D")));
-	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARPOLYGON,wxT("Malla poligonal"), wxNullBitmap, wxT("Informacion de la malla poligonal")));
-	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARVIDEO,wxT("Tarjeta de video"), wxNullBitmap, wxT("Informacion de la tarjeta de video en el archivo abierto")));
+	// Menu information
+	nkMenuTool * mi_nkMenuInfo = mi_nkHerramientas->insertarMenu(-1, "Information");
+	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARIMAGE,wxT("Volume 3D"), wxNullBitmap, wxT("Information of volume 3D.")));
+	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARPOLYGON,wxT("Polygon mesh"), wxNullBitmap, wxT("Information of polygon mesh.")));
+	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARVIDEO,wxT("Video card"), wxNullBitmap, wxT("Information of videocard in system.")));
 	//////////////////////////////////
 
-	// Barra Menu "configuracion" lateral 
+	// Toolbar Image
 	mi_nkImageViewer = new nkToolBar(this, nkNukak3D::ID_ARBOL, wxDefaultPosition, wxDefaultSize);
 
-	// Menu grupo "configuracion" -> paleta de colores -> lateral
-	nkMenuTool * mi_nkMenuImageViewer = mi_nkImageViewer->insertarMenu(-1, wxT("Paleta de Colores"));
+	// Menu Lookup table.
+	nkMenuTool * mi_nkMenuImageViewer = mi_nkImageViewer->insertarMenu(-1, wxT("Lookup Table"));
 	mi_nkMenuImageViewer->insertarTool(
 		new nkTool(nkNukak3D::ID_REINICIAR_PALETA,
-			wxT("Reiniciar paleta de Colores"), 
+			wxT("Reset Lookup Table"), 
 			wxNullBitmap, 
-			wxT("Carga los valores predeterminados del ancho y alto de la ventana para la paleta de colores.")));
+			wxT("Load window and level by default for this lookup table.")));
 	std::vector<std::string> lutNames = vtkLookupTableManager::GetAvailableLookupTables();
 	for( unsigned int i=0; i<lutNames.size(); i++){
 		mi_nkMenuImageViewer->insertarTool(
 			new nkTool(nkNukak3D::ID_ULTIMO + i,
 			wxT(lutNames[i].c_str()), 
 			wxT(wxNullBitmap), 
-			wxT("Cambiar la forma de visualizacion de los niveles de la imagen")));
+			wxT("Change Lookup table.")));
 	}
 	
-	// Menu grupo "configuracion" -> Modo de procesamiento 3D -> lateral
-	nkMenuTool * mi_nkMenuVol3DMode = mi_nkImageViewer->insertarMenu(-1, wxT("Visualizacion de volumenes 3D"));
+	// Menu rendering mode.
+	nkMenuTool * mi_nkMenuVol3DMode = mi_nkImageViewer->insertarMenu(-1, wxT("View volume 3D"));
 	
 	mi_nkMenuVol3DMode->insertarTool(
 		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_ESCALAR,
-		wxT("Escalar: Planos ortogonales"), 
+		wxT("Escalar: Ortogonal planes"), 
 			wxNullBitmap, 
-			wxT("Visualizacion de 3 Planos ortogonales sobre el volumen.")));
+			wxT("View 3 ortogonal planes over volume 3D.")));
 	
 	mi_nkMenuVol3DMode->insertarTool(
 		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC,
-			wxT("3D: Trazado de Rayos"), 
+			wxT("3D: Ray Cast"), 
 			wxNullBitmap, 
-			wxT("Visualizacion 3D con un algoritmo de RayCasting.")));
+			wxT("Rendering volume with Ray Cast method.")));
 	
 	mi_nkMenuVol3DMode->insertarTool(
 		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_TEXTURA,
-			wxT("3D: Textura"), 
+			wxT("3D: Texture Mapping"), 
 			wxNullBitmap, 
-			wxT("Visualizacion 3D normal.")));
+			wxT("Rendering volume with Texture Mapping method.")));
 
-	// Menu grupo "configuracion" -> isosuperficies -> lateral
-	nkMenuTool * mi_nkMenuIsoSuperficie = mi_nkImageViewer->insertarMenu(-1, "IsoSuperficie");
-	mi_nkMenuIsoSuperficie->insertarTool(new nkTool(nkNukak3D::ID_MARCHING_CUBES,wxT("3D: Marching Cubes"), wxNullBitmap, wxT("Generar una IsoSuperficie por medio del algoritmo MarchingCubes")));
+	// Menu rendering mode.
+	nkMenuTool * mi_nkMenuIsoSuperficie = mi_nkImageViewer->insertarMenu(-1, "IsoSurface");
+	mi_nkMenuIsoSuperficie->insertarTool(new nkTool(nkNukak3D::ID_MARCHING_CUBES,wxT("3D: Marching Cubes"), wxNullBitmap, wxT("Reconstruction surface with Marching Cubes method.")));
 
 
 	/////////////////////////////////////////////////
 
-	//Menu grupo "configuracion" -> filtros y segmentacion -> lateral
-	nkMenuTool * mi_nkMenuVolUtilidades = mi_nkImageViewer->insertarMenu(-1, wxT("Filtros y segmentacion"));
+	// Menu image filters.
+	nkMenuTool * mi_nkMenuVolUtilidades = mi_nkImageViewer->insertarMenu(-1, wxT("Filter and Segmentation"));
 	
 	mi_nkMenuVolUtilidades->insertarTool(
 		new nkTool(nkNukak3D::ID_LSLEVELSETSCOMPLETO,
-			wxT("Segmentacion con Levelsets"), 
+			wxT("Segmentation with Levelsets"), 
 			wxNullBitmap, 
-			wxT("Segmentacion con Levelsets usando como semilla la posicion actual del cursor")));
+			wxT("Segmentation with Levelsets using cursor position as seed.")));
 	
 	mi_nkMenuVolUtilidades->insertarTool(
 		new nkTool(nkNukak3D::ID_AREA,
-			wxT("Area de la imagen axial"), 
+			wxT("Area of Axial Image"), 
 			wxNullBitmap, 
-			wxT("Area mayor que cero en la imagen axial actual en mm2")));	
+			wxT("Area greater that zero in the axial image in square millimeters mm2.")));	
 
 	mi_nkMenuVolUtilidades->insertarTool(
 		new nkTool(nkNukak3D::ID_FILVOLGAUSSIAN,
-			wxT("Filtro gaussiano"), 
+			wxT("Gaussian Filter"), 
 			wxNullBitmap, 
-			wxT("Filtro gaussiano del volumen")));	
+			wxT("Gaussian filter to volume.")));	
 
 	mi_nkMenuVolUtilidades->insertarTool(
 		new nkTool(nkNukak3D::ID_FILVOLMEDIAN,
-			wxT("Filtro mediana"), 
+			wxT("Median Filter"), 
 			wxNullBitmap, 
-			wxT("Filtro mediana del volumen")));	
+			wxT("Median filter to volume.")));	
 
 	/////////////////////////////////////////////////
 
-	//Menu grupo "configuracion" -> Operaciones sobre mallas 3D -> lateral
-	nkMenuTool * mi_nkMenuFiltrosPoly = mi_nkImageViewer->insertarMenu(-1, wxT("Operaciones sobre mallas 3D"));
+	// Menu Mesh 3D.
+	nkMenuTool * mi_nkMenuFiltrosPoly = mi_nkImageViewer->insertarMenu(-1, wxT("Modifiers For Mesh 3D"));
 	
 	mi_nkMenuFiltrosPoly->insertarTool(
 		new nkTool(nkNukak3D::ID_FILPOLYTRIANGLE,
-			wxT("Triangulacion"), 
+			wxT("Triangulated"), 
 			wxNullBitmap, 
-			wxT("Triangulacion de la malla 3D")));
+			wxT("Triangulated of mesh 3D.")));
 	
 	mi_nkMenuFiltrosPoly->insertarTool(
 		new nkTool(nkNukak3D::ID_FILPOLYDECIMATE,
-			wxT("Decimado"), 
+			wxT("Decimate Mesh 3D"), 
 			wxNullBitmap, 
-			wxT("Decimado (simplificacion) de la malla")));	
+			wxT("Decimate reduction o 3d mesh")));	
 
 	mi_nkMenuFiltrosPoly->insertarTool(
 		new nkTool(nkNukak3D::ID_FILPOLYSMOOTH,
-			wxT("Suavizado"), 
+			wxT("Smooth"), 
 			wxNullBitmap, 
-			wxT("Suavizado de la malla")));	
+			wxT("Smooth mesh 3D")));	
 
 	mi_nkMenuFiltrosPoly->insertarTool(
 		new nkTool(nkNukak3D::ID_FILPOLYNORMALS,
-			wxT("Normales"), 
+			wxT("Normals"), 
 			wxNullBitmap, 
-			wxT("Angulos de las normales")));	
+			wxT("Recalculate Normals.")));	
 
 	mi_nkMenuFiltrosPoly->insertarTool(
 		new nkTool(nkNukak3D::ID_FILPOLYDEFORM,
-			wxT("Deformar"), 
+			wxT("Deform"), 
 			wxNullBitmap, 
-			wxT("Deformar malla")));	
+			wxT("Deform mesh 3d")));	
 
 
-	//Menu grupo "configuracion" -> Navegacion -> lateral
-	nkMenuTool * mi_nkMenuNavegacion = mi_nkImageViewer->insertarMenu(-1, wxT("Navegacion"));
+	// Menu Navitation.
+	nkMenuTool * mi_nkMenuNavegacion = mi_nkImageViewer->insertarMenu(-1, wxT("Navigation"));
 	
 	mi_nkMenuNavegacion->insertarTool(
 		new nkTool(nkNukak3D::ID_NAVRESET,
-			wxT("Reinicializar camara"), 
+			wxT("Reset Camera"), 
 			wxNullBitmap, 
-			wxT("Reinicializa la vista de la camara ajustada a todo el volumen")));
+			wxT("Reset position and orientation of camera.")));
 
 	mi_nkMenuNavegacion->insertarTool(
 		new nkTool(nkNukak3D::ID_NAVTRACKBALL,
 			wxT("Trackball"), 
 			wxNullBitmap, 
-			wxT("Modo de navegacion trackball")));
+			wxT("Trackball camera.")));
 
 	mi_nkMenuNavegacion->insertarTool(
 		new nkTool(nkNukak3D::ID_NAVJOYSTICK,
 			wxT("Joystick"), 
 			wxNullBitmap, 
-			wxT("Modo de navegacion trackball")));
+			wxT("Joystick camera.")));
 
 	mi_nkMenuNavegacion->insertarTool(
 		new nkTool(nkNukak3D::ID_NAVFLIGHT,
 			wxT("Flight"), 
 			wxNullBitmap, 
-			wxT("Modo de navegacion flight")));
+			wxT("Flight camera.")));
 
 	mi_nkMenuNavegacion->insertarTool(
 		new nkTool(nkNukak3D::ID_NAVUNICAM,
 			wxT("Unicam"), 
 			wxNullBitmap, 
-			wxT("Modo de navegacion unicam")));
+			wxT("Modo de navegacion unicam.")));
 
 	
-	//Menu grupo "configuracion" -> Vision estereo -> lateral
-	nkMenuTool * mi_nkMenuEstereo = mi_nkImageViewer->insertarMenu(-1, wxT("Estereo"));
+	// Menu stereoscopy vision
+	nkMenuTool * mi_nkMenuEstereo = mi_nkImageViewer->insertarMenu(-1, wxT("Stereoscopy"));
 	
 	mi_nkMenuEstereo->insertarTool(
 		new nkTool(nkNukak3D::ID_STACTIVO,
-			wxT("Estereo activo"), 
+			wxT("Enable Stereoscopy Vision"), 
 			wxNullBitmap, 
-			wxT("Inicializa/desactiva el modo de vision estereo activa con gafas de obturacion")));
+			wxT("Enable/Disable Stereoscopy vision.")));
 
 	mi_nkMenuEstereo->insertarTool(
 		new nkTool(nkNukak3D::ID_STPASIVO,
-			wxT("Estereo pasivo"), 
+			wxT("Stereo passive"), 
 			wxNullBitmap, 
-			wxT("Inicializa/desactiva el modo de vision estereo pasiva con gafas rojo/cyan")));
+			wxT("Enable/Disable Stereo passive.")));
 
 	mi_nkMenuEstereo->insertarTool(
 		new nkTool(nkNukak3D::ID_STAUMENTAR,
-			wxT("Aumentar separacion +"), 
+			wxT("More separation +"), 
 			wxNullBitmap, 
-			wxT("Aumenta la separacion entre ojos")));
+			wxT("More separation between images in Stereoscopy vision")));
 
 	mi_nkMenuEstereo->insertarTool(
 		new nkTool(nkNukak3D::ID_STDISMINUIR,
-			wxT("Disminuir separacion -"), 
+			wxT("Less separation -"), 
 			wxNullBitmap, 
-			wxT("Disminuye la separacion entre ojos")));
+			wxT("Less separation between images in Stereoscopy vision")));
 	
-	// Insertar Menu grupo "herramientas" a la ventana
-	this->insertarToolBar(mi_nkHerramientas, wxT("Herramientas"), wxT("Herramientas"));
-	// Insertar Menu grupo "configuracion" a la ventana
-	this->insertarToolBar(mi_nkImageViewer, wxT("Configuracion"), wxT("Configuracion"));
+	// Insert nkToolBar Tools
+	this->insertarToolBar(mi_nkHerramientas, wxT("Tools"), wxT("Tools"));
+	// Insert nkToolBar Configuration
+	this->insertarToolBar(mi_nkImageViewer, wxT("Configuration"), wxT("Configuration"));
 
 
 	prv_libro = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
@@ -274,7 +272,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 		wxNO_BORDER);
 
 	prv_auiManager.AddPane(prv_libro, wxAuiPaneInfo().
-                  Name(wxT("Nukak 3d Espacio de Trabajo")).Caption(wxT("Nukak 3D Archivos")).
+                  Name(wxT("Nukak3d Workspace")).Caption(wxT("Nukak 3D Files")).
 				  CenterPane().
 				  PaneBorder(false));
 
@@ -295,7 +293,7 @@ nkNukak3D::~nkNukak3D()
 }
 
 //*****************************************************************************************
-//		TABLA DE EVENTOS
+//		TABLE OF EVENTS
 //*****************************************************************************************
 BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_TREE_ITEM_ACTIVATED(nkNukak3D::ID_ARBOL, nkNukak3D::eventoArbol)
@@ -343,7 +341,7 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 END_EVENT_TABLE()
 
 //*****************************************************************************************
-//		INSERTAR TOOLBAR
+//		INSERT TOOLBAR
 //*****************************************************************************************
 void nkNukak3D::insertarToolBar(wxWindow* window, wxString un_nombre, wxString una_etiqueta){
 	int separacion = 15;
@@ -408,7 +406,7 @@ void nkNukak3D::eventoAbrirVolumen(wxCommandEvent& WXUNUSED(event)){
 	wxT ("All (*)|*");
 
 	wxFileDialog * miFileDialog = new wxFileDialog(this, 
-        										  wxT("Escoja un archivo..."),
+        										  wxT("Open file..."),
                                                   wxT(""), 
 												  wxT(""), 
                                                   miWxFilter,
@@ -446,7 +444,7 @@ void nkNukak3D::eventoAbrirVolumen(wxCommandEvent& WXUNUSED(event)){
 	wxEndBusyCursor();
 }
 //*****************************************************************************************
-//		MENU -> ABRIR -> VOLUMEN DICOM
+//		MENU -> OPEN -> VOLUME DICOM
 //*****************************************************************************************
 void nkNukak3D::eventoAbrirVolumenDicom(wxCommandEvent& WXUNUSED(event)){
 	wxVtkDICOMImporter* miImporter = new wxVtkDICOMImporter (this);
@@ -476,7 +474,7 @@ void nkNukak3D::eventoAbrirVolumenDicom(wxCommandEvent& WXUNUSED(event)){
 	wxEndBusyCursor();
 }
 //*****************************************************************************************
-//		MENU -> ABRIR -> MALLA 3D
+//		MENU -> OPEN -> MESH 3D
 //*****************************************************************************************
 void nkNukak3D::eventoAbrirMalla3D(wxCommandEvent& WXUNUSED(event)){
 	const wxString miWxFilter =
@@ -484,7 +482,7 @@ void nkNukak3D::eventoAbrirMalla3D(wxCommandEvent& WXUNUSED(event)){
 	wxT ("All (*)|*");
 
 	wxFileDialog * miFileDialog = new wxFileDialog(this, 
-        										  wxT("Escoja un archivo..."),
+        										  wxT("Open file..."),
                                                   wxT(""), 
 												  wxT(""), 
                                                   miWxFilter,
@@ -513,7 +511,7 @@ void nkNukak3D::eventoAbrirMalla3D(wxCommandEvent& WXUNUSED(event)){
 	wxEndBusyCursor();
 }
 //*****************************************************************************************
-//		MENU -> GUARDAR -> VOLUMEN
+//		MENU -> OPEN -> VOLUME
 //*****************************************************************************************
 void nkNukak3D::eventoGuardarVol(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -533,7 +531,7 @@ void nkNukak3D::eventoGuardarVol(wxCommandEvent& WXUNUSED(event)){
 				wxT ("Tiff (*.tif;*.tiff)|*.tif;*.tiff|")
 				wxT ("All (*)|*");
 			wxFileDialog * myFileDialog = new wxFileDialog(this, 
-        										  wxT("Guardar Volumen Como"),
+        										  wxT("Save as"),
                                                   wxT(""), wxT(""),
                                                   miWxFilter,
                                                   wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
@@ -557,7 +555,7 @@ void nkNukak3D::eventoGuardarVol(wxCommandEvent& WXUNUSED(event)){
 	}
 }
 //*****************************************************************************************
-//		MENU -> GUARDAR -> MALLA 3D
+//		MENU -> SAVE -> MESH 3D
 //*****************************************************************************************
 void nkNukak3D::eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -569,7 +567,7 @@ void nkNukak3D::eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event)){
 				wxT ("VTK (*.vtk)|*.vtk|")
 				wxT ("All (*)|*");
 			wxFileDialog * myFileDialog = new wxFileDialog(this, 
-        										  wxT("Guardar Malla Poligonal Como"),
+        										  wxT("Save as"),
                                                   wxT(""), wxT(""),
                                                   miWxFilter,
                                                   wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
@@ -593,7 +591,7 @@ void nkNukak3D::eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event)){
 	}
 }
 //*****************************************************************************************
-//		EVENTO ARBOL
+//		EVENT TREE
 //*****************************************************************************************
 void nkNukak3D::eventoArbol(wxTreeEvent& event){
 	wxCommandEvent mievento;
@@ -602,33 +600,32 @@ void nkNukak3D::eventoArbol(wxTreeEvent& event){
 #else //MAC O UNIX
 	wxString mi_item = mi_nkHerramientas->GetItemText(event.GetItem());
 #endif //__WIN32__
-	if (mi_item == wxT("Volumen")) eventoAbrirVolumen(mievento);
-	else if (mi_item == wxT("Imagenes Dicom")) eventoAbrirVolumenDicom(mievento);
-	else if (mi_item == wxT("Malla Poligonal 3D")) eventoAbrirMalla3D(mievento);
+	if (mi_item == wxT("Volume")) eventoAbrirVolumen(mievento);
+	else if (mi_item == wxT("Dicom Directory")) eventoAbrirVolumenDicom(mievento);
+	else if (mi_item == wxT("Polygon Mesh")) eventoAbrirMalla3D(mievento);
 	else if (mi_item == wxT("3D: Marching Cubes")) eventoMarchingCubes(mievento);
-	else if (mi_item == wxT("Escalar: Planos ortogonales")) eventoVolViewerRenderingEscalar(mievento);
-	else if (mi_item == wxT("3D: Trazado de Rayos")) eventoVolViewerRenderingMRC(mievento);
-	else if (mi_item == wxT("3D: Textura")) eventoVolViewerRenderingTextura(mievento);
-	else if (mi_item == wxT("Reiniciar paleta de Colores")) eventoReiniciarPaleta(mievento);
-	else if (mi_item == wxT("Escalar: Planos ortogonales")) eventoVolViewerRenderingEscalar(mievento);
-	else if (mi_item == wxT("Segmentacion con Levelsets")) eventolsLevelsetsCompleto(mievento);
-	else if (mi_item == wxT("Area de la imagen axial")) eventoArea(mievento);
-	else if (mi_item == wxT("Filtro gaussiano")) eventoFilVolGaussian(mievento);
-	else if (mi_item == wxT("Filtro mediana")) eventoFilVolMedian(mievento);
-	else if (mi_item == wxT("Triangulacion")) eventoFilPolyTriangle(mievento);
-	else if (mi_item == wxT("Decimado")) eventoFilPolyDecimate(mievento);
-	else if (mi_item == wxT("Suavizado")) eventoFilPolySmooth(mievento);
-	else if (mi_item == wxT("Normales")) eventoFilPolyNormals(mievento);
-	else if (mi_item == wxT("Deformar")) eventoFilPolyDeform(mievento);
-	else if (mi_item == wxT("Reinicializar camara")) eventoNavResetCamara(mievento);
+	else if (mi_item == wxT("Escalar: Ortogonal planes")) eventoVolViewerRenderingEscalar(mievento);
+	else if (mi_item == wxT("3D: Ray Cast")) eventoVolViewerRenderingMRC(mievento);
+	else if (mi_item == wxT("3D: Texture Mapping")) eventoVolViewerRenderingTextura(mievento);
+	else if (mi_item == wxT("Reset Lookup Table")) eventoReiniciarPaleta(mievento);
+	else if (mi_item == wxT("Segmentation with Levelsets")) eventolsLevelsetsCompleto(mievento);
+	else if (mi_item == wxT("Area of Axial Image")) eventoArea(mievento);
+	else if (mi_item == wxT("Gaussian Filter")) eventoFilVolGaussian(mievento);
+	else if (mi_item == wxT("Median Filter")) eventoFilVolMedian(mievento);
+	else if (mi_item == wxT("Triangulated")) eventoFilPolyTriangle(mievento);
+	else if (mi_item == wxT("Decimate Mesh 3D")) eventoFilPolyDecimate(mievento);
+	else if (mi_item == wxT("Smooth")) eventoFilPolySmooth(mievento);
+	else if (mi_item == wxT("Normals")) eventoFilPolyNormals(mievento);
+	else if (mi_item == wxT("Deform")) eventoFilPolyDeform(mievento);
+	else if (mi_item == wxT("Reset Camera")) eventoNavResetCamara(mievento);
 	else if (mi_item == wxT("Trackball")) eventoNavTrackball(mievento);
 	else if (mi_item == wxT("Joystick")) eventoNavJoystick(mievento);
 	else if (mi_item == wxT("Flight")) eventoNavFlight(mievento);
 	else if (mi_item == wxT("Unicam")) eventoNavUnicam(mievento);
-	else if (mi_item == wxT("Estereo activo")) eventoStActivo(mievento);
-	else if (mi_item == wxT("Estereo pasivo")) eventoStPasivo(mievento);
-	else if (mi_item == wxT("Aumentar separacion +")) eventoStAumentar(mievento);
-	else if (mi_item == wxT("Disminuir separacion -")) eventoStDisminuir(mievento);
+	else if (mi_item == wxT("Enable Stereoscopy Vision")) eventoStActivo(mievento);
+	else if (mi_item == wxT("Stereo passive")) eventoStPasivo(mievento);
+	else if (mi_item == wxT("More separation +")) eventoStAumentar(mievento);
+	else if (mi_item == wxT("Less separation -")) eventoStDisminuir(mievento);
 
 	std::vector<std::string> lutNames = vtkLookupTableManager::GetAvailableLookupTables();
 	int val = -1;
@@ -641,7 +638,7 @@ void nkNukak3D::eventoArbol(wxTreeEvent& event){
 	}
 }
 //*****************************************************************************************
-//		MENU -> PALETA DE COLORES -> REINICIAR PALETA
+//		MENU -> LOOKUP TABLE -> RESET
 //*****************************************************************************************
 void nkNukak3D::eventoReiniciarPaleta(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -656,7 +653,7 @@ void nkNukak3D::eventoReiniciarPaleta(wxCommandEvent& WXUNUSED(event)){
 	}
 }
 //*****************************************************************************************
-//		MENU -> PALETA DE COLORES -> SELECCIoN DE PALETA
+//		MENU -> LOOKUP TABLE -> SELECT
 //*****************************************************************************************
 void nkNukak3D::eventoPaletaColor(wxCommandEvent& event){
 	if (event.GetId() >= nkNukak3D::ID_ULTIMO){
@@ -678,7 +675,7 @@ void nkNukak3D::eventoPaletaColor(wxCommandEvent& event){
 	}
 }
 //*****************************************************************************************
-//		MENU -> VISUALIZACION DE VOLUMENES 3D -> ESCALAR (PLANOS ORTOGONALES)
+//		MENU -> VIEW VOLUME 3D -> ESCALAR (ORTOGONAL PLANES)
 //*****************************************************************************************
 void nkNukak3D::eventoVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -693,7 +690,7 @@ void nkNukak3D::eventoVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		MENU -> VISUALIZACION DE VOLUMENES 3D -> RAY CASTING
+//		MENU -> VIEW VOLUME 3D -> RAY CAST
 //*****************************************************************************************
 void nkNukak3D::eventoVolViewerRenderingMRC(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -708,7 +705,7 @@ void nkNukak3D::eventoVolViewerRenderingMRC(wxCommandEvent& WXUNUSED(event)){
 	}
 }
 //*****************************************************************************************
-//		MENU -> VISUALIZACION DE VOLUMENES 3D -> TEXTURE RENDERING
+//		MENU -> VIEW VOLUME 3D -> TEXTURE MAPPING
 //*****************************************************************************************
 void nkNukak3D::eventoVolViewerRenderingTextura(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -734,9 +731,9 @@ void nkNukak3D::eventoMarchingCubes(wxCommandEvent& WXUNUSED(event)){
 
 			wxString etiquetas[100];
 			const int num_datos=3;
-			etiquetas[0] = wxT("Numero de contornos");
-			etiquetas[1] = wxT("Valor de umbral Inferior");
-			etiquetas[2] = wxT("Valor de umbral Superior");
+			etiquetas[0] = wxT("Numbers of contours");
+			etiquetas[1] = wxT("Value of threshold lower");
+			etiquetas[2] = wxT("Value of threshold upper");
 			
 			nkIODialog * miDlg = new nkIODialog(	this, 
 															etiquetas,
@@ -775,7 +772,7 @@ void nkNukak3D::eventoMarchingCubes(wxCommandEvent& WXUNUSED(event)){
 	}
 }
 //*****************************************************************************************
-//		MENU -> SEGMENTACION -> LEVELSETS
+//		MENU -> SEGMENTAtION -> LEVELSETS
 //*****************************************************************************************
 void nkNukak3D::eventolsLevelsetsCompleto(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -980,7 +977,7 @@ void nkNukak3D::eventoStDisminuir(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> GAUSSIANO
+//		FILTER -> GAUSSIAN
 //*****************************************************************************************
 void nkNukak3D::eventoFilVolGaussian(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -994,7 +991,7 @@ void nkNukak3D::eventoFilVolGaussian(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> MEDIANA
+//		FILTER -> MEDIAN
 //*****************************************************************************************
 void nkNukak3D::eventoFilVolMedian(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1008,7 +1005,7 @@ void nkNukak3D::eventoFilVolMedian(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> GRADIENTE
+//		FILTER -> GRADIENT
 //*****************************************************************************************
 void nkNukak3D::eventoFilVolGradient(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1022,7 +1019,7 @@ void nkNukak3D::eventoFilVolGradient(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> THRESHOLD
+//		FILTER -> THRESHOLD
 //*****************************************************************************************
 void nkNukak3D::eventoFilVolThreshold(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1037,7 +1034,7 @@ void nkNukak3D::eventoFilVolThreshold(wxCommandEvent &WXUNUSED(event))
 }
 
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> TRIANGULACION
+//		FILTER -> TRIANGULATE
 //*****************************************************************************************
 void nkNukak3D::eventoFilPolyTriangle(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1051,7 +1048,7 @@ void nkNukak3D::eventoFilPolyTriangle(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> DECIMATE
+//		FILTER -> DECIMATE
 //*****************************************************************************************
 void nkNukak3D::eventoFilPolyDecimate(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1065,7 +1062,7 @@ void nkNukak3D::eventoFilPolyDecimate(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> SMOOTH
+//		FILTER -> SMOOTH
 //*****************************************************************************************
 void nkNukak3D::eventoFilPolySmooth(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1079,7 +1076,7 @@ void nkNukak3D::eventoFilPolySmooth(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> NORMALS
+//		FILTER -> NORMALS
 //*****************************************************************************************
 void nkNukak3D::eventoFilPolyNormals(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1093,7 +1090,7 @@ void nkNukak3D::eventoFilPolyNormals(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> DEFORMAR MALLA
+//		FILTER -> DEFORM
 //*****************************************************************************************
 void nkNukak3D::eventoFilPolyDeform(wxCommandEvent &WXUNUSED(event)) 
 {
@@ -1107,7 +1104,7 @@ void nkNukak3D::eventoFilPolyDeform(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		CAPTURA DE LA VISTA 3D
+//		CAPTURE SNAPSHOT 3D
 //*****************************************************************************************
 void nkNukak3D::eventoSnapshot3D(wxCommandEvent &WXUNUSED(event))
 {
@@ -1115,13 +1112,12 @@ void nkNukak3D::eventoSnapshot3D(wxCommandEvent &WXUNUSED(event))
 		int mi_pagina = prv_libro->GetSelection();
 		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
 
-		// Dialogo para grabar
 		const wxString miWxFilter =	
 			wxT ("Jpeg (*.jpg)|*.jpg|")
 			wxT ("Bmp (*.bmp)|*.bmp|")			
 			wxT ("Tiff (*.tif)|*.tif|");
 		wxFileDialog * myFileDialog = new wxFileDialog(this, 
-    										  wxT("Guardar captura de pantalla como"),
+    										  wxT("Save as"),
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
@@ -1176,7 +1172,7 @@ void nkNukak3D::eventoSnapshot3D(wxCommandEvent &WXUNUSED(event))
 	}
 } 
 //*****************************************************************************************
-//		CAPTURA DE LA VISTA AXIAL
+//		CAPTURE SNAPSHOT AXIAL VIEW
 //*****************************************************************************************
 void nkNukak3D::eventoSnapshotAxial(wxCommandEvent &WXUNUSED(event))
 {
@@ -1194,7 +1190,7 @@ void nkNukak3D::eventoSnapshotAxial(wxCommandEvent &WXUNUSED(event))
 			wxT ("Bmp (*.bmp)|*.bmp|")
 			wxT ("Tiff (*.tif)|*.tif|");
 		wxFileDialog * myFileDialog = new wxFileDialog(this, 
-    										  wxT("Guardar captura de pantalla como"),
+    										  wxT("Save as"),
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
@@ -1243,7 +1239,7 @@ void nkNukak3D::eventoSnapshotAxial(wxCommandEvent &WXUNUSED(event))
 } 
 
 //*****************************************************************************************
-//		CAPTURA DE LA VISTA CORONAL
+//		CAPTURE SNAPSHOT CORONAL VIEW
 //*****************************************************************************************
 void nkNukak3D::eventoSnapshotCoronal(wxCommandEvent &WXUNUSED(event))
 {
@@ -1261,7 +1257,7 @@ void nkNukak3D::eventoSnapshotCoronal(wxCommandEvent &WXUNUSED(event))
 			wxT ("Bmp (*.bmp)|*.bmp|")
 			wxT ("Tiff (*.tif)|*.tif|");
 		wxFileDialog * myFileDialog = new wxFileDialog(this, 
-    										  wxT("Guardar captura de pantalla como"),
+    										  wxT("Save as"),
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
@@ -1309,7 +1305,7 @@ void nkNukak3D::eventoSnapshotCoronal(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		CAPTURA DE LA VISTA SAGITAL
+//		CAPTURE SNAPSHOT SAGITAL VIEW
 //*****************************************************************************************
 void nkNukak3D::eventoSnapshotSagital(wxCommandEvent &WXUNUSED(event))
 {
@@ -1327,7 +1323,7 @@ void nkNukak3D::eventoSnapshotSagital(wxCommandEvent &WXUNUSED(event))
 			wxT ("Bmp (*.bmp)|*.bmp|")
 			wxT ("Tiff (*.tif)|*.tif|");
 		wxFileDialog * myFileDialog = new wxFileDialog(this, 
-    										  wxT("Guardar captura de pantalla como"),
+    										  wxT("save as"),
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
@@ -1375,7 +1371,7 @@ void nkNukak3D::eventoSnapshotSagital(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		PARAMETROS DE LA IMAGEN
+//		IMAGE INFORMATION
 //*****************************************************************************************
 void nkNukak3D::eventoParImage(wxCommandEvent &WXUNUSED(event))
 {
@@ -1414,7 +1410,7 @@ void nkNukak3D::eventoParImage(wxCommandEvent &WXUNUSED(event))
 			if( l_type == 11 ) l_text<<wxT("Scalar type = DOUBLE");
 
 			wxMessageDialog* l_dialog = new wxMessageDialog(this, l_text,
-                                                    wxT ("Parametros del volumen 3D"),
+                                                    wxT ("Information of volume"),
                                                     wxOK|wxICON_INFORMATION );
 			l_dialog->ShowModal();
 			delete l_dialog;
@@ -1422,7 +1418,7 @@ void nkNukak3D::eventoParImage(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		PARAMETROS DE LA MALLA POLIGONAL
+//		MESH INFORMATION
 //*****************************************************************************************
 void nkNukak3D::eventoParPolygon(wxCommandEvent &WXUNUSED(event))
 {
@@ -1448,7 +1444,7 @@ void nkNukak3D::eventoParPolygon(wxCommandEvent &WXUNUSED(event))
 	
 
 			wxMessageDialog* l_dialog = new wxMessageDialog(this, l_text,
-                                                    wxT ("Parametros de la malla poligonal"),
+                                                    wxT ("Mesh information"),
                                                     wxOK|wxICON_INFORMATION );
 			l_dialog->ShowModal();
 			delete l_dialog;
@@ -1456,7 +1452,7 @@ void nkNukak3D::eventoParPolygon(wxCommandEvent &WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		PARAMETROS DE LA TARJETA DE VIDEO
+//		VIDEO CARD INFORMATION
 //*****************************************************************************************
 void nkNukak3D::eventoParVideo(wxCommandEvent &WXUNUSED(event))
 {	
@@ -1484,7 +1480,7 @@ void nkNukak3D::eventoParVideo(wxCommandEvent &WXUNUSED(event))
 			nkIODialog * miDlg = new nkIODialog(	this, 
 													l_text,
 													-1,
-													wxT("Nukak3D: Tarjeta de video"),
+													wxT("Nukak3D: Video card"),
 													wxDefaultPosition,
 													wxSize(640,350));
 			miDlg->ShowModal();

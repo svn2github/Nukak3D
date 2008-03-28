@@ -1,8 +1,6 @@
 /** 
  * @file nkObj3DViewer.h
- * @brief Clase para visualizar mallas poligonales
- * @details Implementa todas las funciones para visualización de
- * mallas poligonales y filtros
+ * @brief Class for view mesh.
  * @author Alexander Pinzón Fernandez, Byron Pérez
  * @version 0.2
  * @date 27/12/2007 03:37 p.m.
@@ -63,15 +61,13 @@
 #define mensajes 1
 
 /** 
- * @brief Clase para visualizar mallas poligonales
- * @details Implementa todas las funciones para visualización de
- * mallas poligonales y filtros
+ * @brief Class for view mesh.
  */
 class nkObj3DViewer: public wxPanel{
  public:
 
 	/**
-	 * @brief Constructor de la clase
+	 * @brief Class constructor.
 	 */
 	nkObj3DViewer(wxWindow* parent, 
 		wxWindowID id = wxID_ANY, 
@@ -81,37 +77,37 @@ class nkObj3DViewer: public wxPanel{
 		const wxString& name = "nkObj3DViewer");
 
 	/**
-	 * @brief Destructor de la clase
+	 * @brief Class destructor.
 	*/	
 	~nkObj3DViewer();
 	
 	/**
-	 * @brief Configurar la vista de la malla 3D
+	 * @brief Config view.
 	*/
 	void Configurar(void);
 
 	/**
-	 * @brief Abrir archivo de malla poligonal
-	 * @param nombreArchivo wxString con el nombre y ruta del archivo
+	 * @brief Open file.
+	 * @param nombreArchivo Filepath of mesh.
 	*/
 	void abrirArchivo(wxString nombreArchivo);
 
 	/**
-	 * @brief Guardar archivo de malla poligonal
-	 * @param nombreArchivo wxString con el nombre y ruta del archivo
+	 * @brief Save mesh.
+	 * @param nombreArchivo Filepath of file.
 	*/
 	void guardarArchivo(wxString nombreArchivo);
 
 	/**
-	 * @brief Configurar la vista de la malla 3D
-	 * @param input apuntador con el vtkPolyData* que se quiere visualizar
+	 * @brief Config view 3d.
+	 * @param input Object to view.
 	*/
 	void configurarMalla3D(vtkPolyData* input);
 
 	/**
-	 * @brief Algoritmo marching cubes para generar una isosuperficie poligonal
-	 * @param una_imagen apuntador al volumen 3D al que se le quiere aplicar el algoritmo
-	 * @param un_numContornos cantidad de contornos
+	 * @brief Marching cubes function.
+	 * @param una_imagen Volume to transform.
+	 * @param un_numContornos Numbers of contours.
 	 * @param un_umbral_inferior
 	 * @param un_umbral_superior
 	 * @param un_rojo
@@ -130,103 +126,103 @@ class nkObj3DViewer: public wxPanel{
 									  );
 	
 	/**
-	 * @brief Activar/Desactivar estéreo activo
+	 * @brief Enable/Diable stereoscopy vision.
 	*/
 	void StActivo(void);
 
 	/**
-	 * @brief Activar/Desactivar estéreo pasivo
+	 * @brief Enable/Diable passive stereo.
 	*/
 	void StPasivo(void);
 
 	/**
-	 * @brief Aumentar distancia entre ojos para el modo estéreo
+	 * @brief More separation of images in stereoscopy vision.
 	*/
 	void StAumentar(void);
 
 	/**
-	 * @brief Disminuir distancia entre ojos para el modo estéreo
+	 * @brief Less separation of images in stereoscopy vision.
 	*/
 	void StDisminuir(void);
 
 	/**
-	 * @brief Resetear posición de la cámara
+	 * @brief Reset position and orientation of camera.
 	*/
 	void NavResetCamara(void);
 
 	/**
-	 * @brief Modo de navegación trackball
+	 * @brief Trackball camera.
 	*/
 	void NavTrackball(void);
 
 	/**
-	 * @brief Modo de navegación joystick
+	 * @brief Joystick camera.
 	*/
 	void NavJoystick(void);
 
 	/**
-	 * @brief Modo de navegación flight
+	 * @brief Flight camera.
 	*/
 	void NavFlight(void);
 
 	/**
-	 * @brief Modo de navegación unicam
+	 * @brief unicam camera.
 	*/
 	void NavUnicam(void);
 
 	/**
-	 * @brief Triangulación de la malla poligonal
+	 * @brief Triangle mesh.
 	*/
 	void PolyTriangle( void );
 
 	/**
-	 * @brief Decimado de la malla poligonal
+	 * @brief Decimate mesh.
 	*/
 	void PolyDecimate( void );
 
 	/**
-	 * @brief Suavizado de la malla poligonal
+	 * @brief Smooth mesh.
 	*/
 	void PolySmooth( void );
 
 	/**
-	 * @brief Normales de la malla poligonal
+	 * @brief Recalc normals.
 	*/
 	void PolyNormals( void );
 
 	/**
-	 * @brief Deformación de la malla poligonal
+	 * @brief Deform mesh.
 	*/
 	void PolyDeform( void );
 
 	/**
-	 * @brief Captura de pantalla
+	 * @brief Snapshot view.
 	*/
 	vtkWindowToImageFilter* Snapshot(void);
 
 	/**
-	 * @brief Obtener polydata
-	 * @return apuntador con el vtkPolyData de la ventana
+	 * @brief Get polydata
+	 * @return vtkPolyData of objet in view 3D.
 	*/
 	vtkPolyData* GetPolyData(void);
 
 	/**
-	 * @brief Información tarjeta de video
+	 * @brief Video card information.
 	 * @return wxString
 	*/
 	wxString VideoCard(void);	
 
 private:
-	wxAuiManager					prv_auiManager;		//! Administrador de la interfaz de usuario
+	wxAuiManager					prv_auiManager;		//! Administrator for Aui.
 
-	wxVTKRenderWindowInteractor*	prv_wxVtkVista3D;	//! wxVTKInteractor de la Vista 3D
-	vtkRenderer*					prv_render3D;		//! Renderer de la vista 3D
-	vtkCamera*						prv_camera;			//! Cámara de la vista 3D
-	vtkViewImage3D*					prv_vista3D;		//! Vista 3D
+	wxVTKRenderWindowInteractor*	prv_wxVtkVista3D;	//! wxVTKInteractor of view 3D.
+	vtkRenderer*					prv_render3D;		//! Render of view 3D.
+	vtkCamera*						prv_camera;			//! Camera.
+	vtkViewImage3D*					prv_vista3D;		//! View 3D
 	
-	vtkActor*						prv_actor;			//! Actor de la malla poligonal
-	vtkPolyDataMapper*				prv_mapper;			//! Mapper de la malla poligonal
-	vtkPolyData*					prv_data;			//! Malla poligonal
+	vtkActor*						prv_actor;			//! Actor for mesh.
+	vtkPolyDataMapper*				prv_mapper;			//! Mapper of mesh.
+	vtkPolyData*					prv_data;			//! Data of mesh.
 	
 	
 	vtkCylinderSource*				prv_endoscope;		//! Rigid endoscope

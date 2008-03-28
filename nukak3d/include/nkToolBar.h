@@ -1,8 +1,6 @@
 /** 
  * @file nkToolBar.h
- * @brief Toolbar de nukak3d.
- * @details Clases para la creacion de un toolbar vertical.
- * Especialmente diseñado para el nukak3d.
+ * @brief Toolbar of nukak3d.
  * @author Alexander Pinzon Fernandez.
  * @version 0.1
  * @date 18/10/2007 02:50 p.m.
@@ -22,14 +20,13 @@
 #endif
 
 /**
- * @brief Item de un menu.
- * @details Clase para la generacion de una item(tool), para un ToolBar.
+ * @brief Item of menu.
+ * @details Class for generate item for toolbar.
 */
 class nkTool{
 public:
 	/**
-	 * @brief Constructor de Clase.
-	 * @details Datos necesarios para la generacion de un nkTool.
+	 * @brief Class constructor.
 	*/
 	nkTool(int toolId, 
 		const wxString& label, 
@@ -37,51 +34,50 @@ public:
 		const wxString& shortHelpString = "", 
 		wxItemKind kind = wxITEM_NORMAL);
 	/**
-	 * @brief Destructor de clase.
+	 * @brief Class destructor.
 	*/
 	~nkTool();
 	/**
-	 * @brief Funcion para la generacion y adicion de un tool en un wxToolBar.
-	 * @param un_tool wxToolBar al cual le adicionaremos este nkTool.
+	 * @brief Generation and insertion of tool in wxToolBar.
+	 * @param un_tool wxToolBar to insert.
 	*/
 	wxToolBarToolBase* getTool(wxToolBar * un_tool);
 	/**
-	 * @brief Tamaño: ancho y alto del icono en un item del menu.
+	 * @brief Size: Widh and Height of item of menu.
 	*/
 	static wxSize LARGO_X_ANCHO_ICONO;
 private:
-	/** ID del evento de este item.*/
+	/** ID of his control.*/
 	int prv_toolId;
-	/** Etiquete que se mostrara en el item.*/
+	/** Label for this control.*/
 	wxString prv_label;
-	/** Icono del item.*/
+	/** Icon.*/
 	wxBitmap prv_bitmap1;
-	/** Texto de ayuda que se mostrara cuando el mouse ubique encima de este control.*/
+	/** Help text for this control.*/
 	wxString prv_shortHelpString;
-	/** Congiuracion de este item como (Normal, Toogle, Radio) Boton.*/
+	/** Configuration of this item (Normal, Toogle, Radio) .*/
 	wxItemKind prv_kind;
 };
 
 /**
- * Declaracion de la lista de nkTool.
+ * List of nkTool declaration.
 */
 WX_DECLARE_LIST(nkTool, nkListaTool);
 
 /**
- * @brief Menu de items.
- * @details Clase para la creacion de un menu con items dentro del ToolBar.
+ * @brief Menu of items.
+ * @details Class for creation menu in Toolbar.
 */
 class nkMenuTool: public wxPanel{
 public:
 	/**
-	 * @brief Identificador para el manejo del evento de click sobre el menu.
+	 * @brief Id for mouse event in this menu.
 	*/
 	enum{
 		ID_CLICKMENU = wxID_HIGHEST + 1000
 	};
 	/**
-	 * @brief Constructor de Clase.
-	 * @details Parametros necesarios para incializar un wxPanel.
+	 * @brief Class constructor.
 	*/
 	nkMenuTool(wxWindow* parent, 
 		wxWindowID id, 
@@ -90,98 +86,94 @@ public:
 		const wxSize& size = wxDefaultSize, 
 		long style = wxNO_BORDER);
 	/**
-	 * @brief Destructor de clase.
-	 * @details Se borraran los elementos de la lista de nkTools.
+	 * @brief Class destructor.
+	 * @details Delete list.
 	*/
 	~nkMenuTool();
 
-	/** Ancho del menu*/
+	/** Widht of menu*/
 	static int ANCHO_TOOLBAR;
 
 	/** 
-	 * @brief Al desplegar o replegar el menu hay que volverlo a crear.
+	 * @brief Make menu.
 	*/
 	void crearMenu(void);
 
 	/**
-	 * @brief Insercion de un item en el menu
+	 * @brief Insert item in menu.
 	*/
 	void insertarTool(nkTool* un_tool);
 	/**
-	 * @brief Obtener un nkTool de la lista.
-	 * @param un_indice Posicion en la lista del nkTool.
+	 * @brief get nkTool of list.
+	 * @param un_indice Position of nkTool in list.
 	*/
 	nkTool* obtenerTool(size_t un_indice);
 	/**
-	 * @brief Retorna el numero de elementos en la lista.
+	 * @brief Return list len.
 	*/
 	size_t longitudLista(void);
 	/**
-	 * @brief Tamaño del wxPanel con los items desplegados o replegados en ancho y alto .
+	 * @brief Return actual size of Menu.
 	*/
 	wxSize obtenerTamanio(void);
 	/**
-	 * @brief Retorna si el menu esta desplegado(true) o no(falso).
+	 * @brief Is display menu.
 	*/
 	bool estaDeplegado(void);
 	/**
-	 * @brief Funcion para desplegar los items del menu.
+	 * @brief Function for dropdown menu.
 	*/
 	void desplegarMenu(void);
 	/**
-	 * @brief Funcion para replegar los items del menu.
+	 * @brief Function for hide tools in menu.
 	*/
 	void replegarMenu(void);
 	/**
-	 * @brief Funcion que pinta el contenido del wxPanel
-	 * @details Funcion que pinta los items o no lo hace dependiendo de la funcion estaDesplegado().
-	 * Ademas pinta el borde y actualiza las variables de tamaño para otros controles que lo necesiten.
+	 * @brief Function for paint content of wxPanel
+	 * @details Function for paint items in menu.
 	*/
 	void repintar(void);
 	/**
-	 * @brief Funcion que despliega el menu si esta replegado, o lo repliega en caso contrario.
+	 * @brief Function for dropdown menu or hide items in this menu.
 	*/
 	void evtClick(wxCommandEvent & WXUNUSED(evt));
 	/**
-	 * @brief Invoca la funcion Refresh(), del wxPanel.
+	 * @brief Call Refresh() function of wxPanel.
 	*/
 	void evtRedimensionar(wxSizeEvent & WXUNUSED(evt));
 	/** 
-	 * @brief Funcion invocada por el evento de wxWindow, EVT_PAINT.
-	 * @details Asigna el tamaño al control.
+	 * @brief Function for event EVT_PAINT.
 	*/
 	void evtRepintar(wxPaintEvent& WXUNUSED(evt));
 private:
-	/** Etiqueta de este menu.*/
+	/** Label for this menu.*/
 	wxString prv_nombreMenu;
-	/** Toolbar en la que se colocaran los items de este menu.*/
+	/** Toolbar for inset this menu.*/
 	wxToolBar* prv_toolbar;
-	/** Lista con los datos de los items de este menu*/
+	/** List with items of this menu.*/
 	nkListaTool prv_listaTool;
-	/** Variable que representa el estado del menu [desplegado:true, replegado:false].*/
+	/** State of menu.*/
 	bool prv_desplegado;
 	/**
-	 * @brief Invocacion del macro, para el manejo de eventos en este menu.
+	 * @brief call Macro for events fo this menu.
 	*/
 	DECLARE_EVENT_TABLE()
 };
 
 /**
- * Declaracion de la lista de menus.
+ * Declaration of list of nkMenuTool.
 */
 WX_DECLARE_LIST(nkMenuTool, nkListaMenu);
 
 /**
- * @brief Agrupacion de menus.
- * @details Clase para la creacion de un panel con menus
+ * @brief Toolbar for Menus.
 */
 class nkToolBar: public wxScrolledWindow{
 public:
-	/** Tamaño de las margenes o espacios en este control.*/
+	/** Margins size for this control.*/
 	static int ALINEACION;
 	/**
-     * @brief Constructor de clase.
-     * @details Constructor derivado de la clase wxScrolledWindow.
+     * @brief Class constructor.
     */
 	nkToolBar(wxWindow* parent, 
 		wxWindowID id = -1, 
@@ -190,55 +182,54 @@ public:
 		long style = wxHSCROLL | wxVSCROLL, 
 		const wxString& name = "scrolledWindow");
 	/**
-     * @brief Destructor.
+     * @brief Class destructor.
     */
 	~nkToolBar(void);
 
 	/**
-	 * @brief Procedimiento para la creacion de un menu en esta clase
-	 * @param id Identificacion del control.
-	 * @param nombreMenu Etiqueta del menu que se mostrara, por defecto "Menu".
+	 * @brief Procedure for create menu.
+	 * @param id for this control.
+	 * @param nombreMenu label for this control.
 	*/
 	nkMenuTool* insertarMenu(long id, const wxString& nombreMenu = "Menu");
 	/**
-	 * @brief Funcion que retorna un nkMenuTool de la lista de sus menus
-	 * @param id identificador que servira de parametro en la lista de menus para la busqueda del elemento.
+	 * @brief Function that return nkMenuTool item of list.
+	 * @param id key identifier in the list.
 	*/
 	nkMenuTool* obtenerMenu(long id);
 
 	/**
-	 * @brief Funcion que invoca la funcion desplegar() de la clase nkMenuTool.
-	 * @param un_menu Menu que sera deplegado.
+	 * @brief Function for dropdown menu.
+	 * @param un_menu for dropdown.
 	*/
 	void desplegarMenu(nkMenuTool* un_menu);
 	/**
-	 * @brief Funcion que invoca la funcion replegar() de la clase nkMenuTool.
-	 * @param un_menu Menu que sera replegado.
+	 * @brief Function for hide items of menu.
+	 * @param un_menu to hide.
 	*/
 	void replegarMenu(nkMenuTool* un_menu);
 	/**
-	 * @brief Funcion que invoca la funcion replegar() de la clase nkMenuTool.
-	 * @details Todos los menus seran replegados.
+	 * @brief Func for hide all items of all menus.
 	*/
 	void replegarMenus(void);
 	/**
-	 * @brief Funcion que calcula el alto total basado en las sumas parciales del alto de cada menu.
+	 * @brief Function to calc height of this toolbar.
 	*/
 	int alto(void);
 	/**
-	 * @brief Cuando el evento EVT_SIZE suceda se invoca la funcion Refresh() de la clase wxWindow.
+	 * @brief Function manager for event EVT_SIZE.
 	*/
 	void evtRedimensionar(wxSizeEvent & p_Event);
 	/**
-	 * @brief Funcion que pinta los menus.
-	 * @details Funcion que pinta y posiciona los menus basado en la altura de cada una, ademas toma en cuenta la posicion de las barras de desplazamiento.
+	 * @brief Function for paint all menus.
+	 * @details Function that paint and put  menus.
 	*/
 	void evtRepintar(wxPaintEvent& WXUNUSED(evt));
 private:
-	/** Lista de todos los menus en este nkToolBar*/
+	/** List of nkMenu.*/
 	nkListaMenu prv_listaMenus;
 	/**
-	 * @brief Invocacion del macro, para el manejo de eventos en esta ventana.
+	 * @brief Macro for manage events.
 	*/
 	DECLARE_EVENT_TABLE()
 

@@ -50,7 +50,7 @@ nkObj3DViewer::nkObj3DViewer(wxWindow* parent,
 	  
 
 	prv_auiManager.AddPane(prv_wxVtkVista3D, wxAuiPaneInfo().
-		Name(wxT("VISTA_3D")).Caption(wxT("Vista 3D")).
+		Name(wxT("VIEW_3D")).Caption(wxT("View 3D")).
 		Center().Layer(1).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
 		CloseButton(false).MaximizeButton(true));
@@ -74,14 +74,14 @@ nkObj3DViewer::~nkObj3DViewer(){
 	if(prv_actor != 0 )prv_actor->Delete();
 }
 //*****************************************************************************************
-//		CONFIGURAR VISTA
+//		CONFIG VIEW
 //*****************************************************************************************
 void nkObj3DViewer::Configurar(void){
 	prv_vista3D->SetBackgroundColor (0.0,0.0,0.0);
 	prv_vista3D->SetRenderingModeToPlanar();
 }
 //*****************************************************************************************
-//		ABRIR ARCHIVO
+//		OPEN FILE
 //*****************************************************************************************
 void nkObj3DViewer::abrirArchivo(wxString nombreArchivo){
 	vtkPolyDataReader* mi_vtkReader = vtkPolyDataReader::New();
@@ -105,7 +105,7 @@ void nkObj3DViewer::abrirArchivo(wxString nombreArchivo){
 
 }
 //*****************************************************************************************
-//		Configurar una malla3D
+//		MESH CONFIG
 //*****************************************************************************************
 void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
 
@@ -129,14 +129,14 @@ void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
 
 }
 //*****************************************************************************************
-//		OBTENER POLYDATA
+//		GET POLYDATA
 //*****************************************************************************************
 vtkPolyData* nkObj3DViewer::GetPolyData()
 {
 	return prv_data;
 }
 //*****************************************************************************************
-//		GENERACION DE MALLA POLIGONAL CON MARCHING CUBES
+//		MARCHING CUBES
 //*****************************************************************************************
 void nkObj3DViewer::imagenAIsoSurface(itk::Image<unsigned short,3>::Pointer una_imagen,
 									  int un_numContornos, 
@@ -176,7 +176,7 @@ void nkObj3DViewer::imagenAIsoSurface(itk::Image<unsigned short,3>::Pointer una_
 }
 
 //*****************************************************************************************
-//		GUARDAR MALLA POLIGONAL
+//		SAVE MESH
 //*****************************************************************************************
 void nkObj3DViewer::guardarArchivo(wxString nombreArchivo){
 		vtkPolyDataWriter *l_Writer = vtkPolyDataWriter::New();
@@ -320,28 +320,27 @@ void nkObj3DViewer::PolyTriangle( )
 	
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> DECIMADO
+//		FILTER -> DECIMATE
 //*****************************************************************************************
 void nkObj3DViewer::PolyDecimate( ) 
 {
-	// Captura de parametros
 	wxString etiquetas[100];
 	const int num_datos=1;
-	etiquetas[0] = wxT("Porcentaje de reduccion"); 
+	etiquetas[0] = wxT("Decimate ratio"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: decimado poligonal"),
+												wxT("Nukak3D: Decimate mesh"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
 	miDlg->cambiarValor(wxT("0.7"),0);
 					
-	miDlg->ShowModal(); // Mostrar dialogo
+	miDlg->ShowModal(); 
 	
-	double datos[num_datos]; // Arreglo para almacenar los datos
+	double datos[num_datos]; 
 
 	if(miDlg->GetReturnCode() == wxID_OK)
 	{	
@@ -350,7 +349,7 @@ void nkObj3DViewer::PolyDecimate( )
 		for(int i=0;i<num_datos;i++)
 			(miDlg->obtenerValor(i)).ToDouble(&datos[i]);
 
-		// Triangulación inicial para poder decimar
+		// Triangulate fisrt
 		this->PolyTriangle();
 
 		// a_Decimate approximation
@@ -382,27 +381,26 @@ void nkObj3DViewer::PolyDecimate( )
 	delete miDlg;
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> SUAVIZADO
+//		FILTER -> SMOOTH
 //*****************************************************************************************
 void nkObj3DViewer::PolySmooth(  ) 
 {
-	// Captura de parametros
 	wxString etiquetas[100];
 	const int num_datos=1;
 
-	etiquetas[0] = wxT("Iteraciones del filtro"); 
+	etiquetas[0] = wxT("Filter iterations"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: suavizado poligonal"),
+												wxT("Nukak3D: Smooth mesh"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
 	miDlg->cambiarValor(wxT("100"),0);				
-	miDlg->ShowModal(); // Mostrar dialogo
-	double datos[1]; // Arreglo para almacenar los datos
+	miDlg->ShowModal(); 
+	double datos[1]; 
 
 	if(miDlg->GetReturnCode() == wxID_OK)
 	{	
@@ -437,28 +435,27 @@ void nkObj3DViewer::PolySmooth(  )
 	delete miDlg;
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> NORMALES
+//		FILTERS -> NORMALS
 //*****************************************************************************************
 void nkObj3DViewer::PolyNormals( ) 
 {
-	// Captura de parametros
 	wxString etiquetas[100];
 	const int num_datos=1;
-	etiquetas[0] = wxT("Valor que define un angulo agudo"); 
+	etiquetas[0] = wxT("Angle value for define normal"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: normales de la malla"),
+												wxT("Nukak3D: Recalc normals"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
 	miDlg->cambiarValor(wxT("60"),0);
 					
-	miDlg->ShowModal(); // Mostrar dialogo
+	miDlg->ShowModal(); 
 	
-	double datos[1]; // Arreglo para almacenar los datos
+	double datos[1]; 
 
 	if(miDlg->GetReturnCode() == wxID_OK)
 	{	
@@ -492,7 +489,7 @@ void nkObj3DViewer::PolyNormals( )
 	delete miDlg;
 }
 //*****************************************************************************************
-//		FILTRADO DE POLIGONOS -> DEFORMAR
+//		FILTER -> DEFORM
 //*****************************************************************************************
 void nkObj3DViewer::PolyDeform(  ) 
 {
@@ -530,7 +527,7 @@ void nkObj3DViewer::PolyDeform(  )
 	wxEndBusyCursor();
 }
 //*****************************************************************************************
-//		OBTENER VENTANA RASTERIZADA PARA CAPTURA DE PANTALLA
+//		RASTERIZER WINDOW
 //*****************************************************************************************
 vtkWindowToImageFilter* nkObj3DViewer::Snapshot( ) 
 {
@@ -542,7 +539,7 @@ vtkWindowToImageFilter* nkObj3DViewer::Snapshot( )
 	return l_w2i;
 }
 //*****************************************************************************************
-//		OBTENER INFORMACION DE LA TARJETA DE VIDEO
+//		VIDEO CARD INFORMATION
 //*****************************************************************************************
 wxString nkObj3DViewer::VideoCard( ) 
 {

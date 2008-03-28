@@ -25,25 +25,25 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 													wxDefaultPosition,
 													wxDefaultSize,
 													viewStyle,
-													wxT ("wxVtk vista Axial"));
+													wxT ("wxVtk Axial view"));
 
 	prv_wxVtkVistaCoronal = new wxVTKRenderWindowInteractor (this, wxID_ANY,
 													wxDefaultPosition,
 													wxDefaultSize,
 													viewStyle,
-													wxT ("wxVtk vista Coronal"));
+													wxT ("wxVtk Coronal view"));
 
 	prv_wxVtkVistaSagital = new wxVTKRenderWindowInteractor (this, wxID_ANY,
 													wxDefaultPosition,
 													wxDefaultSize,
 													viewStyle,
-													wxT ("wxVtk vista Sagital"));
+													wxT ("wxVtk Sagital view"));
 
 	prv_wxVtkVista3D = new wxVTKRenderWindowInteractor (this, wxID_ANY,
 													wxDefaultPosition,
 													wxDefaultSize,
 													viewStyle,
-													wxT ("wxVtk vista 3D"));
+													wxT ("wxVtk 3D view"));
 
 	
 	prv_wxVtkVista3D->GetRenderWindow()->SetStereoCapableWindow(1); //! Init stereo window
@@ -84,25 +84,25 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 	
 
 	prv_auiManager.AddPane(prv_wxVtkVistaAxial, wxAuiPaneInfo().
-		Name(wxT("VISTA_AXIAL")).Caption(wxT("Vista Axial")).
+		Name(wxT("AXIAL_VIEW")).Caption(wxT("Axial View")).
 		Bottom().Position(0).Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
         CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.AddPane(prv_wxVtkVistaCoronal, wxAuiPaneInfo().
-		Name(wxT("VISTA_CORONAL")).Caption(wxT("Vista Coronal")).		
+		Name(wxT("CORONAL_VIEW")).Caption(wxT("Coronal View")).		
 		Bottom().Position(1).Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
         CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.AddPane(prv_wxVtkVistaSagital, wxAuiPaneInfo().
-		Name(wxT("VISTA_SAGITAL")).Caption(wxT("Vista Sagital")).
+		Name(wxT("SAGITAL_VIEW")).Caption(wxT("Sagital View")).
 		Bottom().Position(2).Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
 		CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.AddPane(prv_wxVtkVista3D, wxAuiPaneInfo().
-		Name(wxT("VISTA_3D")).Caption(wxT("Vista 3D")).
+		Name(wxT("3D_VIEW")).Caption(wxT("3D View")).
 		Center().Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
 		CloseButton(false).MaximizeButton(true));
@@ -134,39 +134,27 @@ nkVolViewer::~nkVolViewer(){
 
 	prv_auiManager.UnInit();
 }
-//*****************************************************************************************
-//		Establecer nombre de archivo
-//*****************************************************************************************
+
 void nkVolViewer::setNombreArchivo(wxString nombreArchivo){
 	this->prv_nombreArchivo = nombreArchivo;
 }
-//*****************************************************************************************
-//		Obtener nombre de archivo
-//*****************************************************************************************
+
 wxString nkVolViewer::getNombreArchivo(void){
 	return this->prv_nombreArchivo;
 }
-//*****************************************************************************************
-//		Establecer imagen
-//*****************************************************************************************
+
 void nkVolViewer::setImagen(itk::Image<unsigned short,3>::Pointer una_imagen){
 	this->prv_imagen = una_imagen;
 }
-//*****************************************************************************************
-//		Obtener puntero a la imagen ITK
-//*****************************************************************************************
+
 itk::Image<unsigned short,3>::Pointer nkVolViewer::getImagen(void){
 	return this->prv_imagen;
 }
-//*****************************************************************************************
-//		Obtener puntero a la imagen VTK
-//*****************************************************************************************
+
 vtkImageData* nkVolViewer::getVtkImagen(void){
 	return this->prv_vista3D->GetImage();
 }
-//*****************************************************************************************
-//		Configurar vista
-//*****************************************************************************************
+
 void nkVolViewer::Configurar(void){
 	prv_vistaAxial->SetInteractionStyle (vtkViewImage2D::SELECT_INTERACTION);
 	prv_vistaAxial->SetWheelInteractionStyle(vtkViewImage2D::ZOOM_INTERACTION);
@@ -205,9 +193,7 @@ void nkVolViewer::Configurar(void){
 	prv_vistaCoronal->AddChild (prv_vistaSagital);
 	prv_vistaSagital->AddChild (prv_vistaAxial); 
 }
-//*****************************************************************************************
-//		Configurar imagen itk
-//*****************************************************************************************
+
 void nkVolViewer::configurarITKimage(
 		wxString un_nombreArchivo, 
 		itk::Image<unsigned short,3>::Pointer una_imagen){
@@ -220,9 +206,7 @@ void nkVolViewer::configurarITKimage(
 	this->prv_vistaAxial->SyncResetCurrentPoint();
 	this->prv_vistaAxial->SyncResetWindowLevel();
 }
-//*****************************************************************************************
-//		Abrir Archivo
-//*****************************************************************************************
+
 void nkVolViewer::abrirArchivo(wxString nombreArchivo){
 	itk::ImageFileReader<nkVolViewer::ImageType>::Pointer reader;
 	reader = itk::ImageFileReader<nkVolViewer::ImageType>::New();
@@ -242,9 +226,7 @@ void nkVolViewer::abrirArchivo(wxString nombreArchivo){
 
 	this->configurarITKimage(nombreArchivo, reader->GetOutput());
 }
-//*****************************************************************************************
-//		Abrir archivo vol
-//*****************************************************************************************
+
 void nkVolViewer::abrirArchivo_vol(wxString nombreArchivo){
 	FILE *fp;
 	int x[3];
@@ -297,9 +279,7 @@ void nkVolViewer::abrirArchivo_vol(wxString nombreArchivo){
 
 	this->configurarITKimage(nombreArchivo, reader->GetOutput());
 }
-//*****************************************************************************************
-//		Abrir archivo DICOM
-//*****************************************************************************************
+
 void nkVolViewer::abrirArchivo_dicom(wxString nombreArchivo, wxVtkDICOMImporter* myimporter, int un_index){
 
 	#ifdef __WXMAC__
@@ -324,9 +304,7 @@ void nkVolViewer::abrirArchivo_dicom(wxString nombreArchivo, wxVtkDICOMImporter*
 	this->prv_vista3D->SetScale ( rescaler->GetScale() );
 	this->configurarITKimage(nombreArchivo, rescaler->GetOutput());
 }
-//*****************************************************************************************
-//		CAMBIAR PALETA DE COLOR
-//*****************************************************************************************
+
 void nkVolViewer::cambiarPaletaColor(vtkLookupTable* una_paleta){
 	if( !una_paleta)
 		return;
@@ -336,9 +314,7 @@ void nkVolViewer::cambiarPaletaColor(vtkLookupTable* una_paleta){
 	prv_vistaSagital->Render();
 	prv_vista3D->Render();
 }
-//*****************************************************************************************
-//		CAMBIAR FORMA DE RENDERING
-//*****************************************************************************************
+
 void nkVolViewer::cambiarFormaDeProcesamiento (int un_modo, int textura_o_mrc){
 	prv_vista3D->SetRenderingMode(un_modo);
 	if (un_modo == vtkViewImage3D::VOLUME_RENDERING){
@@ -354,9 +330,7 @@ void nkVolViewer::cambiarFormaDeProcesamiento (int un_modo, int textura_o_mrc){
 	}
 	prv_vista3D->Render();
 }
-//*****************************************************************************************
-//		GUARDAR ARCHIVO
-//*****************************************************************************************
+
 void nkVolViewer::guardarArchivo(wxString nombreArchivo){
 	itk::VTKImageToImageFilter<nkVolViewer::ImageType>::Pointer myConverter =
     itk::VTKImageToImageFilter<nkVolViewer::ImageType>::New();
@@ -402,9 +376,6 @@ void nkVolViewer::guardarArchivo(wxString nombreArchivo){
 	image->Delete();
 }
 
-//*****************************************************************************************
-//		Reiniciar paleta de colores
-//*****************************************************************************************
 void nkVolViewer::reiniciarNiveleseDePaleta(void){
 	prv_vistaAxial->ResetWindowLevel();
 	prv_vistaCoronal->ResetWindowLevel();
@@ -415,25 +386,21 @@ void nkVolViewer::reiniciarNiveleseDePaleta(void){
 	prv_vistaSagital->Render();
 	prv_vista3D->Render();
 }
-//*****************************************************************************************
-//		Obtener valor actual de contorno
-//*****************************************************************************************
+
 double nkVolViewer::obtenerValorActualDeContorno(void){
 	return prv_vistaAxial->GetCurrentPointDoubleValue();
 }
-//*****************************************************************************************
-//		Levelsets
-//*****************************************************************************************
+
 void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 	
-	// tipo de dato interno
+	// Pxel type
 	typedef   float           InternalPixelType;
 	const     unsigned int    Dimension = 3;
 	
-	// imagen interna
+	// input image type
 	typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
 
-	// imagen de salida
+	// output image type
 	typedef itk::Image< nkVolViewer::PixelType, Dimension > OutputImageType;
 
 	// casting de unsigned short a float
@@ -448,36 +415,35 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 	CastFilterOutType::Pointer castOut = CastFilterOutType::New();
 	CastFilterOutType::Pointer castOut2 = CastFilterOutType::New();
 
-	// filtro gradiente para detección de bordes
+	// gradient filter
 	typedef   itk::GradientMagnitudeRecursiveGaussianImageFilter< 
 								InternalImageType, 
 								InternalImageType >  GradientFilterType;
 	GradientFilterType::Pointer  gradientMagnitude = GradientFilterType::New();
 
-	// filtro sigmoide para la función de velocidad
+	// sigmoide filter for velocity function
 	typedef   itk::SigmoidImageFilter<                               
 								InternalImageType, 
 								InternalImageType >  SigmoidFilterType;	
 	SigmoidFilterType::Pointer sigmoid = SigmoidFilterType::New();
 
-	// funcion fastmarching para generar el levelset inicial
+	// funtion fastmarching for generate levelset nitial
 	typedef  itk::FastMarchingImageFilter< InternalImageType, InternalImageType >
 								FastMarchingFilterType;
 	FastMarchingFilterType::Pointer  fastMarching = FastMarchingFilterType::New();
 
-	// funcion para detección de la forma del contorno de acuerdo con la función
-	// de velocidad que sale de sigmoid
+	// function for detection form contour of course to velocity function by sigmoid filter
 	typedef  itk::ShapeDetectionLevelSetImageFilter< InternalImageType, 
 								InternalImageType, InternalPixelType >    ShapeDetectionFilterType;
 	ShapeDetectionFilterType::Pointer shapeDetection = ShapeDetectionFilterType::New(); 
 	
-	// filtro binario para la salida
+	// binary flter for output
 	typedef itk::BinaryThresholdImageFilter< InternalImageType, InternalImageType > 
 								ThresholdingFilterType;
 	ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();	
 
 
-	// Guardar la imagen segmentada
+	// Save image segmetating
 	typedef  itk::ImageFileWriter<  nkVolViewer::ImageType  > WriterType;		
 	WriterType::Pointer writer = WriterType::New();
 	WriterType::Pointer writer2 = WriterType::New();
@@ -496,11 +462,11 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 	writer->SetInput( castOut->GetOutput() );
 
 
-	// Captura de parametros
+	// Capture params
 	wxString etiquetas[100];
 	const int num_datos=9;
 
-	etiquetas[0] = wxT("Radio semilla"); 
+	etiquetas[0] = wxT("Seeds raduis"); 
 	etiquetas[1] = wxT("Gaussiano - sigma");
 	etiquetas[2] = wxT("Sigmoide - alpha");
 	etiquetas[3] = wxT("Sigmoide - beta");
@@ -543,29 +509,22 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 		for(int i=0;i<num_datos;i++)
 			(miDlg->obtenerValor(i)).ToDouble(&datos[i]);
 
-
-		// parámetros del filtro rescale intensity
 		castOut->SetOutputMinimum ( 0 );
 		castOut->SetOutputMaximum ( 255 );
 
-
-		// parámetro del filtro gradiente-gaussiano
 		gradientMagnitude->SetSigma( datos[1] );
 
-		// parámetros de la función sigmoide
 		sigmoid->SetOutputMinimum(  0.0  );
 		sigmoid->SetOutputMaximum(  1.0  );
 		sigmoid->SetAlpha( datos[2] );
 		sigmoid->SetBeta(  datos[3] );	
 
-		// parametros de la imagen de salida
 		thresholder->SetLowerThreshold( itk::NumericTraits<InternalPixelType>::NonpositiveMin() );
 		thresholder->SetUpperThreshold( itk::NumericTraits<InternalPixelType>::Zero );
 
 		thresholder->SetOutsideValue(  0  );
 		thresholder->SetInsideValue(  1 );
 
-		// semilla del algoritmo
 		typedef FastMarchingFilterType::NodeContainer           NodeContainer;
 		typedef FastMarchingFilterType::NodeType                NodeType;
 		NodeContainer::Pointer seeds = NodeContainer::New();
@@ -575,9 +534,9 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 		prv_vista3D->GetCurrentVoxelCoordinates (p_point);
 
 		char temp[100]="";
-		sprintf(temp,"\nCoordenadas semilla = (%d,%d,%d)\n",p_point[0],p_point[1],p_point[2]);
+		sprintf(temp,"\nCoordinate seeds = (%d,%d,%d)\n",p_point[0],p_point[1],p_point[2]);
 		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
-		sprintf(temp,"Radio semilla = %f\nSigma gaussiano = %f\nAlfa = %f\nBeta = %f\n",datos[0],datos[1],datos[2],datos[3]);
+		sprintf(temp,"Seeds Radius = %f\nSigma gaussian = %f\nAlfa = %f\nBeta = %f\n",datos[0],datos[1],datos[2],datos[3]);
 		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
 		sprintf(temp,"Propagation = %f\nCurvature = %f\nError = %f\nIteraciones = %f\n",datos[4],datos[5],datos[6],datos[7]);
 		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
@@ -588,7 +547,6 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 		seedPosition[1] = p_point[1];	
 		seedPosition[2] = p_point[2];
 
-		// radio de la semilla 
 		NodeType node;
 		double radius = datos[0];
 		const double seedValue = - radius;
@@ -596,40 +554,36 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 		node.SetValue( seedValue );
 		node.SetIndex( seedPosition );
 		
-		// inserción de la semilla a la estructura de datos
 		seeds->Initialize();
 		seeds->InsertElement( 0, node );
 
-		// Asignar las semillas al filtro fast marching
 		fastMarching->SetTrialPoints(  seeds  );
 
-		// Se define velocidad constante para el filtro fastmarching
-		// porque solo se usa como generador de carta de distancias
+		// Define contant velocity for filter fastmarching
 		fastMarching->SetSpeedConstant( 1.0 );
 		//fastMarching->SetStoppingValue( datos[8] );
 		
 
-		// establecimiento del tamaño de la imagen de salida
+		// Set size image
 		fastMarching->SetOutputSize( 
 			   prv_imagen->GetBufferedRegion().GetSize() );
 		fastMarching->SetOutputSpacing(
 			   prv_imagen->GetSpacing() );
 
-		// parametros de control del filtro para detección de forma con levelsets
 		shapeDetection->SetPropagationScaling(  datos[4] );
 		shapeDetection->SetCurvatureScaling( datos[5] ); 
 		shapeDetection->SetMaximumRMSError( datos[6] );
 		shapeDetection->SetNumberOfIterations( (int)datos[7] ); 
 
-
-		// Guardar la imagen fast marching
+		// Save image fast marching
+		// Save image fast marching
 		//castOut2->SetOutputMinimum ( 0 );
 		//castOut2->SetOutputMaximum ( 255 );
 		//castOut2->SetInput( fastMarching->GetOutput() );
 		//writer2->SetFileName( "segmented2.vtk" );
 		//writer2->SetInput( castOut2->GetOutput() );
 
-		// Guardar la funcion de velocidad
+		// Save velocity function
 		castOut2->SetOutputMinimum ( 0 );
 		castOut2->SetOutputMaximum ( 255 );
 		castOut2->SetInput( sigmoid->GetOutput() );
@@ -646,13 +600,13 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 			
 			nkVolViewer * mivol = new nkVolViewer(p_libro);
 			mivol->Configurar();
-			mivol->configurarITKimage(_T("Velocidad"),castOut2->GetOutput());
-			p_libro->AddPage(mivol, _T("Velocidad"),true );
+			mivol->configurarITKimage(_T("Velocity"),castOut2->GetOutput());
+			p_libro->AddPage(mivol, _T("Velocity"),true );
 
 			nkVolViewer * mivol2 = new nkVolViewer(p_libro);
 			mivol2->Configurar();
-			mivol2->configurarITKimage(_T("Segmentación"),castOut->GetOutput());
-			p_libro->AddPage(mivol2, _T("Segmentación"),true );
+			mivol2->configurarITKimage(_T("Segmentation"),castOut->GetOutput());
+			p_libro->AddPage(mivol2, _T("Segmentation"),true );
 
 		}
 		catch( itk::ExceptionObject & excep )
@@ -673,7 +627,7 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 }
 
 //*****************************************************************************************
-//		Area de la imagen axial
+//		Area of axial image
 //*****************************************************************************************
 void nkVolViewer::Area(void){
 	//Area calculation
@@ -682,7 +636,7 @@ void nkVolViewer::Area(void){
 	prv_vista3D->GetCurrentVoxelCoordinates (p_point);
 
 	char temp[100]="";
-	sprintf(temp,"Coordenadas cursor = (%d,%d,%d)\n",p_point[0],p_point[1],p_point[2]);
+	sprintf(temp,"Coordinate cursor = (%d,%d,%d)\n",p_point[0],p_point[1],p_point[2]);
 	if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
 
 	double area=0;
@@ -702,7 +656,7 @@ void nkVolViewer::Area(void){
 	nkVolViewer::ImageType::SpacingType spacing;
 	spacing = prv_imagen->GetSpacing();
 	
-	sprintf(temp,"\nPixeles > 0 = %f\n",area);
+	sprintf(temp,"\nPixels > 0 = %f\n",area);
 	if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
 
 	area*= spacing[0]*spacing[1];
@@ -821,34 +775,33 @@ void nkVolViewer::NavUnicam( )
 	l_style->Delete();
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> GAUSSIANO
+//		FILTER -> GAUSSIAN
 //*****************************************************************************************
 void nkVolViewer::FilVolGaussian( wxAuiNotebook * p_libro ) 
 {
-	// Captura de parametros
 	wxString etiquetas[100];
 	const int num_datos=2;
-	etiquetas[0] = wxT("Varianza"); 
-	etiquetas[1] = wxT("Radio del kernel");
+	etiquetas[0] = wxT("Variance"); 
+	etiquetas[1] = wxT("Kernel radius");
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: filtro gaussiano"),
+												wxT("Nukak3D: Gauusian filter"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
 	miDlg->cambiarValor(wxT("1.0"),0);
 	miDlg->cambiarValor(wxT("5"),1);
 					
-	miDlg->ShowModal(); // Mostrar dialogo
+	miDlg->ShowModal(); 
 	
 	if(miDlg->GetReturnCode() == wxID_OK)
 	{	
 		wxBeginBusyCursor();
 		
-		double datos[num_datos]; // Arreglo para almacenar los datos
+		double datos[num_datos]; 
 
 		for(int i=0;i<num_datos;i++)
 			(miDlg->obtenerValor(i)).ToDouble(&datos[i]);
@@ -883,8 +836,8 @@ void nkVolViewer::FilVolGaussian( wxAuiNotebook * p_libro )
 			
 			nkVolViewer * mivol = new nkVolViewer(p_libro);
 			mivol->Configurar();
-			mivol->configurarITKimage(_T("Filtro gaussiano"),castOut->GetOutput());
-			p_libro->AddPage(mivol, _T("Filtro gaussiano"),true );
+			mivol->configurarITKimage(_T("Gaussian filter"),castOut->GetOutput());
+			p_libro->AddPage(mivol, _T("Gaussian filter"),true );
 
 		}
 		catch( itk::ExceptionObject & excep )
@@ -900,7 +853,7 @@ void nkVolViewer::FilVolGaussian( wxAuiNotebook * p_libro )
 	delete miDlg;
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> MEDIANA
+//		FILTER -> MEDIAN
 //*****************************************************************************************
 void nkVolViewer::FilVolMedian( wxAuiNotebook * p_libro ) 
 {
@@ -908,15 +861,15 @@ void nkVolViewer::FilVolMedian( wxAuiNotebook * p_libro )
 	wxString etiquetas[100];
 	const int num_datos=3;
 
-	etiquetas[0] = wxT("Radio del kernel en X"); 
-	etiquetas[1] = wxT("Radio del kernel en Y");
-	etiquetas[2] = wxT("Radio del kernel en Z");
+	etiquetas[0] = wxT("Kernel radius in X"); 
+	etiquetas[1] = wxT("Kernel radius in Y");
+	etiquetas[2] = wxT("Kernel radius in Z");
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: filtro mediana"),
+												wxT("Nukak3D: Median Filter"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
@@ -924,9 +877,9 @@ void nkVolViewer::FilVolMedian( wxAuiNotebook * p_libro )
 	miDlg->cambiarValor(wxT("1"),1);
 	miDlg->cambiarValor(wxT("1"),2);
 					
-	miDlg->ShowModal(); // Mostrar dialogo
+	miDlg->ShowModal(); 
 	
-	double datos[num_datos]; // Arreglo para almacenar los datos
+	double datos[num_datos]; 
 
 	if(miDlg->GetReturnCode() == wxID_OK)
 	{	
@@ -970,21 +923,21 @@ void nkVolViewer::FilVolMedian( wxAuiNotebook * p_libro )
 	delete miDlg;
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> GRADIENTE
+//		Gradient Filter
 //*****************************************************************************************
 void nkVolViewer::FilVolGradient( ) 
 {
 
 }
 //*****************************************************************************************
-//		FILTRADO DE VOLUMEN -> UMBRAL
+//		Threshold filter
 //*****************************************************************************************
 void nkVolViewer::FilVolThreshold( ) 
 {
 
 }
 //*****************************************************************************************
-//		OBTENER VENTANA RASTERIZADA PARA CAPTURA DE PANTALLA
+//		Rasterizer window
 //*****************************************************************************************
 vtkWindowToImageFilter* nkVolViewer::Snapshot( int p_screen ) 
 {
@@ -1005,7 +958,7 @@ vtkWindowToImageFilter* nkVolViewer::Snapshot( int p_screen )
 	return l_w2i;
 }
 //*****************************************************************************************
-//		OBTENER INFORMACION DE LA TARJETA DE VIDEO
+//		VIDEOCARD INFORMATION
 //*****************************************************************************************
 wxString nkVolViewer::VideoCard( ) 
 {
