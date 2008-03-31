@@ -18,6 +18,8 @@
     #include "wx/wx.h"
 #endif
 
+#include "wx/intl.h"
+
 /** vtk*/
 #include <vtkActor.h>
 #include <vtkPolyData.h>

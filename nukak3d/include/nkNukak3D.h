@@ -24,7 +24,9 @@
 /** wx */
 #include <wx/aui/aui.h>
 #include <wx/aui/auibook.h>
+#include <wx/intl.h>
 #include <wx/joystick.h>
+#include <wx/imaglist.h>
 #ifndef __WXMSW__
     #include "mondrian.xpm"
 #endif
@@ -37,6 +39,7 @@
 #include <vtkBMPWriter.h>
 #include <vtkJPEGWriter.h>
 #include <vtkTIFFWriter.h>
+#include "vtkLookupTableManager.h"
 
 /** nk*/
 #include "nkObj3DViewer.h"
@@ -120,10 +123,11 @@ public:
 	 * @details Main window.
 	*/
 	nkNukak3D(wxWindow* parent, int id=-1,
-		const wxString& title=wxT(""),
+		const wxString& title="Nukak3D",
         const wxPoint& pos=wxDefaultPosition,
         const wxSize& size=wxDefaultSize,
-        long style=wxDEFAULT_FRAME_STYLE);
+        long style=wxDEFAULT_FRAME_STYLE
+		);
 	/**
 	 * @brief Class destructor.
 	*/

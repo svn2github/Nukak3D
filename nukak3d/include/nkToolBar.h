@@ -19,6 +19,8 @@
     #include "wx/wx.h"
 #endif
 
+#include "wx/intl.h"
+
 /**
  * @brief Item of menu.
  * @details Class for generate item for toolbar.

@@ -84,25 +84,25 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 	
 
 	prv_auiManager.AddPane(prv_wxVtkVistaAxial, wxAuiPaneInfo().
-		Name(wxT("AXIAL_VIEW")).Caption(wxT("Axial View")).
+		Name(wxT("AXIAL_VIEW")).Caption(_("Axial View")).
 		Bottom().Position(0).Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
         CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.AddPane(prv_wxVtkVistaCoronal, wxAuiPaneInfo().
-		Name(wxT("CORONAL_VIEW")).Caption(wxT("Coronal View")).		
+		Name(wxT("CORONAL_VIEW")).Caption(_("Coronal View")).		
 		Bottom().Position(1).Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
         CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.AddPane(prv_wxVtkVistaSagital, wxAuiPaneInfo().
-		Name(wxT("SAGITAL_VIEW")).Caption(wxT("Sagital View")).
+		Name(wxT("SAGITAL_VIEW")).Caption(_("Sagital View")).
 		Bottom().Position(2).Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
 		CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.AddPane(prv_wxVtkVista3D, wxAuiPaneInfo().
-		Name(wxT("3D_VIEW")).Caption(wxT("3D View")).
+		Name(wxT("3D_VIEW")).Caption(_("3D View")).
 		Center().Layer(0).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
 		CloseButton(false).MaximizeButton(true));
@@ -216,7 +216,7 @@ void nkVolViewer::abrirArchivo(wxString nombreArchivo){
 		reader->Update();
 	}catch (itk::ExceptionObject & e){
 		std::cerr << e;
-		wxMessageDialog* myDialog = new wxMessageDialog(this, wxT(e.GetDescription()),
+		wxMessageDialog* myDialog = new wxMessageDialog(this, _(e.GetDescription()),
                                                     wxT ("Error"),
                                                     wxOK|wxICON_ERROR);
 		myDialog->ShowModal();
@@ -269,7 +269,7 @@ void nkVolViewer::abrirArchivo_vol(wxString nombreArchivo){
 		reader->Update();
 	}catch (itk::ExceptionObject & e){
 		std::cerr << e;
-		wxMessageDialog* myDialog = new wxMessageDialog(this, wxT(e.GetDescription()),
+		wxMessageDialog* myDialog = new wxMessageDialog(this, _(e.GetDescription()),
                                                     wxT ("Error"),
                                                     wxOK|wxICON_ERROR);
 		myDialog->ShowModal();
@@ -466,22 +466,22 @@ void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
 	wxString etiquetas[100];
 	const int num_datos=9;
 
-	etiquetas[0] = wxT("Seeds raduis"); 
-	etiquetas[1] = wxT("Gaussiano - sigma");
-	etiquetas[2] = wxT("Sigmoide - alpha");
-	etiquetas[3] = wxT("Sigmoide - beta");
-	etiquetas[4] = wxT("SetPropagationScaling");
-	etiquetas[5] = wxT("SetCurvatureScaling"); 
-	etiquetas[6] = wxT("SetMaximumRMSError");
-	etiquetas[7] = wxT("SetNumberOfIterations"); 
-	etiquetas[8] = wxT("Stopping time"); 
+	etiquetas[0] = _("Seeds radius"); 
+	etiquetas[1] = _("Gaussiano - sigma");
+	etiquetas[2] = _("Sigmoide - alpha");
+	etiquetas[3] = _("Sigmoide - beta");
+	etiquetas[4] = _("SetPropagationScaling");
+	etiquetas[5] = _("SetCurvatureScaling"); 
+	etiquetas[6] = _("SetMaximumRMSError");
+	etiquetas[7] = _("SetNumberOfIterations"); 
+	etiquetas[8] = _("Stopping time"); 
 	
 
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: levelsets"),
+												_("Nukak3D: levelsets"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
@@ -781,14 +781,14 @@ void nkVolViewer::FilVolGaussian( wxAuiNotebook * p_libro )
 {
 	wxString etiquetas[100];
 	const int num_datos=2;
-	etiquetas[0] = wxT("Variance"); 
-	etiquetas[1] = wxT("Kernel radius");
+	etiquetas[0] = _("Variance"); 
+	etiquetas[1] = _("Kernel radius");
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: Gauusian filter"),
+												_("Nukak3D: Gauusian filter"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
@@ -861,15 +861,15 @@ void nkVolViewer::FilVolMedian( wxAuiNotebook * p_libro )
 	wxString etiquetas[100];
 	const int num_datos=3;
 
-	etiquetas[0] = wxT("Kernel radius in X"); 
-	etiquetas[1] = wxT("Kernel radius in Y");
-	etiquetas[2] = wxT("Kernel radius in Z");
+	etiquetas[0] = _("Kernel radius in X"); 
+	etiquetas[1] = _("Kernel radius in Y");
+	etiquetas[2] = _("Kernel radius in Z");
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: Median Filter"),
+												_("Nukak3D: Median Filter"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	

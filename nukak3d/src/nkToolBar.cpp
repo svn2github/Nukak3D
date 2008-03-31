@@ -78,7 +78,7 @@ void nkMenuTool::crearMenu(void){
 		wxBitmap(wxBitmap(icon_menu_mas_xpm).
 			ConvertToImage().
 			Scale(nkTool::LARGO_X_ANCHO_ICONO.GetWidth(), nkTool::LARGO_X_ANCHO_ICONO.GetHeight())),
-		wxString("Click in ") + prv_nombreMenu + wxString(" for display items"),
+		_("Click in ") + prv_nombreMenu + _(" for display items"),
 		wxITEM_NORMAL);
 }
 

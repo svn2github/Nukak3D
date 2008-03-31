@@ -29,8 +29,8 @@ nkIODialog::nkIODialog(wxWindow* parent,
 			wxT("0"),
 			wxPoint(200,20*(i+1)));
 	}
-	new wxButton(this, wxID_OK, wxT("OK"),wxPoint(40,prv_tamanio*20+40));	
-	new wxButton(this, wxID_CANCEL, wxT("Cancelar"),wxPoint(170,prv_tamanio*20+40));
+	new wxButton(this, wxID_OK, _("OK"),wxPoint(40,prv_tamanio*20+40));	
+	new wxButton(this, wxID_CANCEL, _("Cancel"),wxPoint(170,prv_tamanio*20+40));
 
 	CenterOnParent();
 
@@ -47,7 +47,7 @@ nkIODialog::nkIODialog(wxWindow* parent,
 	wxDialog(parent, id, title, pos, size, style, name)
 {
 	new wxTextCtrl(this,-1,p_text,wxPoint(30,30),wxSize(580,240),wxTE_MULTILINE | wxTE_READONLY );
-	new wxButton(this, wxID_OK, wxT("OK"),wxPoint(270,280));	
+	new wxButton(this, wxID_OK, _("OK"),wxPoint(270,280));	
 
 	CenterOnParent();
 

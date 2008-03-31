@@ -11,6 +11,26 @@
 #include "nkNukak3D.h"
 
 bool nkMain::OnInit(){
+	int language_system = mi_locale.GetSystemLanguage();
+	if (language_system >= wxLANGUAGE_SPANISH && language_system <= wxLANGUAGE_SPANISH_VENEZUELA ){
+		language_system = wxLANGUAGE_SPANISH;
+	}else{
+		language_system = wxLANGUAGE_DEFAULT;
+	}
+	
+	if ( !mi_locale.Init(wxLANGUAGE_SPANISH/*language_system*/, wxLOCALE_CONV_ENCODING) ){
+		wxLogError(_T("This language is not supported by the system."));
+		return false;
+	}
+
+	wxLocale::AddCatalogLookupPathPrefix(_("."));
+	mi_locale.AddCatalog(wxT("nukak3d"));
+	#ifndef __WIN32__
+		{
+        wxLogNull noLog;
+        mi_locale.AddCatalog(_T("fileutils"));
+		}
+	#endif
 	
 	//! Object of main window
 	nkNukak3D* mi_nukak3D = new nkNukak3D ( (wxWindow*)(NULL) , -1, 

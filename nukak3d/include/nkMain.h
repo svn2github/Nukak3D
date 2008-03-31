@@ -20,6 +20,7 @@
 #endif
 
 #include <wx/splash.h>
+#include <wx/intl.h>
 
 /** 
  * @brief nukak3d Application.
@@ -31,6 +32,8 @@ public:
 	 * @return bool
 	 */
 	virtual bool OnInit ( void );  
+protected:
+    wxLocale mi_locale; // locale we'll be using
 };
 
 #endif //_NKMAIN_H_

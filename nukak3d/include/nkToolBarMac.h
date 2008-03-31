@@ -21,6 +21,7 @@
 
 #include <wx/treectrl.h>
 #include <wx/imaglist.h>
+#include "wx/intl.h"
 
 /**
  * @brief Item of menu.

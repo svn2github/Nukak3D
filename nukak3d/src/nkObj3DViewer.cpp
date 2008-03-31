@@ -35,7 +35,7 @@ nkObj3DViewer::nkObj3DViewer(wxWindow* parent,
 													wxDefaultPosition,
 													wxDefaultSize,
 													viewStyle,
-													wxT ("wxVtk vista 3D"));
+													wxT ("wxVtk 3D view"));
 
 	prv_wxVtkVista3D->GetRenderWindow()->SetStereoCapableWindow(1); //! Init stereo window
 
@@ -50,7 +50,7 @@ nkObj3DViewer::nkObj3DViewer(wxWindow* parent,
 	  
 
 	prv_auiManager.AddPane(prv_wxVtkVista3D, wxAuiPaneInfo().
-		Name(wxT("VIEW_3D")).Caption(wxT("View 3D")).
+		Name(wxT("VIEW_3D")).Caption(_("View 3D")).
 		Center().Layer(1).PinButton(true).
 		MinSize(wxSize(200,200)).PaneBorder(true).
 		CloseButton(false).MaximizeButton(true));
@@ -326,13 +326,13 @@ void nkObj3DViewer::PolyDecimate( )
 {
 	wxString etiquetas[100];
 	const int num_datos=1;
-	etiquetas[0] = wxT("Decimate ratio"); 
+	etiquetas[0] = _("Decimate ratio"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: Decimate mesh"),
+												_("Nukak3D: Decimate mesh"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
@@ -388,13 +388,13 @@ void nkObj3DViewer::PolySmooth(  )
 	wxString etiquetas[100];
 	const int num_datos=1;
 
-	etiquetas[0] = wxT("Filter iterations"); 
+	etiquetas[0] = _("Filter iterations"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: Smooth mesh"),
+												_("Nukak3D: Smooth mesh"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
@@ -441,13 +441,13 @@ void nkObj3DViewer::PolyNormals( )
 {
 	wxString etiquetas[100];
 	const int num_datos=1;
-	etiquetas[0] = wxT("Angle value for define normal"); 
+	etiquetas[0] = _("Angle value for define normal"); 
 	
 	nkIODialog * miDlg = new nkIODialog(	this, 
 												etiquetas,
 												num_datos,
 												-1,
-												wxT("Nukak3D: Recalc normals"),
+												_("Nukak3D: Recalc normals"),
 												wxDefaultPosition,
 												wxSize(330,(num_datos+4)*20+40));
 	
