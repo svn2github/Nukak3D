@@ -18,12 +18,12 @@ bool nkMain::OnInit(){
 		language_system = wxLANGUAGE_DEFAULT;
 	}
 	
-	if ( !mi_locale.Init(wxLANGUAGE_SPANISH/*language_system*/, wxLOCALE_CONV_ENCODING) ){
+	if ( !mi_locale.Init(language_system, wxLOCALE_CONV_ENCODING) ){
 		wxLogError(_T("This language is not supported by the system."));
 		return false;
 	}
 
-	wxLocale::AddCatalogLookupPathPrefix(_("."));
+	wxLocale::AddCatalogLookupPathPrefix(_(".nukak3d/locale"));
 	mi_locale.AddCatalog(wxT("nukak3d"));
 	#ifndef __WIN32__
 		{
