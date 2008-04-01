@@ -33,7 +33,7 @@ bool nkMain::OnInit(){
 	}
 	
 	if ( !mi_locale.Init(language_system, wxLOCALE_CONV_ENCODING) ){
-		wxLogError(_T("This language is not supported by the system."));
+		//wxLogError(_T("This language is not supported by the system."));
 		return false;
 	}
 
@@ -41,7 +41,7 @@ bool nkMain::OnInit(){
 	mi_locale.AddCatalog(wxT("nukak3d"));
 	#ifndef __WIN32__
 		{
-        wxLogNull noLog;
+        //wxLogNull noLog;
         mi_locale.AddCatalog(_T("fileutils"));
 		}
 	#endif

@@ -1506,15 +1506,17 @@ void nkNukak3D::eventoLanguage(wxCommandEvent &WXUNUSED(event)){
 	choices[0] = _("English");
 	choices[1] = _("Spanish");
 	wxChoice * mi_choise = new wxChoice(mi_dialogo, -1, wxPoint(20,50), wxDefaultSize, 2, choices);
-	new wxButton(mi_dialogo, wxID_OK, _("OK"),wxPoint(40,70));	
-	new wxButton(mi_dialogo, wxID_CANCEL, _("Cancel"),wxPoint(130,70));
+	wxButton * mi_botonOk = new wxButton(mi_dialogo, wxID_OK, _("OK"),wxPoint(40,90));	
+	wxButton * mi_botonCancel = new wxButton(mi_dialogo, wxID_CANCEL, _("Cancel"),wxPoint(130,90));
 	CenterOnParent();
 	mi_dialogo->ShowModal();
 	int mi_language = wxLANGUAGE_ENGLISH ;
+	bool writeConfig = false;
 	if(mi_dialogo->GetReturnCode() == wxID_OK){
 		wxBeginBusyCursor();
 		mi_language = mi_choise->GetSelection();
 		if (mi_language != wxNOT_FOUND){
+			writeConfig = true;
 			if(mi_language == 0){ //English
 				mi_language = wxLANGUAGE_ENGLISH ;
 
@@ -1522,15 +1524,17 @@ void nkNukak3D::eventoLanguage(wxCommandEvent &WXUNUSED(event)){
 				mi_language = wxLANGUAGE_SPANISH;
 			}
 		}
-		wxConfigBase *mi_Config = wxConfigBase::Get();
-		if ( mi_Config != NULL ){
+		wxEndBusyCursor();
+	}
+	delete mi_text;
+	delete mi_choise;
+	delete mi_botonOk;
+	delete mi_botonCancel;
+	delete mi_dialogo;
+	wxConfigBase *mi_Config = wxConfigBase::Get();
+	if ( mi_Config != NULL && writeConfig == true){
 			// save the language's values to the config
 			mi_Config->Write(_T("/Tools/Language"), mi_language);
-			wxMessageDialog(mi_dialogo,
-				_("Restart program to apply language configuration")
-				).ShowModal();
-		}
-		delete mi_dialogo;
-		wxEndBusyCursor();
+			wxMessageDialog(this,_("Restart program to apply language configuration")).ShowModal();
 	}
 }
