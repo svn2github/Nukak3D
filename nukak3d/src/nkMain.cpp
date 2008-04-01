@@ -37,6 +37,11 @@ bool nkMain::OnInit(){
 		return false;
 	}
 
+	#ifdef __WXMAC__
+		wxLocale::AddCatalogLookupPathPrefix(_("./nukak3d.app/Contents/Resources/locale"));
+	#else
+		wxLocale::AddCatalogLookupPathPrefix(_(".nukak3d/locale"));
+	#endif
 	wxLocale::AddCatalogLookupPathPrefix(_(".nukak3d/locale"));
 	mi_locale.AddCatalog(wxT("nukak3d"));
 	#ifndef __WIN32__
