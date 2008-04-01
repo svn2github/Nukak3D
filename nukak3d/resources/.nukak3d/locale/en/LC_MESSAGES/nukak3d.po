@@ -1,0 +1,801 @@
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the nukak3d package.
+# Alexander Pinzon Fernandez <apinzonf@sourceforge.net>, 2008.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: nukak3d VERSION 4.5.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-04-01 14:48-0500\n"
+"PO-Revision-Date: 2008-04-01 16:22-0500\n"
+"Last-Translator: Alexander Pinzon Fernandez <apinzonf@sourceforge.net>\n"
+"Language-Team: Alexander Pinzon Fernandez <apinzonf@gmail.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-Country: COLOMBIA\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ../../../../../include\n"
+"X-Poedit-SearchPath-1: ../../../../../src\n"
+
+#: ../../../../../src/nkIODialog.cpp:32
+#: ../../../../../src/nkIODialog.cpp:50
+#: ../../../../../src/nkNukak3D.cpp:1509
+msgid "OK"
+msgstr ""
+
+#: ../../../../../src/nkIODialog.cpp:33
+#: ../../../../../src/nkNukak3D.cpp:1510
+msgid "Cancel"
+msgstr ""
+
+#: ../../../../../src/nkMain.cpp:40
+msgid ".nukak3d/locale"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:50
+msgid "E&xit\tAlt-X"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:50
+msgid "Close application."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:51
+msgid "&File"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:55
+#: ../../../../../src/nkNukak3D.cpp:1504
+msgid "Choose language"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:55
+msgid "Change language for controls."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:56
+#: ../../../../../src/nkNukak3D.cpp:265
+msgid "Tools"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:60
+msgid "&About Nukak3D...\tCtrl-A"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:60
+msgid "Show information of authors."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:61
+msgid "Help"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:67
+msgid "Open volume images"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:68
+#: ../../../../../src/nkNukak3D.cpp:607
+msgid "Volume"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:68
+msgid "Open a single file."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:69
+#: ../../../../../src/nkNukak3D.cpp:608
+msgid "Dicom Directory"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:69
+msgid "Open directory with Dicom images."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:71
+msgid "Open Mesh 3D"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:72
+#: ../../../../../src/nkNukak3D.cpp:609
+msgid "Polygon Mesh"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:72
+msgid "Open file vtk."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:75
+msgid "Save"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:76
+msgid "Save Volume"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:76
+msgid "Save volume of images."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:77
+msgid "Save Mesh 3D."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:77
+msgid "Save mesh 3D in vtk file format."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:80
+msgid "Capture Screen"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:81
+msgid "Save 3D View"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:81
+msgid "Save snapshot of 3d view."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:82
+msgid "Save Axial View"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:82
+msgid "Save snapshot of axial view."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:83
+msgid "Save Sagital View"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:83
+msgid "Save snapshot of sagital view."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:84
+msgid "Save Coronal View"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:84
+msgid "Save snapshot of coronal view."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:87
+msgid "Information"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:88
+msgid "Volume 3D"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:88
+msgid "Information of volume 3D."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:89
+msgid "Polygon mesh"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:89
+msgid "Information of polygon mesh."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:90
+msgid "Video card"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:90
+msgid "Information of videocard in system."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:97
+msgid "Lookup Table"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:100
+#: ../../../../../src/nkNukak3D.cpp:614
+msgid "Reset Lookup Table"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:102
+msgid "Load window and level by default for this lookup table."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:109
+msgid "Change Lookup table."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:113
+msgid "View volume 3D"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:117
+#: ../../../../../src/nkNukak3D.cpp:611
+msgid "Escalar: Ortogonal planes"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:119
+msgid "View 3 ortogonal planes over volume 3D."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:123
+#: ../../../../../src/nkNukak3D.cpp:612
+msgid "3D: Ray Cast"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:125
+msgid "Rendering volume with Ray Cast method."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:129
+#: ../../../../../src/nkNukak3D.cpp:613
+msgid "3D: Texture Mapping"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:131
+msgid "Rendering volume with Texture Mapping method."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:134
+msgid "IsoSurface"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:135
+#: ../../../../../src/nkNukak3D.cpp:610
+msgid "3D: Marching Cubes"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:135
+msgid "Reconstruction surface with Marching Cubes method."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:141
+msgid "Filter and Segmentation"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:145
+#: ../../../../../src/nkNukak3D.cpp:615
+msgid "Segmentation with Levelsets"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:147
+msgid "Segmentation with Levelsets using cursor position as seed."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:151
+#: ../../../../../src/nkNukak3D.cpp:616
+msgid "Area of Axial Image"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:153
+msgid "Area greater that zero in the axial image in square millimeters mm2."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:157
+#: ../../../../../src/nkNukak3D.cpp:617
+msgid "Gaussian Filter"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:159
+msgid "Gaussian filter to volume."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:163
+#: ../../../../../src/nkNukak3D.cpp:618
+msgid "Median Filter"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:165
+msgid "Median filter to volume."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:170
+msgid "Modifiers For Mesh 3D"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:174
+#: ../../../../../src/nkNukak3D.cpp:619
+msgid "Triangulated"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:176
+msgid "Triangulated of mesh 3D."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:180
+#: ../../../../../src/nkNukak3D.cpp:620
+msgid "Decimate Mesh 3D"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:182
+msgid "Decimate reduction o 3d mesh"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:186
+#: ../../../../../src/nkNukak3D.cpp:621
+msgid "Smooth"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:188
+msgid "Smooth mesh 3D"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:192
+#: ../../../../../src/nkNukak3D.cpp:622
+msgid "Normals"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:194
+msgid "Recalculate Normals."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:198
+#: ../../../../../src/nkNukak3D.cpp:623
+msgid "Deform"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:200
+msgid "Deform mesh 3d"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:204
+msgid "Navigation"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:208
+#: ../../../../../src/nkNukak3D.cpp:624
+msgid "Reset Camera"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:210
+msgid "Reset position and orientation of camera."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:214
+#: ../../../../../src/nkNukak3D.cpp:625
+msgid "Trackball"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:216
+msgid "Trackball camera."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:220
+#: ../../../../../src/nkNukak3D.cpp:626
+msgid "Joystick"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:222
+msgid "Joystick camera."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:226
+#: ../../../../../src/nkNukak3D.cpp:627
+msgid "Flight"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:228
+msgid "Flight camera."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:232
+#: ../../../../../src/nkNukak3D.cpp:628
+msgid "Unicam"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:234
+msgid "Unicam camera."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:238
+msgid "Stereoscopy"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:242
+#: ../../../../../src/nkNukak3D.cpp:629
+msgid "Enable Stereoscopy Vision"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:244
+msgid "Enable/Disable Stereoscopy vision."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:248
+#: ../../../../../src/nkNukak3D.cpp:630
+msgid "Stereo passive"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:250
+msgid "Enable/Disable Stereo passive."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:254
+#: ../../../../../src/nkNukak3D.cpp:631
+msgid "More separation +"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:256
+msgid "More separation between images in Stereoscopy vision"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:260
+#: ../../../../../src/nkNukak3D.cpp:632
+msgid "Less separation -"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:262
+msgid "Less separation between images in Stereoscopy vision"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:267
+msgid "Configuration"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:278
+msgid "Nukak3d Workspace"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:278
+msgid "Nukak 3D Files"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:413
+#: ../../../../../src/nkNukak3D.cpp:489
+msgid "Open file..."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:538
+#: ../../../../../src/nkNukak3D.cpp:574
+#: ../../../../../src/nkNukak3D.cpp:1124
+#: ../../../../../src/nkNukak3D.cpp:1197
+#: ../../../../../src/nkNukak3D.cpp:1264
+#: ../../../../../src/nkNukak3D.cpp:1330
+msgid "Save as"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:738
+msgid "Numbers of contours"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:739
+msgid "Value of threshold lower"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:740
+msgid "Value of threshold upper"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:746
+msgid "Nukak3D: Marching cubes"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1396
+#, c-format
+msgid "Size in x = \t%d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1397
+#, c-format
+msgid "Size in y = \t%d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1398
+#, c-format
+msgid "Size in z = \t%d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1399
+#, c-format
+msgid "Spacing in x = \t%1.5f\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1400
+#, c-format
+msgid "Spacing in y = \t%1.5f\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1401
+#, c-format
+msgid "Spacing in z = \t%1.5f\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1405
+msgid "Scalar type = CHAR"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1406
+msgid "Scalar type = UNSIGNED_CHAR"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1407
+msgid "Scalar type = SHORT"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1408
+msgid "Scalar type = UNSIGNED_SHORT"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1409
+msgid "Scalar type = INT"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1410
+msgid "Scalar type = UNSIGNED_INT"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1411
+msgid "Scalar type = LONG"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1412
+msgid "Scalar type = UNSIGNED_LONG"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1413
+msgid "Scalar type = FLOAT"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1414
+msgid "Scalar type = DOUBLE"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1417
+msgid "Information of volume"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1443
+#, c-format
+msgid "Number of strips = %d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1444
+#, c-format
+msgid "Number of polygons = %d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1445
+#, c-format
+msgid "Number of lines = %d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1446
+#, c-format
+msgid "Number of vertex = %d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1447
+#, c-format
+msgid "Number of cells = %d\n"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1451
+msgid "Mesh information"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1474
+msgid "Nukak3D: Video card."
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1487
+msgid "Nukak3D: Video card"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1503
+msgid "Nukak3D: Choose language"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1506
+msgid "English"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1507
+msgid "Spanish"
+msgstr ""
+
+#: ../../../../../src/nkNukak3D.cpp:1538
+msgid "Restart program to apply language configuration"
+msgstr ""
+
+#: ../../../../../src/nkObj3DViewer.cpp:53
+msgid "View 3D"
+msgstr ""
+
+#: ../../../../../src/nkObj3DViewer.cpp:329
+msgid "Decimate ratio"
+msgstr ""
+
+#: ../../../../../src/nkObj3DViewer.cpp:335
+msgid "Nukak3D: Decimate mesh"
+msgstr ""
+
+#: ../../../../../src/nkObj3DViewer.cpp:391
+msgid "Filter iterations"
+msgstr ""
+
+#: ../../../../../src/nkObj3DViewer.cpp:397
+msgid "Nukak3D: Smooth mesh"
+msgstr ""
+
+#: ../../../../../src/nkObj3DViewer.cpp:444
+msgid "Angle value for define normal"
+msgstr ""
+
+#: ../../../../../src/nkObj3DViewer.cpp:450
+msgid "Nukak3D: Recalc normals"
+msgstr ""
+
+#: ../../../../../src/nkToolBar.cpp:81
+msgid "Click in "
+msgstr ""
+
+#: ../../../../../src/nkToolBar.cpp:81
+msgid " for display items"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:87
+msgid "Axial View"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:93
+msgid "Coronal View"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:99
+msgid "Sagital View"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:105
+msgid "3D View"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:469
+msgid "Seeds radius"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:470
+msgid "Gaussiano - sigma"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:471
+msgid "Sigmoide - alpha"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:472
+msgid "Sigmoide - beta"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:473
+msgid "SetPropagationScaling"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:474
+msgid "SetCurvatureScaling"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:475
+msgid "SetMaximumRMSError"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:476
+msgid "SetNumberOfIterations"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:477
+msgid "Stopping time"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:484
+msgid "Nukak3D: levelsets"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:784
+msgid "Variance"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:785
+msgid "Kernel radius"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:791
+msgid "Nukak3D: Gauusian filter"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:864
+msgid "Kernel radius in X"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:865
+msgid "Kernel radius in Y"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:866
+msgid "Kernel radius in Z"
+msgstr ""
+
+#: ../../../../../src/nkVolViewer.cpp:872
+msgid "Nukak3D: Median Filter"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:43
+msgid ""
+"\n"
+"Nukak3D 2007 "
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:44
+msgid ""
+"\n"
+"Version 4.0 Revision 3104."
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:45
+msgid ""
+"\n"
+"(c) 2007 Bioingenium Research Group."
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:46
+msgid ""
+"\n"
+"\n"
+"This project has been developed within the research"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:47
+msgid ""
+"\n"
+"of computer graphics group Bioingenium."
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:48
+#: ../../../../../include/nkAcercaDe.h:49
+#: ../../../../../include/nkAcercaDe.h:50
+#: ../../../../../include/nkAcercaDe.h:52
+#: ../../../../../include/nkAcercaDe.h:57
+msgid "\n"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:51
+msgid ""
+"\n"
+"Developed By:"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:53
+msgid ""
+"\n"
+"Alexander Pinzon"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:54
+msgid ""
+"\n"
+"Byron Perez"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:55
+msgid ""
+"\n"
+"Wilson Sarmiento"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:56
+msgid ""
+"\n"
+"Eduardo Romero"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:58
+msgid ""
+"\n"
+"Universidad Nacional de Colombia"
+msgstr ""
+
+#: ../../../../../include/nkAcercaDe.h:63
+msgid "Ok"
+msgstr ""
+
