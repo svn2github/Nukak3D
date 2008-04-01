@@ -19,8 +19,9 @@
 #include  "wx/wx.h"
 #endif
 
-#include <wx/splash.h>
+#include <wx/config.h>
 #include <wx/intl.h>
+#include <wx/splash.h>
 
 /** 
  * @brief nukak3d Application.
@@ -32,6 +33,12 @@ public:
 	 * @return bool
 	 */
 	virtual bool OnInit ( void );  
+
+	/**
+     * @brief Exit method of application, for delete wxConfigBase::Set()
+	 * @return int
+	 */
+	virtual int OnExit();
 protected:
     wxLocale mi_locale; // locale we'll be using
 };

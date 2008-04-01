@@ -50,6 +50,11 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	mi_wxMenuArchivo->Append(nkNukak3D::ID_SALIR, _("E&xit\tAlt-X"), _("Close application."));
 	mi_wxMBMenu->Append(mi_wxMenuArchivo, _("&File"));
 
+	// Tools Menu Bar -> Botton
+	wxMenu * mi_wxMenuHerramientas = new wxMenu;  
+	mi_wxMenuHerramientas->Append(nkNukak3D::ID_SETLANGUAGE, _("Choose language"), _("Change language for controls."));
+	mi_wxMBMenu->Append(mi_wxMenuHerramientas, _("Tools"));
+
 	// Help Menu Bar -> Botton
 	wxMenu * mi_wxMenuAyuda = new wxMenu;  
 	mi_wxMenuAyuda->Append(nkNukak3D::ID_ACERCA_DE, _("&About Nukak3D...\tCtrl-A"), _("Show information of authors."));
@@ -332,6 +337,7 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_MENU(nkNukak3D::ID_SNAPSHOTAXIAL, nkNukak3D::eventoSnapshotAxial)
 	EVT_MENU(nkNukak3D::ID_SNAPSHOTSAGITAL, nkNukak3D::eventoSnapshotSagital)
 	EVT_MENU(nkNukak3D::ID_SNAPSHOTCORONAL, nkNukak3D::eventoSnapshotCoronal)
+	EVT_MENU(nkNukak3D::ID_SETLANGUAGE, nkNukak3D::eventoLanguage)
 	EVT_MENU(nkNukak3D::ID_PARIMAGE, nkNukak3D::eventoParImage)
 	EVT_MENU(nkNukak3D::ID_PARPOLYGON, nkNukak3D::eventoParPolygon)
 	EVT_MENU(nkNukak3D::ID_PARVIDEO,  nkNukak3D::eventoParVideo)
@@ -1491,4 +1497,40 @@ void nkNukak3D::eventoParVideo(wxCommandEvent &WXUNUSED(event))
 		
 	}
 
+}
+
+void nkNukak3D::eventoLanguage(wxCommandEvent &WXUNUSED(event)){
+	wxDialog * mi_dialogo = new wxDialog(this, wxID_ANY, _("Nukak3D: Choose language"), wxDefaultPosition, wxSize(250,170));
+	wxStaticText * mi_text = new wxStaticText(mi_dialogo, -1, _("Choose language"), wxPoint(20,20));
+	wxString choices[10];
+	choices[0] = _("English");
+	choices[1] = _("Spanish");
+	wxChoice * mi_choise = new wxChoice(mi_dialogo, -1, wxPoint(20,50), wxDefaultSize, 2, choices);
+	new wxButton(mi_dialogo, wxID_OK, _("OK"),wxPoint(40,70));	
+	new wxButton(mi_dialogo, wxID_CANCEL, _("Cancel"),wxPoint(130,70));
+	CenterOnParent();
+	mi_dialogo->ShowModal();
+	int mi_language = wxLANGUAGE_ENGLISH ;
+	if(mi_dialogo->GetReturnCode() == wxID_OK){
+		wxBeginBusyCursor();
+		mi_language = mi_choise->GetSelection();
+		if (mi_language != wxNOT_FOUND){
+			if(mi_language == 0){ //English
+				mi_language = wxLANGUAGE_ENGLISH ;
+
+			}else if(mi_language == 1){ //Spanish
+				mi_language = wxLANGUAGE_SPANISH;
+			}
+		}
+		wxConfigBase *mi_Config = wxConfigBase::Get();
+		if ( mi_Config != NULL ){
+			// save the language's values to the config
+			mi_Config->Write(_T("/Tools/Language"), mi_language);
+			wxMessageDialog(mi_dialogo,
+				_("Restart program to apply language configuration")
+				).ShowModal();
+		}
+		delete mi_dialogo;
+		wxEndBusyCursor();
+	}
 }

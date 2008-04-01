@@ -24,9 +24,10 @@
 /** wx */
 #include <wx/aui/aui.h>
 #include <wx/aui/auibook.h>
+#include <wx/config.h>
+#include <wx/imaglist.h>
 #include <wx/intl.h>
 #include <wx/joystick.h>
-#include <wx/imaglist.h>
 #ifndef __WXMSW__
     #include "mondrian.xpm"
 #endif
@@ -104,6 +105,7 @@ public:
 		ID_PARVIDEO,					/**< VideoCard information. */
 		ID_REINICIAR_PALETA,			/**< Reset window and level. */
 		ID_SALIR,						/**< Close application. */
+		ID_SETLANGUAGE,                 /**< Change user language. */
 		ID_SNAPSHOT3D,					/**< Snapshot canvas 3D. */
 		ID_SNAPSHOTAXIAL,				/**< Snapshot axial view. */
 		ID_SNAPSHOTCORONAL,				/**< Snapshot coronal view. */
@@ -351,6 +353,11 @@ public:
 	 * @brief Show information of video card.
 	*/
 	void eventoParVideo(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Change the user preferences, language.
+	*/
+	void eventoLanguage(wxCommandEvent& WXUNUSED(event));
 
 	/**
 	 * @brief Get notebok to make other pages.

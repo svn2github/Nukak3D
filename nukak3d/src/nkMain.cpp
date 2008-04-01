@@ -11,11 +11,25 @@
 #include "nkNukak3D.h"
 
 bool nkMain::OnInit(){
+	SetVendorName(_T("Bioingenium"));
+	SetAppName(_T("nukak3d"));
+	wxConfigBase *prv_configBase = wxConfigBase::Get();
+	prv_configBase->SetRecordDefaults();
+
+	int languageSettings = prv_configBase->Read(_T("/Tools/Language"), wxNOT_FOUND);
 	int language_system = mi_locale.GetSystemLanguage();
-	if (language_system >= wxLANGUAGE_SPANISH && language_system <= wxLANGUAGE_SPANISH_VENEZUELA ){
-		language_system = wxLANGUAGE_SPANISH;
+	if (languageSettings == wxNOT_FOUND) {
+		if (language_system >= wxLANGUAGE_SPANISH && language_system <= wxLANGUAGE_SPANISH_VENEZUELA ){
+			language_system = wxLANGUAGE_SPANISH;
+		}else{
+			language_system = wxLANGUAGE_ENGLISH;
+		}
 	}else{
-		language_system = wxLANGUAGE_DEFAULT;
+		if (languageSettings >= wxLANGUAGE_SPANISH && languageSettings <= wxLANGUAGE_SPANISH_VENEZUELA ){
+			language_system = wxLANGUAGE_SPANISH;
+		}else{
+			language_system = wxLANGUAGE_ENGLISH ;
+		}
 	}
 	
 	if ( !mi_locale.Init(language_system, wxLOCALE_CONV_ENCODING) ){
@@ -50,6 +64,11 @@ bool nkMain::OnInit(){
 	mi_nukak3D->Maximize(true);
 	mi_nukak3D->Show (true);
 	return true;
+}
+
+int nkMain::OnExit(){
+    delete wxConfigBase::Set((wxConfigBase *) NULL);
+    return 0;
 }
 
 IMPLEMENT_APP (nkMain)
