@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * @file nkNukak3D.h
  * @brief Main window.
  * @details Gui implementation 

@@ -1,4 +1,4 @@
-/** 
+ï»¿/** 
  * @file nkIODialog.cpp
  * @brief Generic dialog for input, output information.
  * @author  Byron Pérez, Alexander Pinzon

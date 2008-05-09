@@ -1,4 +1,4 @@
-include_directories(${CMAKE_SOURCE_DIR}/include)
+﻿include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/resources)
 
 IF (WIN32)

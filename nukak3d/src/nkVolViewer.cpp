@@ -1,4 +1,4 @@
-#include "nkVolViewer.h"
+﻿#include "nkVolViewer.h"
 #include <vtkInteractorStyleSwitch.h>
 #include <vtkRenderWindowInteractor.h>
 

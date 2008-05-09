@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * @file nkVolViewer.h
  * @brief Class for view volume 3D.
  * @details Implement all fucntions for manage image.

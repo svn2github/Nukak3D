@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * @file nkToolbarMac.h
  * @brief Toolbar of nukak3d.
  * @author Alexander Pinzon Fernandez.

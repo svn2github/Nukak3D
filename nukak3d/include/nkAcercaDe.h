@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * @file nkAcercaDe.h
  * @brief About Nukak3D.
  * @author Alexander Pinzon Fernandez.

@@ -1,4 +1,4 @@
-/** 
+﻿/** 
  * @file nkToolbar.cpp
  * @brief Toolbar OF nukak3d.
  * @details Class for creation of toolbar.

@@ -1,2 +1,2 @@
-#include "wx/msw/wx.rc"
+﻿#include "wx/msw/wx.rc"
 NUKAK3D                   ICON    DISCARDABLE     "nukak3d.ico"

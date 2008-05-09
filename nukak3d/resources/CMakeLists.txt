@@ -1,4 +1,4 @@
-INSTALL_FILES(/include FILES nukak3d.rc)
+﻿INSTALL_FILES(/include FILES nukak3d.rc)
 IF (APPLE)
 	SET(RESOURCES_LANGUAGE_PATH /nukak3d.app/Contents/Resources/locale)
 ELSE (APPLE)

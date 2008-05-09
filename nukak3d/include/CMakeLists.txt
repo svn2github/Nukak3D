@@ -1,4 +1,4 @@
-INSTALL_FILES(/include FILES
+﻿INSTALL_FILES(/include FILES
 nkIODialog.h
 nkMain.h
 nkNukak3D.h
