@@ -1,4 +1,4 @@
-﻿#include "nkObj3DViewer.h"
+#include "nkObj3DViewer.h"
 
 #include "itkImageToVTKImageFilter.h"
 #include "itkImage.h"

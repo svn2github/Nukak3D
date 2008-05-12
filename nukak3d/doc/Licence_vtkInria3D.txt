@@ -1,4 +1,4 @@
-﻿The vtkINRIA3D copyright is as follows:
+The vtkINRIA3D copyright is as follows:
 
 
 Copyright (c) INRIA - Asclepios Project (http://www-sop.inria.fr/asclepios).

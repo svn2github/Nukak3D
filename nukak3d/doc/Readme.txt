@@ -1,4 +1,4 @@
-﻿Nukak3D 4.5.3
+Nukak3D 4.5.3
 ---------------
 
 3D medical image platform for visualization and image processing. 

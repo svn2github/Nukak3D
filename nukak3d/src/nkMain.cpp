@@ -1,4 +1,4 @@
-﻿/** 
+/** 
  * @file nkMain.cpp
  * @brief Application nukak3d.
  * @details Class for creation of application

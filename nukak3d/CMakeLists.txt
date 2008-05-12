@@ -1,4 +1,4 @@
-﻿# @file CmakeList.txt
+# @file CmakeList.txt
 # @brief Project configuration file.
 # @author Alexander Pinzon Fernandez
 # @version 3.0

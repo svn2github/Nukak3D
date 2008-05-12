@@ -1,4 +1,4 @@
-﻿/** 
+/** 
  * @file nkMain.h
  * @brief nukak3d Application.
  * @author Alexander Pinzon Fernandez.

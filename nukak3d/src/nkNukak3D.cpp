@@ -1,4 +1,4 @@
-﻿/** 
+/** 
  * @file nkNukak3D.cpp
  * @brief Main windiw of Nukak3D.
  * @details Implementation of gui.

@@ -1,4 +1,4 @@
-ï»¿/** 
+/** 
  * @file nkObj3DViewer.h
  * @brief Class for view mesh.
  * @author Alexander Pinzón Fernandez, Byron Pérez

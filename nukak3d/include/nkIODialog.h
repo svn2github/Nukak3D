@@ -1,4 +1,4 @@
-ï»¿/** 
+/** 
  * @file nkIODialog.h
  * @brief Generic dialog for input data.
  * @author  Byron Pérez, Alexander Pinzon

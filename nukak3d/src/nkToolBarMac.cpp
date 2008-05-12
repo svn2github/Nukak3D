@@ -1,4 +1,4 @@
-﻿/** 
+/** 
  * @file nkToolbarMac.cpp
  * @brief Toolbar of nukak3d.
  * @details Class for Toolbar in unix and Mac systems
