@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nukak3d VERSION 4.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-04-01 14:44-0500\n"
-"PO-Revision-Date: 2008-04-01 16:21-0500\n"
+"POT-Creation-Date: 2008-06-27 16:39-0500\n"
+"PO-Revision-Date: 2008-06-27 16:42-0500\n"
 "Last-Translator: Alexander Pinzon Fernandez <apinzonf@sourceforge.net>\n"
 "Language-Team: Alexander Pinzon Fernandez <apinzonf@gmail.com>\n"
 "MIME-Version: 1.0\n"
@@ -22,16 +22,75 @@ msgstr ""
 
 #: ../../../../../src/nkIODialog.cpp:32
 #: ../../../../../src/nkIODialog.cpp:50
-#: ../../../../../src/nkNukak3D.cpp:1509
+#: ../../../../../src/nkNukak3D.cpp:1510
 msgid "OK"
 msgstr "Aceptar"
 
 #: ../../../../../src/nkIODialog.cpp:33
-#: ../../../../../src/nkNukak3D.cpp:1510
+#: ../../../../../src/nkNukak3D.cpp:1511
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: ../../../../../src/nkMain.cpp:40
+#: ../../../../../src/nkLevelSets.cpp:141
+msgid "SetPropagationScaling"
+msgstr ""
+
+#: ../../../../../src/nkLevelSets.cpp:142
+msgid "SetCurvatureScaling"
+msgstr ""
+
+#: ../../../../../src/nkLevelSets.cpp:143
+msgid "SetNumberOfIterations"
+msgstr ""
+
+#: ../../../../../src/nkLevelSets.cpp:149
+msgid "Nukak3D: levelsets"
+msgstr "Nukak3D: levelsets"
+
+#: ../../../../../src/nkLevelSets.cpp:206
+msgid "Nukak3D: Level Sets Segmentation Configuration Wizard."
+msgstr "Nukak3D: Asistente para segmentacion con Level Sets."
+
+#: ../../../../../src/nkLevelSets.cpp:210
+#, fuzzy
+msgid ""
+"Level Sets Segmentation\n"
+"\n"
+msgstr "Filtros y Segmentacion"
+
+#: ../../../../../src/nkLevelSets.cpp:211
+msgid "Configuration in 3 steps:\n"
+msgstr "Configuracion en 3 pasos :\n"
+
+#: ../../../../../src/nkLevelSets.cpp:212
+msgid "\t1. Gradient Filter :\n"
+msgstr "\t1. Filtro Gradient:\n"
+
+#: ../../../../../src/nkLevelSets.cpp:213
+msgid "\t2. Sigmoid Filter :\n"
+msgstr "\t2. Filtrom Sigmoid :\n"
+
+#: ../../../../../src/nkLevelSets.cpp:214
+msgid "\t3. Add Seeds :\n"
+msgstr "\t3. Agregar semillas :\n"
+
+#: ../../../../../src/nkLevelSets.cpp:644
+msgid "Radius"
+msgstr "Radio"
+
+#: ../../../../../src/nkLevelSets.cpp:649
+msgid "Add seed"
+msgstr "Agregar semilla"
+
+#: ../../../../../src/nkLevelSets.cpp:654
+msgid "Delete selected seed from grid"
+msgstr "Borrar la semilla seleccionada"
+
+#: ../../../../../src/nkMain.cpp:41
+msgid "./nukak3d.app/Contents/Resources/locale"
+msgstr ""
+
+#: ../../../../../src/nkMain.cpp:43
 msgid ".nukak3d/locale"
 msgstr ""
 
@@ -48,7 +107,7 @@ msgid "&File"
 msgstr "Archivo"
 
 #: ../../../../../src/nkNukak3D.cpp:55
-#: ../../../../../src/nkNukak3D.cpp:1504
+#: ../../../../../src/nkNukak3D.cpp:1505
 msgid "Choose language"
 msgstr "Escoja el lenguage"
 
@@ -450,10 +509,10 @@ msgstr "Abrir archivo..."
 
 #: ../../../../../src/nkNukak3D.cpp:538
 #: ../../../../../src/nkNukak3D.cpp:574
-#: ../../../../../src/nkNukak3D.cpp:1124
-#: ../../../../../src/nkNukak3D.cpp:1197
-#: ../../../../../src/nkNukak3D.cpp:1264
-#: ../../../../../src/nkNukak3D.cpp:1330
+#: ../../../../../src/nkNukak3D.cpp:1125
+#: ../../../../../src/nkNukak3D.cpp:1198
+#: ../../../../../src/nkNukak3D.cpp:1265
+#: ../../../../../src/nkNukak3D.cpp:1331
 msgid "Save as"
 msgstr "Salvar como"
 
@@ -473,130 +532,130 @@ msgstr "Valor de umbral superior"
 msgid "Nukak3D: Marching cubes"
 msgstr "Nukak3D: Marching cubes"
 
-#: ../../../../../src/nkNukak3D.cpp:1396
+#: ../../../../../src/nkNukak3D.cpp:1397
 #, c-format
 msgid "Size in x = \t%d\n"
 msgstr "Resolucion en x = \t%d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1397
+#: ../../../../../src/nkNukak3D.cpp:1398
 #, c-format
 msgid "Size in y = \t%d\n"
 msgstr "Resolucion en y = \t%d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1398
+#: ../../../../../src/nkNukak3D.cpp:1399
 #, c-format
 msgid "Size in z = \t%d\n"
 msgstr "Resolucion en z = \t%d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1399
+#: ../../../../../src/nkNukak3D.cpp:1400
 #, c-format
 msgid "Spacing in x = \t%1.5f\n"
 msgstr "Espaciamiento en x = \t%1.5f\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1400
+#: ../../../../../src/nkNukak3D.cpp:1401
 #, c-format
 msgid "Spacing in y = \t%1.5f\n"
 msgstr "Espaciamiento en y = \t%1.5f\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1401
+#: ../../../../../src/nkNukak3D.cpp:1402
 #, c-format
 msgid "Spacing in z = \t%1.5f\n"
 msgstr "Espaciamiento en z = \t%1.5f\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1405
+#: ../../../../../src/nkNukak3D.cpp:1406
 msgid "Scalar type = CHAR"
 msgstr "Tipo de dato = CHAR"
 
-#: ../../../../../src/nkNukak3D.cpp:1406
+#: ../../../../../src/nkNukak3D.cpp:1407
 msgid "Scalar type = UNSIGNED_CHAR"
 msgstr "Tipo de dato = UNSIGNED_CHAR"
 
-#: ../../../../../src/nkNukak3D.cpp:1407
+#: ../../../../../src/nkNukak3D.cpp:1408
 msgid "Scalar type = SHORT"
 msgstr "Tipo de dato = SHORT"
 
-#: ../../../../../src/nkNukak3D.cpp:1408
+#: ../../../../../src/nkNukak3D.cpp:1409
 msgid "Scalar type = UNSIGNED_SHORT"
 msgstr "Tipo de dato = UNSIGNED_SHORT"
 
-#: ../../../../../src/nkNukak3D.cpp:1409
+#: ../../../../../src/nkNukak3D.cpp:1410
 msgid "Scalar type = INT"
 msgstr "Tipo de dato = INT"
 
-#: ../../../../../src/nkNukak3D.cpp:1410
+#: ../../../../../src/nkNukak3D.cpp:1411
 msgid "Scalar type = UNSIGNED_INT"
 msgstr "Tipo de dato = UNSIGNED_INT"
 
-#: ../../../../../src/nkNukak3D.cpp:1411
+#: ../../../../../src/nkNukak3D.cpp:1412
 msgid "Scalar type = LONG"
 msgstr "Tipo de dato = LONG"
 
-#: ../../../../../src/nkNukak3D.cpp:1412
+#: ../../../../../src/nkNukak3D.cpp:1413
 msgid "Scalar type = UNSIGNED_LONG"
 msgstr "Tipo de dato = LONG"
 
-#: ../../../../../src/nkNukak3D.cpp:1413
+#: ../../../../../src/nkNukak3D.cpp:1414
 msgid "Scalar type = FLOAT"
 msgstr "Tipo de dato = FLOAT"
 
-#: ../../../../../src/nkNukak3D.cpp:1414
+#: ../../../../../src/nkNukak3D.cpp:1415
 msgid "Scalar type = DOUBLE"
 msgstr "Tipo de dato = DOUBLE"
 
-#: ../../../../../src/nkNukak3D.cpp:1417
+#: ../../../../../src/nkNukak3D.cpp:1418
 msgid "Information of volume"
 msgstr "Información del v"
 
-#: ../../../../../src/nkNukak3D.cpp:1443
+#: ../../../../../src/nkNukak3D.cpp:1444
 #, c-format
 msgid "Number of strips = %d\n"
 msgstr "Numero de tiras = %d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1444
+#: ../../../../../src/nkNukak3D.cpp:1445
 #, c-format
 msgid "Number of polygons = %d\n"
 msgstr "Numero de poligonos = %d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1445
+#: ../../../../../src/nkNukak3D.cpp:1446
 #, c-format
 msgid "Number of lines = %d\n"
 msgstr "Numero de lineas = %d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1446
+#: ../../../../../src/nkNukak3D.cpp:1447
 #, c-format
 msgid "Number of vertex = %d\n"
 msgstr "Número of vertices = %d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1447
+#: ../../../../../src/nkNukak3D.cpp:1448
 #, c-format
 msgid "Number of cells = %d\n"
 msgstr "Número de celdas = %d\n"
 
-#: ../../../../../src/nkNukak3D.cpp:1451
+#: ../../../../../src/nkNukak3D.cpp:1452
 msgid "Mesh information"
 msgstr "Información de la malla"
 
-#: ../../../../../src/nkNukak3D.cpp:1474
+#: ../../../../../src/nkNukak3D.cpp:1475
 msgid "Nukak3D: Video card."
 msgstr "Nukak3D: Tarjeta de video"
 
-#: ../../../../../src/nkNukak3D.cpp:1487
+#: ../../../../../src/nkNukak3D.cpp:1488
 msgid "Nukak3D: Video card"
 msgstr "Nukak3D: Tarjeta de video"
 
-#: ../../../../../src/nkNukak3D.cpp:1503
+#: ../../../../../src/nkNukak3D.cpp:1504
 msgid "Nukak3D: Choose language"
 msgstr "Nukak3D: Escojer Lenguaje"
 
-#: ../../../../../src/nkNukak3D.cpp:1506
+#: ../../../../../src/nkNukak3D.cpp:1507
 msgid "English"
 msgstr "Ingles"
 
-#: ../../../../../src/nkNukak3D.cpp:1507
+#: ../../../../../src/nkNukak3D.cpp:1508
 msgid "Spanish"
 msgstr "Español"
 
-#: ../../../../../src/nkNukak3D.cpp:1538
+#: ../../../../../src/nkNukak3D.cpp:1539
 msgid "Restart program to apply language configuration"
 msgstr "Reinicie el programa para aplicar los cambios del lenguaje "
 
@@ -636,87 +695,47 @@ msgstr "Clic en "
 msgid " for display items"
 msgstr " desplegar los items"
 
-#: ../../../../../src/nkVolViewer.cpp:87
+#: ../../../../../src/nkVolViewer.cpp:88
 msgid "Axial View"
 msgstr "Vista Axial"
 
-#: ../../../../../src/nkVolViewer.cpp:93
+#: ../../../../../src/nkVolViewer.cpp:94
 msgid "Coronal View"
 msgstr "Vista Coronal"
 
-#: ../../../../../src/nkVolViewer.cpp:99
+#: ../../../../../src/nkVolViewer.cpp:100
 msgid "Sagital View"
 msgstr "Vista Sagital"
 
-#: ../../../../../src/nkVolViewer.cpp:105
+#: ../../../../../src/nkVolViewer.cpp:106
 msgid "3D View"
 msgstr "Vista 3D"
 
-#: ../../../../../src/nkVolViewer.cpp:469
-msgid "Seeds radius"
-msgstr "Radio de la semilla"
-
-#: ../../../../../src/nkVolViewer.cpp:470
-msgid "Gaussiano - sigma"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:471
-msgid "Sigmoide - alpha"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:472
-msgid "Sigmoide - beta"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:473
-msgid "SetPropagationScaling"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:474
-msgid "SetCurvatureScaling"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:475
-msgid "SetMaximumRMSError"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:476
-msgid "SetNumberOfIterations"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:477
-msgid "Stopping time"
-msgstr ""
-
-#: ../../../../../src/nkVolViewer.cpp:484
-msgid "Nukak3D: levelsets"
-msgstr "Nukak3D: levelsets"
-
-#: ../../../../../src/nkVolViewer.cpp:784
+#: ../../../../../src/nkVolViewer.cpp:551
 msgid "Variance"
 msgstr "Varianza"
 
-#: ../../../../../src/nkVolViewer.cpp:785
+#: ../../../../../src/nkVolViewer.cpp:552
 msgid "Kernel radius"
 msgstr "Radio del nucleo"
 
-#: ../../../../../src/nkVolViewer.cpp:791
+#: ../../../../../src/nkVolViewer.cpp:558
 msgid "Nukak3D: Gauusian filter"
 msgstr "Nukak3D: Gaussian filter"
 
-#: ../../../../../src/nkVolViewer.cpp:864
+#: ../../../../../src/nkVolViewer.cpp:631
 msgid "Kernel radius in X"
 msgstr "Radio del nucleo en X"
 
-#: ../../../../../src/nkVolViewer.cpp:865
+#: ../../../../../src/nkVolViewer.cpp:632
 msgid "Kernel radius in Y"
 msgstr "Radio del nucleo en Y"
 
-#: ../../../../../src/nkVolViewer.cpp:866
+#: ../../../../../src/nkVolViewer.cpp:633
 msgid "Kernel radius in Z"
 msgstr "Radio del nucleo en y"
 
-#: ../../../../../src/nkVolViewer.cpp:872
+#: ../../../../../src/nkVolViewer.cpp:639
 msgid "Nukak3D: Median Filter"
 msgstr "Nukak3D: Filtro Mediana"
 
@@ -812,6 +831,8 @@ msgstr ""
 msgid "Ok"
 msgstr "Aceptar"
 
+#~ msgid "Seeds radius"
+#~ msgstr "Radio de la semilla"
 #~ msgid "."
 #~ msgstr "."
 
