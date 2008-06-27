@@ -29,6 +29,8 @@ ${CMAKE_SOURCE_DIR}/include/nkVolViewer.h
 nkIODialog.cpp
 ${CMAKE_SOURCE_DIR}/include/nkIODialog.h
 ${CMAKE_SOURCE_DIR}/include/nkAcercaDe.h
+nkLevelSets.cpp
+${CMAKE_SOURCE_DIR}/include/nkLevelSets.h
 )
 
 IF( WIN32 )

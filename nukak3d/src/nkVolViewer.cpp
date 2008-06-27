@@ -1,4 +1,5 @@
 #include "nkVolViewer.h"
+#include "nkLevelSets.h"
 #include <vtkInteractorStyleSwitch.h>
 #include <vtkRenderWindowInteractor.h>
 
@@ -108,6 +109,7 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 		CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.Update();
+
 }
 
 //*****************************************************************************************
@@ -391,241 +393,6 @@ double nkVolViewer::obtenerValorActualDeContorno(void){
 	return prv_vistaAxial->GetCurrentPointDoubleValue();
 }
 
-void nkVolViewer::lsLevelsetsCompleto( wxAuiNotebook * p_libro ){
-	
-	// Pxel type
-	typedef   float           InternalPixelType;
-	const     unsigned int    Dimension = 3;
-	
-	// input image type
-	typedef itk::Image< InternalPixelType, Dimension >  InternalImageType;
-
-	// output image type
-	typedef itk::Image< nkVolViewer::PixelType, Dimension > OutputImageType;
-
-	// casting de unsigned short a float
-	typedef itk::CastImageFilter<nkVolViewer::ImageType,InternalImageType>
-				CastFilterInType;
-	CastFilterInType::Pointer castIn = CastFilterInType::New();
-
-
-	// casting de float a unsigned short
-	typedef itk::RescaleIntensityImageFilter<InternalImageType,nkVolViewer::ImageType>
-				CastFilterOutType;
-	CastFilterOutType::Pointer castOut = CastFilterOutType::New();
-	CastFilterOutType::Pointer castOut2 = CastFilterOutType::New();
-
-	// gradient filter
-	typedef   itk::GradientMagnitudeRecursiveGaussianImageFilter< 
-								InternalImageType, 
-								InternalImageType >  GradientFilterType;
-	GradientFilterType::Pointer  gradientMagnitude = GradientFilterType::New();
-
-	// sigmoide filter for velocity function
-	typedef   itk::SigmoidImageFilter<                               
-								InternalImageType, 
-								InternalImageType >  SigmoidFilterType;	
-	SigmoidFilterType::Pointer sigmoid = SigmoidFilterType::New();
-
-	// funtion fastmarching for generate levelset nitial
-	typedef  itk::FastMarchingImageFilter< InternalImageType, InternalImageType >
-								FastMarchingFilterType;
-	FastMarchingFilterType::Pointer  fastMarching = FastMarchingFilterType::New();
-
-	// function for detection form contour of course to velocity function by sigmoid filter
-	typedef  itk::ShapeDetectionLevelSetImageFilter< InternalImageType, 
-								InternalImageType, InternalPixelType >    ShapeDetectionFilterType;
-	ShapeDetectionFilterType::Pointer shapeDetection = ShapeDetectionFilterType::New(); 
-	
-	// binary flter for output
-	typedef itk::BinaryThresholdImageFilter< InternalImageType, InternalImageType > 
-								ThresholdingFilterType;
-	ThresholdingFilterType::Pointer thresholder = ThresholdingFilterType::New();	
-
-
-	// Save image segmetating
-	typedef  itk::ImageFileWriter<  nkVolViewer::ImageType  > WriterType;		
-	WriterType::Pointer writer = WriterType::New();
-	WriterType::Pointer writer2 = WriterType::New();
-	writer->SetFileName( "segmented.vtk" );
-	writer->SetInput( castOut->GetOutput() );
-
-
-	// pipeline //
-	castIn->SetInput( prv_imagen );
-	gradientMagnitude->SetInput( castIn->GetOutput() );
-	sigmoid->SetInput( gradientMagnitude->GetOutput() );	
-	shapeDetection->SetInput( fastMarching->GetOutput() );
-	shapeDetection->SetFeatureImage( sigmoid->GetOutput() );
-	thresholder->SetInput( shapeDetection->GetOutput() );
-	castOut->SetInput( thresholder->GetOutput() );
-	writer->SetInput( castOut->GetOutput() );
-
-
-	// Capture params
-	wxString etiquetas[100];
-	const int num_datos=9;
-
-	etiquetas[0] = _("Seeds radius"); 
-	etiquetas[1] = _("Gaussiano - sigma");
-	etiquetas[2] = _("Sigmoide - alpha");
-	etiquetas[3] = _("Sigmoide - beta");
-	etiquetas[4] = _("SetPropagationScaling");
-	etiquetas[5] = _("SetCurvatureScaling"); 
-	etiquetas[6] = _("SetMaximumRMSError");
-	etiquetas[7] = _("SetNumberOfIterations"); 
-	etiquetas[8] = _("Stopping time"); 
-	
-
-	nkIODialog * miDlg = new nkIODialog(	this, 
-												etiquetas,
-												num_datos,
-												-1,
-												_("Nukak3D: levelsets"),
-												wxDefaultPosition,
-												wxSize(330,(num_datos+4)*20+40));
-	
-
-	miDlg->cambiarValor(wxT("5.0"),0);
-	miDlg->cambiarValor(wxT("1.2"),1);
-	miDlg->cambiarValor(wxT("-1.0"),2);
-	miDlg->cambiarValor(wxT("50.0"),3);
-	miDlg->cambiarValor(wxT("1.00"),4);
-	miDlg->cambiarValor(wxT("0.5"),5);
-	miDlg->cambiarValor(wxT("0.02"),6);
-	miDlg->cambiarValor(wxT("200"),7);
-	miDlg->cambiarValor(wxT("10.0"),8);
-	
-					
-	miDlg->ShowModal();
-	
-	double datos[num_datos];
-
-	if(miDlg->GetReturnCode() == wxID_OK){
-		
-		wxBeginBusyCursor();
-		nkObj3DViewer * miobj = new nkObj3DViewer(p_libro);
-		
-		for(int i=0;i<num_datos;i++)
-			(miDlg->obtenerValor(i)).ToDouble(&datos[i]);
-
-		castOut->SetOutputMinimum ( 0 );
-		castOut->SetOutputMaximum ( 255 );
-
-		gradientMagnitude->SetSigma( datos[1] );
-
-		sigmoid->SetOutputMinimum(  0.0  );
-		sigmoid->SetOutputMaximum(  1.0  );
-		sigmoid->SetAlpha( datos[2] );
-		sigmoid->SetBeta(  datos[3] );	
-
-		thresholder->SetLowerThreshold( itk::NumericTraits<InternalPixelType>::NonpositiveMin() );
-		thresholder->SetUpperThreshold( itk::NumericTraits<InternalPixelType>::Zero );
-
-		thresholder->SetOutsideValue(  0  );
-		thresholder->SetInsideValue(  1 );
-
-		typedef FastMarchingFilterType::NodeContainer           NodeContainer;
-		typedef FastMarchingFilterType::NodeType                NodeType;
-		NodeContainer::Pointer seeds = NodeContainer::New();
-
-		int p_point[3];
-
-		prv_vista3D->GetCurrentVoxelCoordinates (p_point);
-
-		char temp[100]="";
-		sprintf(temp,"\nCoordinate seeds = (%d,%d,%d)\n",p_point[0],p_point[1],p_point[2]);
-		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
-		sprintf(temp,"Seeds Radius = %f\nSigma gaussian = %f\nAlfa = %f\nBeta = %f\n",datos[0],datos[1],datos[2],datos[3]);
-		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
-		sprintf(temp,"Propagation = %f\nCurvature = %f\nError = %f\nIteraciones = %f\n",datos[4],datos[5],datos[6],datos[7]);
-		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);
-
-		InternalImageType::IndexType  seedPosition;
-
-		seedPosition[0] = p_point[0];
-		seedPosition[1] = p_point[1];	
-		seedPosition[2] = p_point[2];
-
-		NodeType node;
-		double radius = datos[0];
-		const double seedValue = - radius;
-
-		node.SetValue( seedValue );
-		node.SetIndex( seedPosition );
-		
-		seeds->Initialize();
-		seeds->InsertElement( 0, node );
-
-		fastMarching->SetTrialPoints(  seeds  );
-
-		// Define contant velocity for filter fastmarching
-		fastMarching->SetSpeedConstant( 1.0 );
-		//fastMarching->SetStoppingValue( datos[8] );
-		
-
-		// Set size image
-		fastMarching->SetOutputSize( 
-			   prv_imagen->GetBufferedRegion().GetSize() );
-		fastMarching->SetOutputSpacing(
-			   prv_imagen->GetSpacing() );
-
-		shapeDetection->SetPropagationScaling(  datos[4] );
-		shapeDetection->SetCurvatureScaling( datos[5] ); 
-		shapeDetection->SetMaximumRMSError( datos[6] );
-		shapeDetection->SetNumberOfIterations( (int)datos[7] ); 
-
-		// Save image fast marching
-		// Save image fast marching
-		//castOut2->SetOutputMinimum ( 0 );
-		//castOut2->SetOutputMaximum ( 255 );
-		//castOut2->SetInput( fastMarching->GetOutput() );
-		//writer2->SetFileName( "segmented2.vtk" );
-		//writer2->SetInput( castOut2->GetOutput() );
-
-		// Save velocity function
-		castOut2->SetOutputMinimum ( 0 );
-		castOut2->SetOutputMaximum ( 255 );
-		castOut2->SetInput( sigmoid->GetOutput() );
-		writer2->SetFileName( "segmented2.vtk" );
-		writer2->SetInput( castOut2->GetOutput() );
-
-
-		try
-		{	
-			writer2->Update();
-			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("Fastmarching ok\n");
-			writer->Update();
-			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("Shape detection ok\n");
-			
-			nkVolViewer * mivol = new nkVolViewer(p_libro);
-			mivol->Configurar();
-			mivol->configurarITKimage(_T("Velocity"),castOut2->GetOutput());
-			p_libro->AddPage(mivol, _T("Velocity"),true );
-
-			nkVolViewer * mivol2 = new nkVolViewer(p_libro);
-			mivol2->Configurar();
-			mivol2->configurarITKimage(_T("Segmentation"),castOut->GetOutput());
-			p_libro->AddPage(mivol2, _T("Segmentation"),true );
-
-		}
-		catch( itk::ExceptionObject & excep )
-		{
-			std::cerr << "Exception caught !" << std::endl;
-			std::cerr << excep << std::endl;
-			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("Exception caught !\n");
-			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(excep.GetDescription());
-		}		
-
-		wxEndBusyCursor();
-
-	}
-	delete miDlg;
-
-
-	
-}
-
 //*****************************************************************************************
 //		Area of axial image
 //*****************************************************************************************
@@ -811,11 +578,11 @@ void nkVolViewer::FilVolGaussian( wxAuiNotebook * p_libro )
 
 		typedef itk::CastImageFilter<nkVolViewer::ImageType,InternalImageType>
 					CastFilterInType;
-		CastFilterInType::Pointer castIn = CastFilterInType::New();
+		CastFilterInType::Pointer mi_castUnShortToFloat = CastFilterInType::New();
 
 		typedef itk::CastImageFilter<InternalImageType, nkVolViewer::ImageType>
 					CastFilterOutType;
-		CastFilterOutType::Pointer castOut = CastFilterOutType::New();
+		CastFilterOutType::Pointer prv_castOutLevetSet = CastFilterOutType::New();
 
 
 		typedef itk::DiscreteGaussianImageFilter< 
@@ -823,20 +590,20 @@ void nkVolViewer::FilVolGaussian( wxAuiNotebook * p_libro )
 					InternalImageType > FilterType;
 		FilterType::Pointer filter = FilterType::New();
 	
-		castIn->SetInput(prv_imagen);
+		mi_castUnShortToFloat->SetInput(prv_imagen);
 		filter->SetVariance( datos[0] );
 		filter->SetFilterDimensionality(3);
 		filter->SetMaximumKernelWidth((int)datos[1]);
-		filter->SetInput(castIn->GetOutput());
-		castOut->SetInput ( filter->GetOutput() );
+		filter->SetInput(mi_castUnShortToFloat->GetOutput());
+		prv_castOutLevetSet->SetInput ( filter->GetOutput() );
 
 		try
 		{					
-			castOut->Update();
+			prv_castOutLevetSet->Update();
 			
 			nkVolViewer * mivol = new nkVolViewer(p_libro);
 			mivol->Configurar();
-			mivol->configurarITKimage(_T("Gaussian filter"),castOut->GetOutput());
+			mivol->configurarITKimage(_T("Gaussian filter"),prv_castOutLevetSet->GetOutput());
 			p_libro->AddPage(mivol, _T("Gaussian filter"),true );
 
 		}
@@ -965,4 +732,15 @@ wxString nkVolViewer::VideoCard( )
 	const char* l_ren  = l_ren = prv_wxVtkVista3D->GetRenderWindow()->ReportCapabilities(); //! Capturing Render capabilities from RenderWindow
 	wxString l_text(l_ren,wxConvUTF8);
 	return l_text;	
+}
+
+void nkVolViewer::NuevoLevelSets(wxAuiNotebook * p_libro){
+	nkLevelSets * miLS = new nkLevelSets(this, p_libro);
+	miLS->SetInput(prv_imagen);
+	miLS->Configurar();
+	miLS->CrearAsistente();
+	miLS->WriteGradientImage();
+	if(miLS->ConfigurarLevelSet()){
+		miLS->UpdateLevelSets();
+	}
 }

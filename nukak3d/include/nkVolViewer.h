@@ -19,6 +19,8 @@
     #include "wx/wx.h"
 #endif
 #include "wx/intl.h"
+#include <wx/progdlg.h>
+
 
 /** vtk/Common*/
 #include <vtkLookupTable.h>
@@ -55,6 +57,7 @@
 #include <itkShapeDetectionLevelSetImageFilter.h>
 #include <itkBinaryThresholdImageFilter.h>
 #include <itkImageFileWriter.h>
+#include <itkCommand.h>
 
 /** INRIA3D*/
 #include "vtkObject.h"
@@ -64,6 +67,8 @@
 #include "vtkViewImage3D.h"
 #include <wxVtkDICOMImporter.h>
 #include "wxVTKRenderWindowInteractor.h"
+#include "vtkIsosurfaceManager.h"
+#include "vtkImageToIsosurface.h"
 
 /** wx*/
 #include "wx/aui/aui.h"
@@ -71,6 +76,9 @@
 /** nk*/
 #include "nkNukak3D.h"
 #include "nkIODialog.h"
+
+/** STL */
+#include <vector>
 
 #define mensajes 1
 
@@ -279,6 +287,22 @@ class nkVolViewer: public wxPanel{
 	*/
 	wxString VideoCard(void);	
 
+	vtkViewImage3D* getVista3D(){
+		return prv_vista3D;
+	}
+
+	vtkViewImage2DWithTracer* getVistaAxial(){
+		return prv_vistaAxial;
+	}
+	vtkViewImage2DWithTracer* getVistaCoronal(){
+		return prv_vistaCoronal;
+	}
+	vtkViewImage2DWithTracer* getVistaSagital(){
+		return prv_vistaSagital;
+	}
+
+	void NuevoLevelSets(wxAuiNotebook * p_libro);
+
 private:
 	wxString					prv_nombreArchivo;	//! Name of file.
 	wxAuiManager				prv_auiManager;		//! Administrator of Aui.
@@ -298,7 +322,6 @@ private:
 	typedef unsigned short PixelType;	//! Pixel data type.
 	typedef itk::Image<unsigned short,3> ImageType;	//! Image data type.
 	ImageType::Pointer  prv_imagen;		//! Pointer to image.
-	
 };
 
 #endif //_NKVOLVIEWER_H_

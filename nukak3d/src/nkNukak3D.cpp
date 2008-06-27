@@ -784,7 +784,8 @@ void nkNukak3D::eventolsLevelsetsCompleto(wxCommandEvent& WXUNUSED(event)){
 		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->lsLevelsetsCompleto( nkNukak3D::getNkNotebook() );			
+			//current->lsLevelsetsCompleto( nkNukak3D::getNkNotebook() );			
+			current->NuevoLevelSets(nkNukak3D::getNkNotebook() );			
 		}
 	}
 }
