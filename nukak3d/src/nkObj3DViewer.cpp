@@ -79,6 +79,7 @@ nkObj3DViewer::~nkObj3DViewer(){
 void nkObj3DViewer::Configurar(void){
 	prv_vista3D->SetBackgroundColor (0.0,0.0,0.0);
 	prv_vista3D->SetRenderingModeToPlanar();
+	this->BoundingBox();
 }
 //*****************************************************************************************
 //		OPEN FILE
@@ -126,7 +127,7 @@ void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
 	prv_render3D->Render();
 	prv_wxVtkVista3D->Render();
 	prv_wxVtkVista3D->Refresh();
-
+	
 }
 
 //*****************************************************************************************

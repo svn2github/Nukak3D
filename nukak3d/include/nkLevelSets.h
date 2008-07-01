@@ -24,8 +24,7 @@
 #include "nkIODialog.h"
 #include "nkNukak3D.h"
 #include "nkVolViewer.h"
-#include "wiztest.xpm"
-#include "wiztest2.xpm"
+#include "logoLS.xpm"
 
 /** STL */
 #include <vector>

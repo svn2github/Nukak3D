@@ -114,7 +114,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	
 	mi_nkMenuVol3DMode->insertarTool(
 		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_ESCALAR,
-		_("Escalar: Ortogonal planes"), 
+		_("Scalar: Ortogonal planes"), 
 			wxNullBitmap, 
 			_("View 3 ortogonal planes over volume 3D.")));
 			
@@ -654,32 +654,38 @@ void nkNukak3D::eventoArbol(wxTreeEvent& event){
 #else //MAC O UNIX
 	wxString mi_item = mi_nkHerramientas->GetItemText(event.GetItem());
 #endif //__WIN32__
-	if (mi_item == _("Volume")) eventoAbrirVolumen(mievento);
+	if (mi_item == _("Activate/deactivate collision detection")) eventoCameraPos(mievento);
+	else if (mi_item == _("Area of Axial Image")) eventoArea(mievento);
+	else if (mi_item == _("Decimate Mesh 3D")) eventoFilPolyDecimate(mievento);
+	else if (mi_item == _("Deform")) eventoFilPolyDeform(mievento);
 	else if (mi_item == _("Dicom Directory")) eventoAbrirVolumenDicom(mievento);
+	else if (mi_item == _("Enable Stereoscopy Vision")) eventoStActivo(mievento);
+	else if (mi_item == _("Endoscopic camera")) eventoNavEndoscope(mievento);
+	else if (mi_item == _("Flight")) eventoNavFlight(mievento);
+	else if (mi_item == _("Gaussian Filter")) eventoFilVolGaussian(mievento);
+	else if (mi_item == _("Joystick")) eventoNavJoystick(mievento);
+	else if (mi_item == _("Less separation -")) eventoStDisminuir(mievento);
+	else if (mi_item == _("Median Filter")) eventoFilVolMedian(mievento);
+	else if (mi_item == _("More separation +")) eventoStAumentar(mievento);
+	else if (mi_item == _("Normals")) eventoFilPolyNormals(mievento);
 	else if (mi_item == _("Polygon Mesh")) eventoAbrirMalla3D(mievento);
-	else if (mi_item == _("3D: Marching Cubes")) eventoMarchingCubes(mievento);
-	else if (mi_item == _("Escalar: Ortogonal planes")) eventoVolViewerRenderingEscalar(mievento);
-	//else if (mi_item == _("3D: Ray Cast")) eventoVolViewerRenderingMRC(mievento);
-	else if (mi_item == _("3D: Texture Mapping")) eventoVolViewerRenderingTextura(mievento);
 	else if (mi_item == _("Reset Lookup Table")) eventoReiniciarPaleta(mievento);
 	else if (mi_item == _("Segmentation with Levelsets")) eventolsLevelsetsCompleto(mievento);
-	else if (mi_item == _("Area of Axial Image")) eventoArea(mievento);
-	else if (mi_item == _("Gaussian Filter")) eventoFilVolGaussian(mievento);
-	else if (mi_item == _("Median Filter")) eventoFilVolMedian(mievento);
-	else if (mi_item == _("Triangulated")) eventoFilPolyTriangle(mievento);
-	else if (mi_item == _("Decimate Mesh 3D")) eventoFilPolyDecimate(mievento);
-	else if (mi_item == _("Smooth")) eventoFilPolySmooth(mievento);
-	else if (mi_item == _("Normals")) eventoFilPolyNormals(mievento);
-	else if (mi_item == _("Deform")) eventoFilPolyDeform(mievento);
 	else if (mi_item == _("Reset Camera")) eventoNavResetCamara(mievento);
-	else if (mi_item == _("Trackball")) eventoNavTrackball(mievento);
-	else if (mi_item == _("Joystick")) eventoNavJoystick(mievento);
-	else if (mi_item == _("Flight")) eventoNavFlight(mievento);
-	else if (mi_item == _("Unicam")) eventoNavUnicam(mievento);
-	else if (mi_item == _("Enable Stereoscopy Vision")) eventoStActivo(mievento);
+	else if (mi_item == _("Scalar: Ortogonal planes")) eventoVolViewerRenderingEscalar(mievento);
+	else if (mi_item == _("Smooth")) eventoFilPolySmooth(mievento);
+	else if (mi_item == _("Show/hide bounding box")) eventoBoundingBox(mievento);
+	else if (mi_item == _("Show/hide box widget")) eventoBoxWidget(mievento);
 	else if (mi_item == _("Stereo passive")) eventoStPasivo(mievento);
-	else if (mi_item == _("More separation +")) eventoStAumentar(mievento);
-	else if (mi_item == _("Less separation -")) eventoStDisminuir(mievento);
+	else if (mi_item == _("Trackball")) eventoNavTrackball(mievento);
+	else if (mi_item == _("Triangulated")) eventoFilPolyTriangle(mievento);
+	else if (mi_item == _("Unicam")) eventoNavUnicam(mievento);
+	else if (mi_item == _("Volume")) eventoAbrirVolumen(mievento);
+	else if (mi_item == _("3D: Marching Cubes")) eventoMarchingCubes(mievento);
+	else if (mi_item == _("3D: Raycasting MIP")) eventoVolViewerRenderingMRCmip(mievento);
+	else if (mi_item == _("3D: Raycasting composite")) eventoVolViewerRenderingMRCcomp(mievento);
+	else if (mi_item == _("3D: Raycasting isosurface")) eventoVolViewerRenderingMRCiso(mievento);
+	else if (mi_item == _("3D: Texture Mapping")) eventoVolViewerRenderingTextura(mievento);
 
 	std::vector<std::string> lutNames = vtkLookupTableManager::GetAvailableLookupTables();
 	int val = -1;

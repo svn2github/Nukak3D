@@ -204,7 +204,7 @@ void nkLevelSets::CrearAsistente(){
 	prv_asistente = new wxWizard(prv_libro, 
 					-1, 
 					_("Nukak3D: Level Sets Segmentation Configuration Wizard."), 
-					wxBitmap(wiztest2_xpm), wxDefaultPosition, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
+					wxBitmap(logoLS_xpm), wxDefaultPosition, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
 	prv_asistente->SetPageSize(wxSize(780,600));
 	wxWizardPageSimple * mi_1Page = new wxWizardPageSimple(prv_asistente);
 	wxString mi_textoPage1 =	wxString(_("Level Sets Segmentation\n\n"))<<
