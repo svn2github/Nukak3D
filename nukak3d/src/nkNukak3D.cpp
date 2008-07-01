@@ -117,18 +117,42 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 		_("Escalar: Ortogonal planes"), 
 			wxNullBitmap, 
 			_("View 3 ortogonal planes over volume 3D.")));
-	
-	mi_nkMenuVol3DMode->insertarTool(
-		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC,
-			_("3D: Ray Cast"), 
-			wxNullBitmap, 
-			_("Rendering volume with Ray Cast method.")));
-	
+			
 	mi_nkMenuVol3DMode->insertarTool(
 		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_TEXTURA,
 			_("3D: Texture Mapping"), 
 			wxNullBitmap, 
 			_("Rendering volume with Texture Mapping method.")));
+	
+	mi_nkMenuVol3DMode->insertarTool(
+		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_MIP,
+			_("3D: Raycasting MIP"), 
+			wxNullBitmap, 
+			_("RayCasting - Maximum Intensity Projection")));
+
+	mi_nkMenuVol3DMode->insertarTool(
+		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_COMP,
+			_("3D: Raycasting composite"), 
+			wxNullBitmap, 
+			_("RayCasting - Composite Look Up Table")));
+
+	mi_nkMenuVol3DMode->insertarTool(
+		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_ISO,
+			_("3D: Raycasting isosurface"), 
+			wxNullBitmap, 
+			_("RayCasting - Isosurface")));
+			
+	mi_nkMenuVol3DMode->insertarTool(
+		new nkTool(nkNukak3D::ID_BOUNDINGBOX,
+			_("Show/hide bounding box"), 
+			wxNullBitmap, 
+			_("Show/hide bounding box")));
+
+	mi_nkMenuVol3DMode->insertarTool(
+		new nkTool(nkNukak3D::ID_BOXWIDGET,
+			_("Show/hide box widget"), 
+			wxNullBitmap, 
+			_("Show/hide box widget")));
 
 	// Menu rendering mode.
 	nkMenuTool * mi_nkMenuIsoSuperficie = mi_nkImageViewer->insertarMenu(-1, _("IsoSurface"));
@@ -168,6 +192,12 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 
 	// Menu Mesh 3D.
 	nkMenuTool * mi_nkMenuFiltrosPoly = mi_nkImageViewer->insertarMenu(-1, _("Modifiers For Mesh 3D"));
+	
+	mi_nkMenuFiltrosPoly->insertarTool(
+		new nkTool(nkNukak3D::ID_BOUNDINGBOX,
+			_("Show/hide bounding box"), 
+			wxNullBitmap, 
+			_("Show/hide bounding box")));
 	
 	mi_nkMenuFiltrosPoly->insertarTool(
 		new nkTool(nkNukak3D::ID_FILPOLYTRIANGLE,
@@ -260,6 +290,20 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 			_("Less separation -"), 
 			wxNullBitmap, 
 			_("Less separation between images in Stereoscopy vision")));
+			
+	//Menu grupo "configuración" -> Colisiones -> lateral
+	nkMenuTool * mi_nkMenuColisiones = mi_nkImageViewer->insertarMenu(-1, _("Collision detection"));
+	
+	mi_nkMenuColisiones->insertarTool(
+		new nkTool(nkNukak3D::ID_CAMERAPOS,
+			_("Activate/deactivate collision detection"), 
+			wxNullBitmap, 
+			_("Activate/deactivate collision detection")));
+	mi_nkMenuColisiones->insertarTool(
+		new nkTool(nkNukak3D::ID_NAVENDOSCOPE,
+			_("Endoscopic camera"), 
+			wxNullBitmap, 
+			_("Endoscopic camera")));
 	
 	// Insert nkToolBar Tools
 	this->insertarToolBar(mi_nkHerramientas, _("Tools"), _("Tools"));
@@ -288,11 +332,11 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 nkNukak3D::~nkNukak3D()
 {
 	prv_auiManager.UnInit();
-	if(m_stick)
+	/*if(m_stick)
 	{
 		m_stick->ReleaseCapture();
 		delete m_stick;
-	}
+	}*/
 }
 
 //*****************************************************************************************
@@ -306,12 +350,16 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_MENU(nkNukak3D::ID_ABRIR_ARCHIVO, nkNukak3D::eventoAbrirVolumen)
 	EVT_MENU(nkNukak3D::ID_ABRIR_ARCHIVO_DICOM, nkNukak3D::eventoAbrirVolumenDicom)
 	EVT_MENU(nkNukak3D::ID_ABRIR_ARCHIVO_MALLA3D, nkNukak3D::eventoAbrirMalla3D)
+	EVT_MENU(nkNukak3D::ID_BOUNDINGBOX, nkNukak3D::eventoBoundingBox)
+	EVT_MENU(nkNukak3D::ID_BOXWIDGET, nkNukak3D::eventoBoxWidget)
 	EVT_MENU(nkNukak3D::ID_GUARDARVOL, nkNukak3D::eventoGuardarVol)
 	EVT_MENU(nkNukak3D::ID_GUARDARMALLA3D, nkNukak3D::eventoGuardarMalla3D)
 	EVT_MENU(nkNukak3D::ID_MARCHING_CUBES, nkNukak3D::eventoMarchingCubes)
 	EVT_MENU(nkNukak3D::ID_REINICIAR_PALETA, nkNukak3D::eventoReiniciarPaleta)
 	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_ESCALAR, nkNukak3D::eventoVolViewerRenderingEscalar)
-	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC, nkNukak3D::eventoVolViewerRenderingMRC)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_MIP, nkNukak3D::eventoVolViewerRenderingMRCmip)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_COMP, nkNukak3D::eventoVolViewerRenderingMRCcomp)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_ISO, nkNukak3D::eventoVolViewerRenderingMRCiso)
 	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_TEXTURA, nkNukak3D::eventoVolViewerRenderingTextura)
 	EVT_MENU(nkNukak3D::ID_LSLEVELSETSCOMPLETO, nkNukak3D::eventolsLevelsetsCompleto)
 	EVT_MENU(nkNukak3D::ID_AREA, nkNukak3D::eventoArea)
@@ -341,6 +389,8 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_MENU(nkNukak3D::ID_PARIMAGE, nkNukak3D::eventoParImage)
 	EVT_MENU(nkNukak3D::ID_PARPOLYGON, nkNukak3D::eventoParPolygon)
 	EVT_MENU(nkNukak3D::ID_PARVIDEO,  nkNukak3D::eventoParVideo)
+	EVT_MENU(nkNukak3D::ID_CAMERAPOS, nkNukak3D::eventoCameraPos)
+	EVT_MENU(nkNukak3D::ID_NAVENDOSCOPE, nkNukak3D::eventoNavEndoscope)
 	EVT_MENU(wxID_ANY, nkNukak3D::eventoPaletaColor)
 END_EVENT_TABLE()
 
@@ -609,7 +659,7 @@ void nkNukak3D::eventoArbol(wxTreeEvent& event){
 	else if (mi_item == _("Polygon Mesh")) eventoAbrirMalla3D(mievento);
 	else if (mi_item == _("3D: Marching Cubes")) eventoMarchingCubes(mievento);
 	else if (mi_item == _("Escalar: Ortogonal planes")) eventoVolViewerRenderingEscalar(mievento);
-	else if (mi_item == _("3D: Ray Cast")) eventoVolViewerRenderingMRC(mievento);
+	//else if (mi_item == _("3D: Ray Cast")) eventoVolViewerRenderingMRC(mievento);
 	else if (mi_item == _("3D: Texture Mapping")) eventoVolViewerRenderingTextura(mievento);
 	else if (mi_item == _("Reset Lookup Table")) eventoReiniciarPaleta(mievento);
 	else if (mi_item == _("Segmentation with Levelsets")) eventolsLevelsetsCompleto(mievento);
@@ -641,6 +691,38 @@ void nkNukak3D::eventoArbol(wxTreeEvent& event){
 		eventoPaletaColor(event);
 	}
 }
+
+//*****************************************************************************************
+//		SHOW/HIDE BOUNDING BOX
+//*****************************************************************************************
+void nkNukak3D::eventoBoundingBox(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_libro->GetPageCount() > 0){
+		int mi_pagina = prv_libro->GetSelection();
+		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+		if (pagina->GetName() == wxT("nkVolViewer")){
+			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->BoundingBoxOnOff();
+		}
+		if (pagina->GetName() == wxT("nkObj3DViewer")){
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->BoundingBoxOnOff();
+		}
+	}
+}
+//*****************************************************************************************
+//		SHOW/HIDE BOX WIDGET
+//*****************************************************************************************
+void nkNukak3D::eventoBoxWidget(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_libro->GetPageCount() > 0){
+		int mi_pagina = prv_libro->GetSelection();
+		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+		if (pagina->GetName() == wxT("nkVolViewer")){
+			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->BoxWidgetOnOff();
+		}
+	}
+}
+
 //*****************************************************************************************
 //		MENU -> LOOKUP TABLE -> RESET
 //*****************************************************************************************
@@ -679,7 +761,7 @@ void nkNukak3D::eventoPaletaColor(wxCommandEvent& event){
 	}
 }
 //*****************************************************************************************
-//		MENU -> VIEW VOLUME 3D -> ESCALAR (ORTOGONAL PLANES)
+//		MENU -> VISUALIZACION DE VOLUMENES 3D -> ESCALAR (PLANOS ORTOGONALES)
 //*****************************************************************************************
 void nkNukak3D::eventoVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -694,9 +776,9 @@ void nkNukak3D::eventoVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event))
 	}
 }
 //*****************************************************************************************
-//		MENU -> VIEW VOLUME 3D -> RAY CAST
+//		MENU -> VISUALIZACION DE VOLUMENES 3D -> RAY CASTING MIP
 //*****************************************************************************************
-void nkNukak3D::eventoVolViewerRenderingMRC(wxCommandEvent& WXUNUSED(event)){
+void nkNukak3D::eventoVolViewerRenderingMRCmip(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
 		int mi_pagina = prv_libro->GetSelection();
 		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
@@ -709,7 +791,37 @@ void nkNukak3D::eventoVolViewerRenderingMRC(wxCommandEvent& WXUNUSED(event)){
 	}
 }
 //*****************************************************************************************
-//		MENU -> VIEW VOLUME 3D -> TEXTURE MAPPING
+//		MENU -> VISUALIZACION DE VOLUMENES 3D -> RAY CASTING COMPOSITE
+//*****************************************************************************************
+void nkNukak3D::eventoVolViewerRenderingMRCcomp(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_libro->GetPageCount() > 0){
+		int mi_pagina = prv_libro->GetSelection();
+		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+		if (pagina->GetName() == wxT("nkVolViewer")){
+			wxBeginBusyCursor();
+			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->cambiarFormaDeProcesamiento(vtkViewImage3D::VOLUME_RENDERING, 3);
+			wxEndBusyCursor();
+		}
+	}
+}
+//*****************************************************************************************
+//		MENU -> VISUALIZACION DE VOLUMENES 3D -> RAY CASTING ISOSURFACE
+//*****************************************************************************************
+void nkNukak3D::eventoVolViewerRenderingMRCiso(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_libro->GetPageCount() > 0){
+		int mi_pagina = prv_libro->GetSelection();
+		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+		if (pagina->GetName() == wxT("nkVolViewer")){
+			wxBeginBusyCursor();
+			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->cambiarFormaDeProcesamiento(vtkViewImage3D::VOLUME_RENDERING, 4);
+			wxEndBusyCursor();
+		}
+	}
+}
+//*****************************************************************************************
+//		MENU -> VISUALIZACION DE VOLUMENES 3D -> TEXTURE RENDERING
 //*****************************************************************************************
 void nkNukak3D::eventoVolViewerRenderingTextura(wxCommandEvent& WXUNUSED(event)){
 	if ((int)prv_libro->GetPageCount() > 0){
@@ -1537,5 +1649,44 @@ void nkNukak3D::eventoLanguage(wxCommandEvent &WXUNUSED(event)){
 			// save the language's values to the config
 			mi_Config->Write(_T("/Tools/Language"), mi_language);
 			wxMessageDialog(this,_("Restart program to apply language configuration")).ShowModal();
+	}
+}
+
+//*****************************************************************************************
+//		Mostrar/guardar posiciones de la camara con colisiones
+//*****************************************************************************************
+void nkNukak3D::eventoCameraPos(wxCommandEvent& WXUNUSED(event))
+{
+	if ((int)prv_libro->GetPageCount() > 0){
+		int mi_pagina = prv_libro->GetSelection();
+		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+
+		if (pagina->GetName() == wxT("nkVolViewer")){
+			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->CameraPos();				
+		}
+
+	}
+
+}
+
+//*****************************************************************************************
+//		Interactor para camara endoscopica 
+//*****************************************************************************************
+void nkNukak3D::eventoNavEndoscope(wxCommandEvent& WXUNUSED(event))
+{
+
+	if ((int)prv_libro->GetPageCount() > 0){
+		int mi_pagina = prv_libro->GetSelection();
+		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+		if (pagina->GetName() == wxT("nkVolViewer")){
+			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->NavEndoscope();
+		}
+		//else  if (pagina->GetName() == wxT("nkObj3DViewer")) 
+		//{
+		//	nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+		//	current->NavEndoscope();
+		//}
 	}
 }

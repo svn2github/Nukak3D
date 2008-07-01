@@ -128,6 +128,44 @@ void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
 	prv_wxVtkVista3D->Refresh();
 
 }
+
+//*****************************************************************************************
+//		Boundig box de la imagen 3D
+//*****************************************************************************************
+void nkObj3DViewer::BoundingBox()
+{
+	vtkOutlineFilter *boundingBox = vtkOutlineFilter::New(); //! Bounding Box creation
+	boundingBox->SetInput(prv_data);
+
+	vtkPolyDataMapper *prv_bboxMapper = vtkPolyDataMapper::New(); //! Bounding Box mapper
+	prv_bboxMapper->SetInput(boundingBox->GetOutput());
+
+	prv_bboxActor = vtkActor::New(); //! Bounding Box actor
+	prv_bboxActor->SetMapper(prv_bboxMapper);
+	prv_bboxActor->GetProperty()->SetColor(1,0.1,0.1); //! Bounding Box color
+	
+	prv_render3D->AddActor(prv_bboxActor);
+	prv_bboxActor->VisibilityOff();
+
+	prv_render3D->Render();
+	prv_wxVtkVista3D->Render();
+	prv_wxVtkVista3D->Refresh();
+}
+//*****************************************************************************************
+//		Boundig box de la imagen 3D
+//*****************************************************************************************
+void nkObj3DViewer::BoundingBoxOnOff()
+{
+	if(prv_bboxActor->GetVisibility()==false )
+		prv_bboxActor->VisibilityOn();
+	else 
+		prv_bboxActor->VisibilityOff();
+
+	prv_render3D->Render();
+	prv_wxVtkVista3D->Render();
+	prv_wxVtkVista3D->Refresh();
+}
+
 //*****************************************************************************************
 //		GET POLYDATA
 //*****************************************************************************************

@@ -32,6 +32,10 @@
 #include <vtkInteractorStyleFlight.h>	
 #include <vtkInteractorStyleUnicam.h>
 #include <vtkWindowToImageFilter.h>
+#include <vtkCallbackCommand.h>
+#include <vtkOutlineFilter.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProperty.h>
 
 /** ITK*/
 #include <itkAnalyzeImageIOFactory.h>
@@ -76,6 +80,7 @@
 /** nk*/
 #include "nkNukak3D.h"
 #include "nkIODialog.h"
+#include "nkInteractorStyleEndoCamera.h"
 
 /** STL */
 #include <vector>
@@ -86,6 +91,73 @@
  * @brief Class for view volume 3D.
  */
 class nkVolViewer: public wxPanel{
+
+private:
+	/** 
+	 * @brief Clase para monitorear la posición de la cámara
+	 */
+	class nkCameraCallback : public vtkCallbackCommand
+	{
+	  private:
+		vtkCamera *prv_camera;
+		nkVolViewer *prv_window;
+		vtkViewImage3D*	prv_vista3D;
+		vtkImageData* prv_imagen;
+		wxVTKRenderWindowInteractor* prv_wxVtkVista3D;
+		unsigned short prv_umbral;
+
+		double prv_bounds[6];
+		int prv_imagesize[3];
+		int prv_colision;
+		int prv_state;
+		int prv_updatePlanes;
+		double prv_camerapos[3];
+
+	  public:
+		static nkCameraCallback* New()
+		{ return new nkCameraCallback; }
+		
+		void SetState(int &p_state)
+		{
+			prv_state = p_state;
+		}
+
+		void SetUmbral(unsigned short p_umbral)
+		{
+			prv_umbral = p_umbral;
+		}
+
+		void SetCameraWindow(vtkCamera *p_camera, double* p_camerapos)
+		{
+			prv_colision=0;
+			prv_updatePlanes=0;
+			this->prv_camera = p_camera;
+			prv_camerapos[0]=p_camerapos[0];
+			prv_camerapos[1]=p_camerapos[1];
+			prv_camerapos[2]=p_camerapos[2];
+		}
+
+		void  SetVista3D(nkVolViewer *p_window, vtkViewImage3D* p_vista3D )
+		{
+			this->prv_window=p_window;
+			this->prv_vista3D=p_vista3D;
+			this->prv_vista3D->GetVolumeActor()->GetBounds(prv_bounds);			
+		}
+		void SetImage(vtkImageData* p_imagen, wxVTKRenderWindowInteractor* p_wxVtkVista3D)
+		{
+			this->prv_imagen = p_imagen;
+			this->prv_imagen->GetDimensions(prv_imagesize);
+			this->prv_wxVtkVista3D = p_wxVtkVista3D;
+		}
+		void SetUpdatePlanes(int p_value)
+		{
+			this->prv_updatePlanes=p_value;
+		}
+
+		virtual void Execute(vtkObject *caller, unsigned long p_EventId, void *p_CallData);
+	};
+
+	friend class nkVolViewer::nkCameraCallback;
  public:
 
 	/**
@@ -171,6 +243,21 @@ class nkVolViewer: public wxPanel{
 	*/
 	void guardarArchivo(wxString nombreArchivo);
 
+	/**
+	 * @brief Bounding box de la imagen 3D
+	 */
+	void BoundingBox(void);
+
+	/**
+	 * @brief Show/hide Bounding box
+	 */
+	void BoundingBoxOnOff(void);
+
+	/**
+	 * @brief Show/hide Box Widget
+	 */
+	void BoxWidgetOnOff(void);
+	
 	/**
 	 * @brief Change Lookup Table.
 	 * @param una_paleta vtkLookupTable* Lookup Table to change.
@@ -302,6 +389,21 @@ class nkVolViewer: public wxPanel{
 	}
 
 	void NuevoLevelSets(wxAuiNotebook * p_libro);
+	
+	/**
+	 * @brief Mostrar/guardar posiciones de la camara
+	*/
+	void CameraPos();
+
+	/**
+	 * @brief Mover solo hacia atras
+	*/
+	void NavEndoscope(void);
+
+	/**
+	 * @brief Actualizar los planos ortogonales con la posicion de la camara
+	 */
+	void NavUpdatePlanes();
 
 private:
 	wxString					prv_nombreArchivo;	//! Name of file.
@@ -316,12 +418,19 @@ private:
 	wxVTKRenderWindowInteractor* prv_wxVtkVistaSagital;	//! wxVTKInteractor of view Sagital.
 	wxVTKRenderWindowInteractor* prv_wxVtkVista3D;		//! wxVTKInteractor of view 3D.
 
-	vtkRenderer* mi_render3D;		//! Render of view  3D.
+	vtkRenderer* prv_render3D;		//! Render of view  3D.
 	vtkCamera*	prv_camera;			//! Camera of view 3D.
+	nkCameraCallback*	prv_cameracallback;				//! Camera callback para detección de colisiones
+	void SetCameraEvent(vtkCallbackCommand* p_Event);	//! Camera event para monitorear la camara 
+	int prv_camtracking;								//! Camera monitoring flag
+	int prv_updatePlanes;								//! Update camera planes on collision detection
 
 	typedef unsigned short PixelType;	//! Pixel data type.
 	typedef itk::Image<unsigned short,3> ImageType;	//! Image data type.
 	ImageType::Pointer  prv_imagen;		//! Pointer to image.
+	
+	vtkActor*	prv_bboxActor;		//! Actor del bounding box de la imagen
+	double		prv_camerapos[3];	//! Posicion de la camara
 };
 
 #endif //_NKVOLVIEWER_H_

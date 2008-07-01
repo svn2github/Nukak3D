@@ -57,15 +57,15 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 	vtkRenderer* mi_renderAxial   = vtkRenderer::New();
 	vtkRenderer* mi_renderCoronal = vtkRenderer::New();
 	vtkRenderer* mi_renderSagital = vtkRenderer::New();
-	mi_render3D      = vtkRenderer::New();
+	prv_render3D      = vtkRenderer::New();
 
 	prv_camera = vtkCamera::New();
-	mi_render3D->SetActiveCamera(prv_camera);
+	prv_render3D->SetActiveCamera(prv_camera);
 
 	prv_wxVtkVistaAxial->GetRenderWindow()->AddRenderer   (mi_renderAxial);
 	prv_wxVtkVistaCoronal->GetRenderWindow()->AddRenderer (mi_renderCoronal);
 	prv_wxVtkVistaSagital->GetRenderWindow()->AddRenderer (mi_renderSagital);
-	prv_wxVtkVista3D->GetRenderWindow()->AddRenderer      (mi_render3D);
+	prv_wxVtkVista3D->GetRenderWindow()->AddRenderer      (prv_render3D);
 
 	prv_vistaAxial->SetRenderWindow   (prv_wxVtkVistaAxial->GetRenderWindow());
 	prv_vistaCoronal->SetRenderWindow (prv_wxVtkVistaCoronal->GetRenderWindow());
@@ -75,7 +75,7 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 	prv_vistaAxial->SetRenderer   (mi_renderAxial);
 	prv_vistaCoronal->SetRenderer (mi_renderCoronal);
 	prv_vistaSagital->SetRenderer (mi_renderSagital);
-	prv_vista3D->SetRenderer      (mi_render3D);
+	prv_vista3D->SetRenderer      (prv_render3D);
 	  
 	
 
@@ -109,6 +109,8 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 		CloseButton(false).MaximizeButton(true));
 
 	prv_auiManager.Update();
+	prv_camtracking=1;
+	prv_updatePlanes=0;
 
 }
 
@@ -122,7 +124,7 @@ nkVolViewer::~nkVolViewer(){
 	prv_vista3D->Detach();
 
 	if (prv_camera != 0) prv_camera->Delete();
-	if (mi_render3D != 0) mi_render3D->Delete();
+	if (prv_render3D != 0) prv_render3D->Delete();
 
 	prv_vistaAxial->Delete();
 	prv_vistaCoronal->Delete();
@@ -207,6 +209,7 @@ void nkVolViewer::configurarITKimage(
 	this->prv_vista3D->SetITKImage ( this->prv_imagen);
 	this->prv_vistaAxial->SyncResetCurrentPoint();
 	this->prv_vistaAxial->SyncResetWindowLevel();
+	this->BoundingBox();
 }
 
 void nkVolViewer::abrirArchivo(wxString nombreArchivo){
@@ -323,11 +326,19 @@ void nkVolViewer::cambiarFormaDeProcesamiento (int un_modo, int textura_o_mrc){
 		switch(textura_o_mrc ){
 			case 1:
 				prv_vista3D->SetVolumeMapperToTexture();
-			break;
+				break;
 			case 2:
 				prv_vista3D->SetVolumeMapperToRayCast();
 				prv_vista3D->SetVolumeRayCastFunctionToMIP();
-			break;
+				break;						
+			case 3:
+				prv_vista3D->SetVolumeMapperToRayCast();
+				prv_vista3D->SetVolumeRayCastFunctionToComposite();
+				break;
+			case 4:
+				prv_vista3D->SetVolumeMapperToRayCast();
+				prv_vista3D->SetVolumeRayCastFunctionToIsosurface();
+				break;
 		}
 	}
 	prv_vista3D->Render();
@@ -376,6 +387,50 @@ void nkVolViewer::guardarArchivo(wxString nombreArchivo){
 		return;
 	}  
 	image->Delete();
+}
+
+void nkVolViewer::BoundingBox()
+{
+	vtkOutlineFilter *boundingBox = vtkOutlineFilter::New(); //! Bounding Box creation
+	boundingBox->SetInput(this->getVtkImagen());
+
+	vtkPolyDataMapper *prv_bboxMapper = vtkPolyDataMapper::New(); //! Bounding Box mapper
+	prv_bboxMapper->SetInput(boundingBox->GetOutput());
+
+	prv_bboxActor = vtkActor::New(); //! Bounding Box actor
+	prv_bboxActor->SetMapper(prv_bboxMapper);
+	prv_bboxActor->GetProperty()->SetColor(1,0.1,0.1); //! Bounding Box color
+	
+	prv_render3D->AddActor(prv_bboxActor);
+	prv_bboxActor->VisibilityOff();
+
+	prv_render3D->Render();
+	prv_wxVtkVista3D->Render();
+	prv_wxVtkVista3D->Refresh();
+}
+
+void nkVolViewer::BoundingBoxOnOff()
+{
+	if(prv_bboxActor->GetVisibility()==false )
+		prv_bboxActor->VisibilityOn();
+	else 
+		prv_bboxActor->VisibilityOff();
+
+	prv_render3D->Render();
+	prv_wxVtkVista3D->Render();
+	prv_wxVtkVista3D->Refresh();
+}
+
+void nkVolViewer::BoxWidgetOnOff()
+{
+	if( prv_vista3D->GetBoxWidgetVisibility() )
+		prv_vista3D->BoxWidgetOff();
+	else
+		prv_vista3D->BoxWidgetOn();
+
+	prv_render3D->Render();
+	prv_wxVtkVista3D->Render();
+	prv_wxVtkVista3D->Refresh();
 }
 
 void nkVolViewer::reiniciarNiveleseDePaleta(void){
@@ -499,7 +554,7 @@ void nkVolViewer::StDisminuir( void )
 //*****************************************************************************************
 void nkVolViewer::NavResetCamara( void )
 {
-	mi_render3D->ResetCamera();
+	prv_render3D->ResetCamera();
 	prv_wxVtkVista3D->Render();
 	prv_wxVtkVista3D->Refresh();
 
@@ -742,5 +797,182 @@ void nkVolViewer::NuevoLevelSets(wxAuiNotebook * p_libro){
 	miLS->WriteGradientImage();
 	if(miLS->ConfigurarLevelSet()){
 		miLS->UpdateLevelSets();
+	}
+}
+
+//*****************************************************************************************
+//		PlanStackChange Execute
+//*****************************************************************************************
+void nkVolViewer::nkCameraCallback::Execute(vtkObject *p_Caller, unsigned long p_EventId, void *p_CallData)
+{
+	if(!prv_state)
+		return;
+
+	char l_temp[100]="";
+	double l_camerapos[3];
+	double l_cameradir[3];
+	int l_voxel[3];
+	unsigned short *l_pointer;
+	unsigned short l_value;
+
+	// Check camera position 
+	prv_camera->GetPosition(l_camerapos);
+	prv_camera->GetDirectionOfProjection(l_cameradir);
+
+	//Colisión
+	if( l_camerapos[0]>=prv_bounds[0] && l_camerapos[0]<prv_bounds[1] &&
+	    l_camerapos[1]>=prv_bounds[2] && l_camerapos[1]<prv_bounds[3] &&
+		l_camerapos[2]>=prv_bounds[4] && l_camerapos[2]<prv_bounds[5] )
+	{
+		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("\nInside volume\n");
+	
+		//Camera global coordinates in voxel coordinates
+		l_voxel[0]=(int)( prv_imagesize[0]*l_camerapos[0]/(prv_bounds[1]-prv_bounds[0]) );
+		l_voxel[1]=(int)( prv_imagesize[1]*l_camerapos[1]/(prv_bounds[3]-prv_bounds[2]) );
+		l_voxel[2]=(int)( prv_imagesize[2]*l_camerapos[2]/(prv_bounds[5]-prv_bounds[4]) );
+
+		//Voxel value
+		l_pointer = (unsigned short *)prv_imagen->GetScalarPointer(l_voxel[0],l_voxel[1],l_voxel[2]);
+		l_value = l_pointer[0];
+	
+		if( l_value>=prv_umbral ) // umbral value detection
+		{			
+
+			prv_colision++;
+			// Colision detection
+			sprintf(l_temp,"Collision = %d\n",prv_colision);
+			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(l_temp);
+
+			// Display camera coordinates
+			sprintf(l_temp,"Coor( %f | %f | %f )  ",l_camerapos[0],l_camerapos[1],l_camerapos[2]);
+			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(l_temp);
+			sprintf(l_temp,"Dir( %f | %f | %f )\n",l_cameradir[0],l_cameradir[1],l_cameradir[2]);
+			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(l_temp);
+
+			// Display voxel coordinates and value
+			sprintf(l_temp,"Vox( %d | %d | %d ) = %d  \n\n",l_voxel[0],l_voxel[1],l_voxel[2],l_value);
+			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(l_temp);
+			
+			// IN this point the algorithm must take and action
+			// stop forward camera movement and return to previous
+
+			if(prv_colision)
+			{
+				if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("Camera stopped");
+				prv_camera->SetPosition(prv_camerapos);
+			}
+			
+		}
+		else
+		{
+			prv_colision=0;
+			//Store last valid camera position
+			prv_camerapos[0]=l_camerapos[0];
+			prv_camerapos[1]=l_camerapos[1];
+			prv_camerapos[2]=l_camerapos[2];
+		}
+		
+		if(prv_updatePlanes)
+		{
+			//Set orthogonal planes acording camera position
+			prv_window->prv_vistaAxial->SetZSlice(l_voxel[2]);
+			prv_window->prv_vistaCoronal->SetZSlice(l_voxel[1]);
+			prv_window->prv_vistaSagital->SetZSlice(l_voxel[0]);
+		}
+
+	}
+	
+}
+
+void nkVolViewer::CameraPos() 
+{	
+	if(prv_camtracking)
+	{		
+		//Dialogo para solicitar umbral de colisión
+		wxString etiquetas[100];
+		const int num_datos=1;
+		etiquetas[0] = _("Collision threshold"); 
+
+		nkIODialog * miDlg = new nkIODialog(	this, 
+												etiquetas,
+												num_datos,
+												-1,
+												_("Nukak3D: Collision detection"),
+												wxDefaultPosition,
+												wxSize(330,(num_datos+4)*20+40));
+
+		wxString valor = wxString::Format("%f",this->obtenerValorActualDeContorno());
+		miDlg->cambiarValor(valor,0);
+
+			
+		miDlg->ShowModal(); // Mostrar dialogo
+
+		if(miDlg->GetReturnCode() == wxID_OK)
+		{
+			wxBeginBusyCursor();
+	
+			long datos; // Arreglo para almacenar los datos		
+			(miDlg->obtenerValor(0)).ToLong(&datos);
+
+			//Llamada al callback de la camara para detectar colisiones
+			prv_cameracallback = nkCameraCallback::New();
+			prv_cameracallback->SetUmbral((unsigned short)datos);
+			prv_cameracallback->SetState(prv_camtracking);
+			prv_cameracallback->SetCameraWindow(prv_camera,prv_camerapos);
+			prv_cameracallback->SetVista3D(this, prv_vista3D);
+			prv_cameracallback->SetImage(getVtkImagen(),prv_wxVtkVista3D);	
+			SetCameraEvent(prv_cameracallback);
+			prv_cameracallback->Delete();
+
+			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("Collision activated\n");
+			
+			// coordenadas del bounding box de la imagen
+			double bounds[6];
+			prv_vista3D->GetVolumeActor()->GetBounds(bounds);
+
+			char temp[100]="";
+			sprintf(temp,"Bounding Box %f  %f   %f\n",bounds[1],bounds[3],bounds[5]);
+			if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(temp);						
+
+			wxEndBusyCursor();
+		}
+		delete miDlg;
+		prv_camtracking=0; // Camera tracking flag
+
+	}
+	else{
+		if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("Collision deactivated\n");
+		prv_cameracallback->SetState(prv_camtracking);
+		prv_camtracking=1; // Camera tracking flag
+		
+	}
+
+}
+
+void nkVolViewer::SetCameraEvent(vtkCallbackCommand* p_Event)
+{
+	prv_camera->AddObserver(vtkCommand::AnyEvent ,p_Event);
+
+}
+
+void nkVolViewer::NavEndoscope( )
+{
+	nkInteractorStyleEndoCamera *l_style = nkInteractorStyleEndoCamera::New();
+	prv_wxVtkVista3D->SetInteractorStyle(l_style);
+	l_style->Delete();
+}
+
+void nkVolViewer::NavUpdatePlanes()
+{
+	if(prv_camtracking){
+		if(prv_updatePlanes)
+		{
+			prv_updatePlanes=0;
+			prv_cameracallback->SetUpdatePlanes(prv_updatePlanes);			
+		}
+		else{
+			prv_updatePlanes=1;
+			prv_cameracallback->SetUpdatePlanes(prv_updatePlanes);			
+		}
 	}
 }

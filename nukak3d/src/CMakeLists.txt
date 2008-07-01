@@ -31,6 +31,8 @@ ${CMAKE_SOURCE_DIR}/include/nkIODialog.h
 ${CMAKE_SOURCE_DIR}/include/nkAcercaDe.h
 nkLevelSets.cpp
 ${CMAKE_SOURCE_DIR}/include/nkLevelSets.h
+nkInteractorStyleEndoCamera.cpp
+${CMAKE_SOURCE_DIR}/include/nkInteractorStyleEndoCamera.h
 )
 
 IF( WIN32 )

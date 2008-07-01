@@ -76,9 +76,14 @@ public:
 		ID_ACERCA_DE_MAC,				/**< Show Dialog About Nukak3d (Only for Mac ) . */
 		ID_ARBOL,						/**< Event launch by nkToolBarMac. */
 		ID_AREA,						/**< Calc area . */
+		ID_BOUNDINGBOX,					/**< Show/hide bounding box. */
+		ID_BOXWIDGET,					/**< Show/hide box widget. */
+		ID_CAMERAPOS,					/**< Mostrar posiciones de la camara. */
+		ID_CAMPLANES,					/**< Actualizar planos con posicion de la camara. */
 		ID_CERRAR,						/**< Close application. */
 		ID_CERRAR_TODO,					/**< Close application. */
 		ID_COLDET,						/**< Collision detection. */
+		ID_ENDOCAMOBB,					/**< Habilitar el endoscopio virtual. */
 		ID_ENDOCAM,						/**< Enable Virtual endoscopy. */
 		ID_FILPOLYDECIMATE,				/**< To reduce numbers of polygon. */
 		ID_FILPOLYDEFORM,				/**< Deform Mesh. */
@@ -94,6 +99,7 @@ public:
 		ID_JOYSTICK,					/**< Input device to Joystick. */
 		ID_LSLEVELSETSCOMPLETO,			/**< Level sets. */
 		ID_MARCHING_CUBES,				/**< Surface reconstruction with Marching Cubes. */
+		ID_NAVENDOSCOPE,				/**< Estilo de navegacion de la camara como endoscopio. */
 		ID_NAVFLIGHT,					/**< Flight Camera. */
 		ID_NAVJOYSTICK,					/**< Joystick Camera. */
 		ID_NAVRESET,					/**< Reset camera position and orientation. */
@@ -115,7 +121,9 @@ public:
 		ID_STDISMINUIR,					/**< Stereoscopic vision less separation. */
 		ID_STPASIVO,					/**< Activar desactivar visualizacion estereoscopica. */
 		ID_VOLVIEWER_RENDERING_ESCALAR,	/**< Ortogonal planes view. */
-		ID_VOLVIEWER_RENDERING_MRC,		/**< Ray cast rendering. */
+		ID_VOLVIEWER_RENDERING_MRC_MIP,	/**< Ray Tracing MIP. */
+		ID_VOLVIEWER_RENDERING_MRC_COMP,/**< Ray Tracing COMPOSITE. */
+		ID_VOLVIEWER_RENDERING_MRC_ISO,	/**< Ray Tracing ISOSURFACE. */
 		ID_VOLVIEWER_RENDERING_TEXTURA,	/**< Texture mpping rendering. */
 		ID_ULTIMO = wxID_HIGHEST+3000	/**< Event's for lookup table. */
 	};
@@ -184,6 +192,16 @@ public:
 	void eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event));
 
 	/**
+	 * @brief Show/hide bounding box
+	*/
+	void eventoBoundingBox(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Show/hide box widget
+	*/
+	void eventoBoxWidget(wxCommandEvent& WXUNUSED(event));
+	
+	/**
 	 * @brief Change lookup table for rendering volume.
 	*/
 	void eventoPaletaColor(wxCommandEvent& event);
@@ -209,9 +227,25 @@ public:
 	void eventoVolViewerRenderingTextura(wxCommandEvent& WXUNUSED(event));
 
 	/**
-	 * @brief Ray cast rendering.
+	 * @brief Visualiza el volumen 3D usando el algoritmo ray casting
+	 * MIP - Maximum Intensity Projection.
+	 * La opacidad se cambia variando la ventana (width and level) de la imagen
 	*/
-	void eventoVolViewerRenderingMRC(wxCommandEvent& WXUNUSED(event));
+	void eventoVolViewerRenderingMRCmip(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Visualiza el volumen 3D usando el algoritmo ray casting.
+	 * COMPOSITE
+	 * La opacidad se cambia variando la ventana (width and level) de la imagen
+	*/
+	void eventoVolViewerRenderingMRCcomp(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Visualiza el volumen 3D usando el algoritmo ray casting.
+	 * ISOSURFACE
+	 * La opacidad se cambia variando la ventana (width and level) de la imagen
+	*/
+	void eventoVolViewerRenderingMRCiso(wxCommandEvent& WXUNUSED(event));
 
 	/**
 	 * @brief Marching cubes event.
@@ -364,25 +398,28 @@ public:
 	 * @return wxAuiNotebook *
 	*/
 	wxAuiNotebook * getNkNotebook(void);
+	
+	/**
+	 * @brief Activa un joystick/gamepad para navegación
+	*/
+	void eventoActivarJoystick(wxCommandEvent& WXUNUSED(event));
+	
+	/**
+	 * @brief Mostrar/guardar posiciones de la camara
+	*/
+	void eventoCameraPos(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Navegación tipo endoscopio 
+	 * @details Modo de navegación tipo endoscopio
+	*/
+	void eventoNavEndoscope(wxCommandEvent& WXUNUSED(event));
 
 private:
 	wxAuiNotebook * prv_libro;		//! notebook for manage pages.
 	wxAuiManager prv_auiManager;	//! Administrator for Aui.
 	nkToolBar *  mi_nkHerramientas;	//! nkToolBar for tools.
 	nkToolBar *  mi_nkImageViewer;	//! nkToolBar for image tools.
-        
-	// Joystick values
-	wxJoystick* m_stick;			//! Joystick/Gamepad.
-    int     m_minX;					//! Min value x of Joystick/Gamepad.
-    int     m_minY;					//! Min value y of Joystick/Gamepad.
-	int     m_minZ;					//! Min value z of Joystick/Gamepad.
-    int     m_maxX;					//! Max value x of Joystick/Gamepad.
-    int     m_maxY;					//! Max value y of Joystick/Gamepad.
-	int     m_maxZ;					//! Max value z of Joystick/Gamepad.
-	int		nButtons;				//! numbers of buttons of Joystick/Gamepad.
-	int		nAxis;					//! numbers of axes of Joystick/Gamepad.
-	unsigned int xpos;				//! Actual position of Joystick/Gamepad.
-	unsigned int ypos;				//! Actual position of Joystick/Gamepad.
 
 	DECLARE_EVENT_TABLE()			//! Call macro for declaration of events.
 };

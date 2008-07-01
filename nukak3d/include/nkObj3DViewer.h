@@ -39,6 +39,7 @@
 #include <vtkTextActor.h>
 #include <vtkCylinderSource.h>
 #include <vtkInteractorStyleTrackballActor.h>
+#include <vtkOutlineFilter.h>
 
 /** ITK*/
 #include <itkImage.h>
@@ -105,6 +106,16 @@ class nkObj3DViewer: public wxPanel{
 	 * @param input Object to view.
 	*/
 	void configurarMalla3D(vtkPolyData* input);
+	
+	/**
+	 * @brief Bounding box de la imagen 3D
+	 */
+	void BoundingBox(void);
+
+	/**
+	 * @brief Show/hide Bounding box
+	 */
+	void BoundingBoxOnOff(void);
 
 	/**
 	 * @brief Marching cubes function.
@@ -222,6 +233,7 @@ private:
 	vtkCamera*						prv_camera;			//! Camera.
 	vtkViewImage3D*					prv_vista3D;		//! View 3D
 	
+	vtkActor*						prv_bboxActor;		//! Actor del bounding box de la malla poligonal
 	vtkActor*						prv_actor;			//! Actor for mesh.
 	vtkPolyDataMapper*				prv_mapper;			//! Mapper of mesh.
 	vtkPolyData*					prv_data;			//! Data of mesh.
