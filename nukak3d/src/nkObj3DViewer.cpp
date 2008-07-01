@@ -148,9 +148,6 @@ void nkObj3DViewer::BoundingBox()
 	prv_render3D->AddActor(prv_bboxActor);
 	prv_bboxActor->VisibilityOff();
 
-	prv_render3D->Render();
-	prv_wxVtkVista3D->Render();
-	prv_wxVtkVista3D->Refresh();
 }
 //*****************************************************************************************
 //		Boundig box de la imagen 3D
