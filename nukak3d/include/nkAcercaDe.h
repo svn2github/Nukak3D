@@ -41,7 +41,7 @@ public:
 		new wxStaticText(this, 
 			wxID_ANY,
 			wxString(_("\nNukak3D 2007 "))<<
-			wxString(_("\nVersion 4.0 Revision 3104."))<<
+			wxString(_("\nVersion 4.6"))<<
 			wxString(_("\n(c) 2007 Bioingenium Research Group."))<<
 			wxString(_("\n\nThis project has been developed within the research"))<<
 			wxString(_("\nof computer graphics group Bioingenium."))<<
