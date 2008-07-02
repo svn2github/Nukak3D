@@ -59,6 +59,7 @@ nkObj3DViewer::nkObj3DViewer(wxWindow* parent,
 	prv_mapper = 0;
 	prv_actor = 0;
 	prv_data = 0;
+	prv_fpsflag = 0;
 }
 //*****************************************************************************************
 //		DESTRUCTOR
@@ -99,6 +100,7 @@ void nkObj3DViewer::abrirArchivo(wxString nombreArchivo){
 	prv_mapper->ScalarVisibilityOff();
 	
 	prv_render3D->AddActor(prv_actor);
+	this->BoundingBox();
 	prv_render3D->ResetCamera();
 
 	prv_render3D->Render();
@@ -122,6 +124,7 @@ void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
 	prv_mapper->ScalarVisibilityOff();
 	
 	prv_render3D->AddActor(prv_actor);
+	this->BoundingBox();
 	prv_render3D->ResetCamera();
 
 	prv_render3D->Render();
@@ -147,6 +150,10 @@ void nkObj3DViewer::BoundingBox()
 	
 	prv_render3D->AddActor(prv_bboxActor);
 	prv_bboxActor->VisibilityOff();
+
+	prv_render3D->Render();
+	prv_wxVtkVista3D->Render();
+	prv_wxVtkVista3D->Refresh();
 
 }
 //*****************************************************************************************
@@ -582,4 +589,23 @@ wxString nkObj3DViewer::VideoCard( )
 	const char* l_ren  = l_ren = prv_wxVtkVista3D->GetRenderWindow()->ReportCapabilities(); //! Capturing Render capabilities from RenderWindow
 	wxString l_text(l_ren,wxConvUTF8);
 	return l_text;	
+}
+//*****************************************************************************************
+//		Actualización de los planos de image
+//*****************************************************************************************
+void nkObj3DViewer::FPS()
+{
+	if(!prv_fpsflag)
+	{
+		prv_fpsEvent=FpsChange::New();
+		prv_fpsEvent->SetRenderer(prv_render3D);
+		prv_render3D->AddObserver(vtkCommand::EndEvent,prv_fpsEvent);
+		prv_fpsEvent->Delete();
+		prv_fpsflag=1;
+	}
+	else
+	{
+		prv_render3D->RemoveObserver(vtkCommand::AnyEvent);
+		prv_fpsflag=0;
+	}
 }

@@ -111,7 +111,7 @@ nkVolViewer::nkVolViewer(wxWindow* parent,
 	prv_auiManager.Update();
 	prv_camtracking=1;
 	prv_updatePlanes=0;
-
+	prv_fpsflag = 0;
 }
 
 //*****************************************************************************************
@@ -785,7 +785,9 @@ wxString nkVolViewer::VideoCard( )
 	wxString l_text(l_ren,wxConvUTF8);
 	return l_text;	
 }
-
+//*****************************************************************************************
+//		NUEVO LEVELSETS
+//*****************************************************************************************
 void nkVolViewer::NuevoLevelSets(wxAuiNotebook * p_libro){
 	nkLevelSets * miLS = new nkLevelSets(this, p_libro);
 	miLS->SetInput(prv_imagen);
@@ -880,7 +882,9 @@ void nkVolViewer::nkCameraCallback::Execute(vtkObject *p_Caller, unsigned long p
 	}
 	
 }
-
+//*****************************************************************************************
+//		Posición de la camara
+//*****************************************************************************************
 void nkVolViewer::CameraPos() 
 {	
 	if(prv_camtracking)
@@ -945,20 +949,26 @@ void nkVolViewer::CameraPos()
 	}
 
 }
-
+//*****************************************************************************************
+//		Agregar un observador a la cámara para monitorear sus eventos
+//*****************************************************************************************
 void nkVolViewer::SetCameraEvent(vtkCallbackCommand* p_Event)
 {
 	prv_camera->AddObserver(vtkCommand::AnyEvent ,p_Event);
 
 }
-
+//*****************************************************************************************
+//		Estilo de navegación tipo endoscopio
+//*****************************************************************************************
 void nkVolViewer::NavEndoscope( )
 {
 	nkInteractorStyleEndoCamera *l_style = nkInteractorStyleEndoCamera::New();
 	prv_wxVtkVista3D->SetInteractorStyle(l_style);
 	l_style->Delete();
 }
-
+//*****************************************************************************************
+//		Actualización de los planos de image
+//*****************************************************************************************
 void nkVolViewer::NavUpdatePlanes()
 {
 	if(prv_camtracking){
@@ -971,5 +981,24 @@ void nkVolViewer::NavUpdatePlanes()
 			prv_updatePlanes=1;
 			prv_cameracallback->SetUpdatePlanes(prv_updatePlanes);			
 		}
+	}
+}
+//*****************************************************************************************
+//		Actualización de los planos de image
+//*****************************************************************************************
+void nkVolViewer::FPS()
+{
+	if(!prv_fpsflag)
+	{
+		prv_fpsEvent=FpsChange::New();
+		prv_fpsEvent->SetRenderer(prv_render3D);
+		prv_render3D->AddObserver(vtkCommand::EndEvent,prv_fpsEvent);
+		prv_fpsEvent->Delete();
+		prv_fpsflag=1;
+	}
+	else
+	{
+		prv_render3D->RemoveObserver(vtkCommand::AnyEvent);
+		prv_fpsflag=0;
 	}
 }

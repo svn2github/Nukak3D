@@ -125,6 +125,7 @@ public:
 		ID_VOLVIEWER_RENDERING_MRC_COMP,/**< Ray Tracing COMPOSITE. */
 		ID_VOLVIEWER_RENDERING_MRC_ISO,	/**< Ray Tracing ISOSURFACE. */
 		ID_VOLVIEWER_RENDERING_TEXTURA,	/**< Texture mpping rendering. */
+		ID_FPS,							/**< Frames per second. */
 		ID_ULTIMO = wxID_HIGHEST+3000	/**< Event's for lookup table. */
 	};
 
@@ -414,6 +415,12 @@ public:
 	 * @details Modo de navegación tipo endoscopio
 	*/
 	void eventoNavEndoscope(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Frames per second
+	 * @details Muestra los cuadros por segundo del render
+	*/
+	void eventoFPS(wxCommandEvent& WXUNUSED(event));
 
 private:
 	wxAuiNotebook * prv_libro;		//! notebook for manage pages.

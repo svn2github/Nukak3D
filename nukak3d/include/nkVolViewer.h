@@ -36,6 +36,7 @@
 #include <vtkOutlineFilter.h>
 #include <vtkPolyDataMapper.h>
 #include <vtkProperty.h>
+#include <vtkCallbackCommand.h>
 
 /** ITK*/
 #include <itkAnalyzeImageIOFactory.h>
@@ -158,6 +159,33 @@ private:
 	};
 
 	friend class nkVolViewer::nkCameraCallback;
+
+	/** 
+	 * @brief Clase para monitorear los cuadros por segundo
+	 */
+	class FpsChange : public vtkCallbackCommand 
+	{
+	  private:
+		vtkRenderer*	prv_render3D;
+		double a_fps;
+	  public:
+		static FpsChange *New()
+		{return new FpsChange;}
+
+		void SetRenderer(vtkRenderer* l_render3D)
+		{
+			this->prv_render3D=l_render3D;
+		}
+		virtual void Execute(vtkObject *p_Caller, unsigned long p_EventId, void *p_CallData)
+		{
+			a_fps = 1/prv_render3D->GetLastRenderTimeInSeconds();
+			wxString temp;
+			temp.Printf("fps = %3.10f\n", a_fps );
+			vtkOutputWindow::GetInstance()->DisplayText(temp);
+		}
+	};
+	friend class nkVolViewer::FpsChange;
+
  public:
 
 	/**
@@ -405,6 +433,12 @@ private:
 	 */
 	void NavUpdatePlanes();
 
+	/**
+	 * @brief Frames per second
+	 * @return Muestra los cuadros por segundo
+	*/
+	void FPS(void);	
+
 private:
 	wxString					prv_nombreArchivo;	//! Name of file.
 	wxAuiManager				prv_auiManager;		//! Administrator of Aui.
@@ -431,6 +465,9 @@ private:
 	
 	vtkActor*	prv_bboxActor;		//! Actor del bounding box de la imagen
 	double		prv_camerapos[3];	//! Posicion de la camara
+
+	FpsChange*	prv_fpsEvent;		//! FPS object
+	int			prv_fpsflag;		//! FPS flag for activate/deactivate
 };
 
 #endif //_NKVOLVIEWER_H_

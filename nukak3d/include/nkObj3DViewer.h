@@ -40,6 +40,7 @@
 #include <vtkCylinderSource.h>
 #include <vtkInteractorStyleTrackballActor.h>
 #include <vtkOutlineFilter.h>
+#include <vtkCallbackCommand.h>
 
 /** ITK*/
 #include <itkImage.h>
@@ -67,6 +68,34 @@
  * @brief Class for view mesh.
  */
 class nkObj3DViewer: public wxPanel{
+ 
+ private:
+	/** 
+	 * @brief Clase para monitorear los cuadros por segundo
+	 */
+	class FpsChange : public vtkCallbackCommand 
+	{
+	  private:
+		vtkRenderer*	prv_render3D;
+		double a_fps;
+	  public:
+		static FpsChange *New()
+		{return new FpsChange;}
+
+		void SetRenderer(vtkRenderer* l_render3D)
+		{
+			this->prv_render3D=l_render3D;
+		}
+		virtual void Execute(vtkObject *p_Caller, unsigned long p_EventId, void *p_CallData)
+		{
+			a_fps = 1/prv_render3D->GetLastRenderTimeInSeconds();
+			wxString temp;
+			temp.Printf("fps = %3.10f\n", a_fps );
+			vtkOutputWindow::GetInstance()->DisplayText(temp);
+		}
+	};
+	friend class nkObj3DViewer::FpsChange;
+
  public:
 
 	/**
@@ -225,6 +254,12 @@ class nkObj3DViewer: public wxPanel{
 	*/
 	wxString VideoCard(void);	
 
+	/**
+	 * @brief Frames per second
+	 * @return Muestra los cuadros por segundo
+	*/
+	void FPS(void);	
+
 private:
 	wxAuiManager					prv_auiManager;		//! Administrator for Aui.
 
@@ -241,6 +276,9 @@ private:
 	
 	vtkCylinderSource*				prv_endoscope;		//! Rigid endoscope
 	vtkActor*						prv_endoActor;		//! endoscope vtkActor
+
+	FpsChange*						prv_fpsEvent;		//! FPS object
+	int								prv_fpsflag;		//! FPS flag for activate/deactivate
 };
 
 #endif //_NKOBJ3DVIEWER_H_

@@ -88,6 +88,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARIMAGE,_("Volume 3D"), wxNullBitmap, _("Information of volume 3D.")));
 	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARPOLYGON,_("Polygon mesh"), wxNullBitmap, _("Information of polygon mesh.")));
 	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARVIDEO,_("Video card"), wxNullBitmap, _("Information of videocard in system.")));
+	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_FPS,_("Frames per second"), wxNullBitmap, _("Frames per second of the renderer.")));
 	//////////////////////////////////
 
 	// Toolbar Image
@@ -391,6 +392,7 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_MENU(nkNukak3D::ID_PARVIDEO,  nkNukak3D::eventoParVideo)
 	EVT_MENU(nkNukak3D::ID_CAMERAPOS, nkNukak3D::eventoCameraPos)
 	EVT_MENU(nkNukak3D::ID_NAVENDOSCOPE, nkNukak3D::eventoNavEndoscope)
+	EVT_MENU(nkNukak3D::ID_FPS, nkNukak3D::eventoFPS)
 	EVT_MENU(wxID_ANY, nkNukak3D::eventoPaletaColor)
 END_EVENT_TABLE()
 
@@ -434,7 +436,9 @@ void nkNukak3D::eventoAcercaDe(wxCommandEvent& WXUNUSED(event)){
 	miAcercaDe->ShowModal();
 	delete miAcercaDe;
 }
-
+//*****************************************************************************************
+//		MENU -> AYUDA -> ACERCA DE    Version MAC
+//*****************************************************************************************
 void nkNukak3D::eventoAcercaDeMAC(wxCommandEvent& WXUNUSED(event)){
 	nkAcercaDe * miAcercaDe = new nkAcercaDe(this);
 	miAcercaDe->ShowModal();
@@ -1617,7 +1621,9 @@ void nkNukak3D::eventoParVideo(wxCommandEvent &WXUNUSED(event))
 	}
 
 }
-
+//*****************************************************************************************
+//		LANGUAGE SELECTION
+//*****************************************************************************************
 void nkNukak3D::eventoLanguage(wxCommandEvent &WXUNUSED(event)){
 	wxDialog * mi_dialogo = new wxDialog(this, wxID_ANY, _("Nukak3D: Choose language"), wxDefaultPosition, wxSize(250,170));
 	wxStaticText * mi_text = new wxStaticText(mi_dialogo, -1, _("Choose language"), wxPoint(20,20));
@@ -1696,3 +1702,24 @@ void nkNukak3D::eventoNavEndoscope(wxCommandEvent& WXUNUSED(event))
 		//}
 	}
 }
+
+//*****************************************************************************************
+//		Frames per second
+//*****************************************************************************************
+void nkNukak3D::eventoFPS(wxCommandEvent& WXUNUSED(event))
+{
+	if ((int)prv_libro->GetPageCount() > 0){
+		int mi_pagina = prv_libro->GetSelection();
+		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+		if (pagina->GetName() == wxT("nkVolViewer")){
+			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->FPS();
+		}
+		else  if (pagina->GetName() == wxT("nkObj3DViewer")) 
+		{
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			current->FPS();
+		}
+	}
+}
+
