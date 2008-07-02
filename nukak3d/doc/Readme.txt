@@ -1,4 +1,4 @@
-Nukak3D 4.5.3
+Nukak3D 4.6.0
 ---------------
 
 3D medical image platform for visualization and image processing. 
@@ -30,5 +30,5 @@ The Nukak3D Team:
   Eduardo Romero
   William Sarmiento
 
-Bogota D.C. - Colombia March 2008
+Bogota D.C. - Colombia Julio 2008
 
