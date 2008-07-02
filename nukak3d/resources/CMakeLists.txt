@@ -1,6 +1,8 @@
 INSTALL_FILES(/include FILES nukak3d.rc)
 IF (APPLE)
 	SET(RESOURCES_LANGUAGE_PATH /nukak3d.app/Contents/Resources/locale)
+	INSTALL_FILES(/bin/${SISTOPER}/nukak3d.app/Contents/Resources FILES 
+		${CMAKE_SOURCE_DIR}/resources/iconMac.icns)
 ELSE (APPLE)
 	SET(RESOURCES_LANGUAGE_PATH /.nukak3d/locale)
 ENDIF (APPLE)

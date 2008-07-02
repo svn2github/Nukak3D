@@ -143,7 +143,6 @@ public:
 	typedef itk::ShapeDetectionLevelSetImageFilter< ImageFloat3,ImageFloat3,PixelTypeFloat> ShapeDetectionFilterType;
 	typedef itk::BinaryThresholdImageFilter< ImageFloat3, ImageFloat3 > ThresholdingFilterType;
 	typedef itk::CastImageFilter< ImageUShort3,ImageFloat3 > CastFilterInType;
-	typedef itk::RescaleIntensityImageFilter< ImageFloat3,ImageUShort3 > CastFilterOutType;
 	typedef itk::GradientMagnitudeRecursiveGaussianImageFilter< ImageFloat3, ImageFloat3 >  GradientFilterType;
 	typedef itk::SigmoidImageFilter< ImageFloat3, ImageFloat3 > SigmoidFilterType;	
 	typedef itk::FastMarchingImageFilter< ImageFloat3, ImageFloat3 > FastMarchingFilterType;
