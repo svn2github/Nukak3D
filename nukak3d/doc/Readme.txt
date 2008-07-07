@@ -28,7 +28,6 @@ The Nukak3D Team:
   Byron Perez
   Alexander Pinzon
   Eduardo Romero
-  William Sarmiento
 
 Bogota D.C. - Colombia Julio 2008
 

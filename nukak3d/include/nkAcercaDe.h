@@ -52,7 +52,6 @@ public:
 			wxString(_("\n"))<<
 			wxString(_("\nAlexander Pinzon"))<<
 			wxString(_("\nByron Perez"))<<
-			wxString(_("\nWilson Sarmiento"))<<
 			wxString(_("\nEduardo Romero"))<<
 			wxString(_("\n"))<<
 			wxString(_("\nUniversidad Nacional de Colombia"))
