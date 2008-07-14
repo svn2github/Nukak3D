@@ -42,13 +42,13 @@ public:
 			wxID_ANY,
 			wxString(_("\nNukak3D 2007 "))<<
 			wxString(_("\nVersion 4.6"))<<
-			wxString(_("\n(c) 2007 Bioingenium Research Group."))<<
+			wxString(_("\n(c) 2008 Bioingenium Research Group."))<<
 			wxString(_("\n\nThis project has been developed within the research"))<<
 			wxString(_("\nof computer graphics group Bioingenium."))<<
 			wxString(_("\n"))<<
 			wxString(_("\n"))<<
 			wxString(_("\n"))<<
-			wxString(_("\nDeveloped By:"))<<
+			wxString(_("\nVersion 4.6 Developed By:"))<<
 			wxString(_("\n"))<<
 			wxString(_("\nAlexander Pinzon"))<<
 			wxString(_("\nByron Perez"))<<
