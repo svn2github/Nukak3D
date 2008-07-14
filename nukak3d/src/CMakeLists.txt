@@ -99,4 +99,4 @@ vtkVolumeRendering
 vtkWidgets
 vtkzlib
 )
-INSTALL_TARGETS(/bin/${SISTOPER} nukak3d)
+INSTALL_TARGETS(/bin nukak3d)
