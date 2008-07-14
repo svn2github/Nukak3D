@@ -1,0 +1,63 @@
+%define version @nukak3d_VERSION_MAJOR@.@nukak3d_VERSION_MINOR@
+%define release @nukak3d_VERSION_BUILD@
+
+Name:         @PROJECT_NAME@
+Version:      %{version}
+Release:      %{release}
+Summary:      3D medical image platform for visualization and image processing.
+
+Group:        Applications/Medical
+License:      GNU General Public License, http://www.gnu.org/licenses/gpl.txt
+URL:          http://nukak3d.sourceforge.net
+Packager:     Alexander Pinzon Fernandez <apinzonf@gmail.com>
+Vendor:       Bioingenium Research Group
+Distribution: Research software
+
+Source: @CPACK_SOURCE_PACKAGE_FILE_NAME@.tar.gz
+BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+BuildRequires: cmake
+
+%define srcdirname %{name}-%{version}.%{release}
+%define builddirname %{_tmppath}/%{name}.build
+
+%description
+Nukak3d is a flexible architecture that integrates general-purpose graphics libraries such as 
+VTK, ITK, VTKInria3D, OpenGL, under a graphical user interface (wxWidgets) 
+for three-dimensional visualization and processing of medical images.
+
+This product has been developed by Bioingenium Research Group, 
+within the frame of the computer graphics project at the National University of Colombia
+
+%prep
+%setup -q -n %{srcdirname}
+
+%build
+mkdir %{builddirname}
+cd %{builddirname}
+ccmake $RPM_BUILD_ROOT/../BUILD/%{srcdirname}
+make
+
+%check
+echo no Ctest
+
+%install
+rm -rf $RPM_BUILD_ROOT
+cd %{builddirname}
+make install DESTDIR=$RPM_BUILD_ROOT
+
+%clean
+rm -rf %{builddirname}
+rm -rf $RPM_BUILD_ROOT
+rm -rf %{srcdirname}
+
+%files
+%defattr(-,root,root,-)
+/usr/bin/nukak3d
+/usr/bin/.nukak3d/locale/en/LC_MESSAGES/nukak3d.mo
+/usr/bin/.nukak3d/locale/es/LC_MESSAGES/nukak3d.mo
+/usr/doc/*
+/usr/include/*
+
+%changelog
+* Fri Jul 11 2008 Alexander Pinzon Fernandez <apinzonf@gmail.com>
+- Adapt the file to work with ccmake.
