@@ -24,10 +24,11 @@ The Nukak3D Web site is located at:
 
   http://www.bioingenium.unal.edu.co
 
-The Nukak3D Team:
+The team's current Nukak3D, 2008:
   Byron Perez
   Alexander Pinzon
   Eduardo Romero
+  
 
 Bogota D.C. - Colombia Julio 2008
 
