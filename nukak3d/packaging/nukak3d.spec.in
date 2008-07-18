@@ -13,7 +13,6 @@ Packager:     Alexander Pinzon Fernandez <apinzonf@gmail.com>
 Vendor:       Bioingenium Research Group
 Distribution: Research software
 
-Requires: wxWidgets >= 2.8
 Source: @CPACK_SOURCE_PACKAGE_FILE_NAME@.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildRequires: cmake
@@ -54,6 +53,7 @@ rm -rf %{srcdirname}
 %files
 %defattr(-,root,root,-)
 /usr/bin/nukak3d
+/usr/bin/*
 /usr/bin/.nukak3d/locale/en/LC_MESSAGES/nukak3d.mo
 /usr/bin/.nukak3d/locale/es/LC_MESSAGES/nukak3d.mo
 /usr/doc/*
