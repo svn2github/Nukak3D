@@ -1,3 +1,13 @@
+#
+# spec file for package Nukak3D (Version @nukak3d_VERSION_MAJOR@.@nukak3d_VERSION_MINOR@)
+#
+# Copyright (c) 2008 Bioingenium Research Group , Bogota, Colombia.
+# This file and all modifications and additions to the pristine
+# package are under the same license as the package itself.
+#
+# Please submit bug fixes or comments via mailto://apinzonf@gmail.com
+#
+
 %define version @nukak3d_VERSION_MAJOR@.@nukak3d_VERSION_MINOR@
 %define release @nukak3d_VERSION_BUILD@
 
@@ -7,7 +17,7 @@ Release:      %{release}
 Summary:      3D medical image platform for visualization and image processing.
 
 Group:        Applications/Medical
-License:      GNU General Public License, http://www.gnu.org/licenses/gpl.txt
+License:      GPL, GNU General Public License, http://www.gnu.org/licenses/gpl.txt
 URL:          http://nukak3d.sourceforge.net
 Packager:     Alexander Pinzon Fernandez <apinzonf@gmail.com>
 Vendor:       Bioingenium Research Group
@@ -27,6 +37,13 @@ for three-dimensional visualization and processing of medical images.
 
 This product has been developed by Bioingenium Research Group, 
 within the frame of the computer graphics project at the National University of Colombia
+
+Authors
+-------
+Byron Perez
+Alexander Pinzon
+Eduardo Romero
+Bioingenium Research Group
 
 %prep
 %setup -q -n %{srcdirname}
