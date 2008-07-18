@@ -1,6 +1,7 @@
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/resources)
 
+ADD_DEFINITIONS(-DCHECKBOXVIEW=1)
 IF (WIN32)
  SET(nkToolBar_SRCS
  nkToolBar.cpp
@@ -14,6 +15,11 @@ ELSE(WIN32)
 	SET( MACOSX_BUNDLE_LONG_VERSION_STRING 4.6.0.0 )
 	SET( CMAKE_OSX_ARCHITECTURES ppc;i386 )
 	SET(GUI_EXECUTABLE MACOSX_BUNDLE)
+ ELSE(APPLE)
+	INCLUDE_DIRECTORIES(
+		${GTK_INCLUDE_DIRS}
+	)
+   ADD_DEFINITIONS(${GTK_CFLAGS})
  ENDIF(APPLE)
  SET(nkToolBar_SRCS
  nkToolBarMac.cpp
@@ -65,38 +71,75 @@ ELSE(APPLE)
 	SET(LIB_VTKINRIA3D 
 	vtkVisuManagement
 	vtkDataManagement
+	itkAddOn
+	vtkCommon
+    vtkRendering
+    vtkRenderingAddOn
+    vtkDataManagement
+    vtkVisuManagement
 	wxVtk
 	wxAddOn
-	itkAddOn
 	vtkRenderingAddOn
-	ImageViewer)
+	ImageViewsWithSlidersLib)
 ENDIF(APPLE)
 
-TARGET_LINK_LIBRARIES(nukak3d
-${wxWidgets_LIBRARIES}
-${LIB_VTKINRIA3D}
-${ITK_LIBRARIES}
-vtkCommon
-vtkDICOMParser
-vtkexoIIc
-vtkexpat
-vtkFiltering
-vtkfreetype
-vtkftgl
-vtkGenericFiltering
-vtkGraphics
-vtkHybrid
-vtkImaging
-vtkIO
-vtkjpeg
-vtkNetCDF
-vtkParallel
-vtkpng
-vtkRendering
-vtksys
-vtktiff
-vtkVolumeRendering
-vtkWidgets
-vtkzlib
-)
+IF(APPLE)
+	TARGET_LINK_LIBRARIES(nukak3d
+	${wxWidgets_LIBRARIES}
+	${LIB_VTKINRIA3D}
+	${ITK_LIBRARIES}
+	vtkCommon
+	vtkDICOMParser
+	vtkexoIIc
+	vtkexpat
+	vtkFiltering
+	vtkfreetype
+	vtkftgl
+	vtkGenericFiltering
+	vtkGraphics
+	vtkHybrid
+	vtkImaging
+	vtkIO
+	vtkjpeg
+	vtkNetCDF
+	vtkParallel
+	vtkpng
+	vtkRendering
+	vtksys
+	vtktiff
+	vtkVolumeRendering
+	vtkWidgets
+	vtkzlib
+	)
+ELSE(APPLE)
+	TARGET_LINK_LIBRARIES(nukak3d
+	${LIB_VTKINRIA3D}
+	${ITK_LIBRARIES}
+	ITKIO
+	ITKBasicFilters
+	vtkCommon
+	vtkDICOMParser
+	vtkexoIIc
+	vtkexpat
+	vtkFiltering
+	vtkfreetype
+	vtkftgl
+	vtkGenericFiltering
+	vtkGraphics
+	vtkHybrid
+	vtkImaging
+	vtkIO
+	vtkjpeg
+	vtkNetCDF
+	vtkParallel
+	vtkpng
+	vtkRendering
+	vtksys
+	vtktiff
+	vtkVolumeRendering
+	vtkWidgets
+	vtkzlib
+	${wxWidgets_LIBRARIES}
+	)
+ENDIF(APPLE)
 INSTALL_TARGETS(/bin nukak3d)
