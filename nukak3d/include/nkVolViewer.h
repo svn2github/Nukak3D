@@ -205,21 +205,21 @@ private:
 
 	/**
 	 * @brief Set name of file.
-	 * @param nombreArchivo
+	 * @param a_fileName
 	*/
-	void setNombreArchivo(wxString nombreArchivo);
+	void seta_fileName(wxString a_fileName);
 
 	/**
 	 * @brief Get name of file.
 	 * @return wxString Name of file.
 	*/
-	wxString getNombreArchivo(void);
+	wxString geta_fileName(void);
 
 	/**
 	 * @brief Set volume.
-	 * @param una_imagen itk::Image<unsigned short,3>::Pointer pointer to image.
+	 * @param an_image itk::Image<unsigned short,3>::Pointer pointer to image.
 	*/
-	void setImagen(itk::Image<unsigned short,3>::Pointer  una_imagen);
+	void setImagen(itk::Image<unsigned short,3>::Pointer  an_image);
 
 	/**
 	 * @brief Obtener volumen 3D (imagen itk)
@@ -236,50 +236,50 @@ private:
 	/**
 	 * @brief Configure views.
 	*/
-	void Configurar(void);
+	void Configure(void);
 
 	/**
 	 * @brief Configure volume.
-	 * @param un_nombreArchivo wxString Filepath of archive.
-	 * @param una_imagen itk::Image<unsigned short,3>::Pointer pointer to image.
+	 * @param un_a_fileName wxString Filepath of archive.
+	 * @param an_image itk::Image<unsigned short,3>::Pointer pointer to image.
 	*/
-	void configurarITKimage(wxString un_nombreArchivo, itk::Image<unsigned short,3>::Pointer una_imagen);
+	void ConfigureITKimage(wxString un_a_fileName, itk::Image<unsigned short,3>::Pointer an_image);
 
 	/**
 	 * @brief Open volumen.
-	 * @param nombreArchivo wxString filepath of archive.
+	 * @param a_fileName wxString filepath of archive.
 	*/
-	void abrirArchivo(wxString nombreArchivo);
+	void prOpenFile(wxString a_fileName);
 
 	/**
 	 * @brief Open file of volume 3D in format .vol.
-	 * @param nombreArchivo wxString Filepath of archive.
+	 * @param a_fileName wxString Filepath of archive.
 	*/
-	void abrirArchivo_vol(wxString nombreArchivo);
+	void prOpenFile_vol(wxString a_fileName);
 
 	/**
 	 * @brief Open directory Dicom.
-	 * @param nombreArchivo wxString Filepath of archive.
+	 * @param a_fileName wxString Filepath of archive.
 	 * @param myimporter pointer to wizard for Dicom images.
 	 * @param un_index number of dicom series.
 	*/
-	void abrirArchivo_dicom(wxString nombreArchivo, wxVtkDICOMImporter* myimporter, int un_index);
+	void prOpenFile_dicom(wxString a_fileName, wxVtkDICOMImporter* myimporter, int un_index);
 
 	/**
 	 * @brief Save file.
-	 * @param nombreArchivo wxString Filepath of archive.
+	 * @param a_fileName wxString Filepath of archive.
 	*/
-	void guardarArchivo(wxString nombreArchivo);
+	void prSaveFile(wxString a_fileName);
 
 	/**
 	 * @brief Bounding box de la imagen 3D
 	 */
-	void BoundingBox(void);
+	void prBoundingBox(void);
 
 	/**
 	 * @brief Show/hide Bounding box
 	 */
-	void BoundingBoxOnOff(void);
+	void prBoundingBoxOnOff(void);
 
 	/**
 	 * @brief Show/hide Box Widget
@@ -324,47 +324,47 @@ private:
 	/**
 	 * @brief Enable/Disable Stereoscopy vision.
 	*/
-	void StActivo(void);
+	void prActiveStereo(void);
 
 	/**
 	 * @brief Enable/Disable passive stereo.
 	*/
-	void StPasivo(void);
+	void prStereoPassive(void);
 
 	/**
 	 * @brief More distance between image in Stereoscopy vision.
 	*/
-	void StAumentar(void);
+	void prStereoMoreSeparation(void);
 
 	/**
 	 * @brief Less distance between image in Stereoscopy vision.
 	*/
-	void StDisminuir(void);
+	void prStereoLessSeparation(void);
 
 	/**
 	 * @brief Reset position and orientation of camera
 	*/
-	void NavResetCamara(void);
+	void prNavResetCamara(void);
 
 	/**
 	 * @brief Tracball camera.
 	*/
-	void NavTrackball(void);
+	void prNavTrackball(void);
 
 	/**
 	 * @brief Joystick Camera.
 	*/
-	void NavJoystick(void);
+	void prNavJoystick(void);
 
 	/**
 	 * @brief Flight camera.
 	*/
-	void NavFlight(void);
+	void prNavFlight(void);
 
 	/**
 	 * @brief Unicam camera.
 	*/
-	void NavUnicam(void);
+	void prNavUnicam(void);
 
 	/**
 	 * @brief Gaussian filter.
@@ -440,7 +440,7 @@ private:
 	void FPS(void);	
 
 private:
-	wxString					prv_nombreArchivo;	//! Name of file.
+	wxString					prv_a_fileName;	//! Name of file.
 	wxAuiManager				prv_auiManager;		//! Administrator of Aui.
 	vtkViewImage2DWithTracer*	prv_vistaAxial;		//! View Axial.
 	vtkViewImage2DWithTracer*	prv_vistaCoronal;	//! View Coronal.

@@ -17,7 +17,7 @@ bool nkMain::OnInit(){
 	prv_configBase->SetRecordDefaults();
 
 	int languageSettings = prv_configBase->Read(_T("/Tools/Language"), wxNOT_FOUND);
-	int language_system = mi_locale.GetSystemLanguage();
+	int language_system = pro_wxLocLanguage.GetSystemLanguage();
 	if (languageSettings == wxNOT_FOUND) {
 		if (language_system >= wxLANGUAGE_SPANISH && language_system <= wxLANGUAGE_SPANISH_VENEZUELA ){
 			language_system = wxLANGUAGE_SPANISH;
@@ -32,7 +32,7 @@ bool nkMain::OnInit(){
 		}
 	}
 	
-	if ( !mi_locale.Init(language_system, wxLOCALE_CONV_ENCODING) ){
+	if ( !pro_wxLocLanguage.Init(language_system, wxLOCALE_CONV_ENCODING) ){
 		//wxLogError(_T("This language is not supported by the system."));
 		return false;
 	}
@@ -42,11 +42,11 @@ bool nkMain::OnInit(){
 	#else
 		wxLocale::AddCatalogLookupPathPrefix(_(".nukak3d/locale"));
 	#endif
-	mi_locale.AddCatalog(wxT("nukak3d"));
+	pro_wxLocLanguage.AddCatalog(wxT("nukak3d"));
 	#ifndef __WIN32__
 		{
         //wxLogNull noLog;
-        mi_locale.AddCatalog(_T("fileutils"));
+        pro_wxLocLanguage.AddCatalog(_T("fileutils"));
 		}
 	#endif
 	

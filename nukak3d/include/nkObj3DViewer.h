@@ -22,25 +22,25 @@
 
 /** vtk*/
 #include <vtkActor.h>
+#include <vtkCallbackCommand.h>
+#include <vtkCamera.h>
+#include <vtkCylinderSource.h>
+#include <vtkDecimatePro.h>
+#include <vtkInteractorStyleFlight.h>	
+#include <vtkInteractorStyleJoystickCamera.h>
+#include <vtkInteractorStyleTrackballActor.h>
+#include <vtkInteractorStyleTrackballCamera.h>
+#include <vtkInteractorStyleUnicam.h>
+#include <vtkOutlineFilter.h>
+#include <vtkOutputWindow.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataMapper.h>
-#include <vtkPolyDataReader.h>
-#include <vtkCamera.h>
-#include <vtkInteractorStyleTrackballCamera.h>
-#include <vtkInteractorStyleJoystickCamera.h>
-#include <vtkInteractorStyleFlight.h>	
-#include <vtkInteractorStyleUnicam.h>
-#include <vtkPolyDataWriter.h>
-#include <vtkTriangleFilter.h>
-#include <vtkOutputWindow.h>
-#include <vtkDecimatePro.h>
 #include <vtkPolyDataNormals.h>
-#include <vtkWindowToImageFilter.h>
+#include <vtkPolyDataReader.h>
+#include <vtkPolyDataWriter.h>
 #include <vtkTextActor.h>
-#include <vtkCylinderSource.h>
-#include <vtkInteractorStyleTrackballActor.h>
-#include <vtkOutlineFilter.h>
-#include <vtkCallbackCommand.h>
+#include <vtkTriangleFilter.h>
+#include <vtkWindowToImageFilter.h>
 
 /** ITK*/
 #include <itkImage.h>
@@ -71,23 +71,21 @@ class nkObj3DViewer: public wxPanel{
  
  private:
 	/** 
-	 * @brief Clase para monitorear los cuadros por segundo
+	 * @brief Monitor for FPS
 	 */
-	class FpsChange : public vtkCallbackCommand 
-	{
-	  private:
+	class FpsChange : public vtkCallbackCommand {
+	private:
 		vtkRenderer*	prv_render3D;
 		double a_fps;
-	  public:
-		static FpsChange *New()
-		{return new FpsChange;}
+	public:
+		static FpsChange *New(){
+			return new FpsChange;
+		}
 
-		void SetRenderer(vtkRenderer* l_render3D)
-		{
+		void SetRenderer(vtkRenderer* l_render3D){
 			this->prv_render3D=l_render3D;
 		}
-		virtual void Execute(vtkObject *p_Caller, unsigned long p_EventId, void *p_CallData)
-		{
+		virtual void Execute(vtkObject *p_Caller, unsigned long p_EventId, void *p_CallData){
 			a_fps = 1/prv_render3D->GetLastRenderTimeInSeconds();
 			wxString temp;
 			temp.Printf("fps = %3.10f\n", a_fps );
@@ -116,126 +114,126 @@ class nkObj3DViewer: public wxPanel{
 	/**
 	 * @brief Config view.
 	*/
-	void Configurar(void);
+	void Configure(void);
 
 	/**
 	 * @brief Open file.
-	 * @param nombreArchivo Filepath of mesh.
+	 * @param a_fileName Filepath of mesh.
 	*/
-	void abrirArchivo(wxString nombreArchivo);
+	void prOpenFile(wxString a_fileName);
 
 	/**
 	 * @brief Save mesh.
-	 * @param nombreArchivo Filepath of file.
+	 * @param a_fileName Filepath of file.
 	*/
-	void guardarArchivo(wxString nombreArchivo);
+	void prSaveFile(wxString a_fileName);
 
 	/**
 	 * @brief Config view 3d.
 	 * @param input Object to view.
 	*/
-	void configurarMalla3D(vtkPolyData* input);
+	void prConfigureMesh3D(vtkPolyData* input);
 	
 	/**
 	 * @brief Bounding box de la imagen 3D
 	 */
-	void BoundingBox(void);
+	void prBoundingBox(void);
 
 	/**
 	 * @brief Show/hide Bounding box
 	 */
-	void BoundingBoxOnOff(void);
+	void prBoundingBoxOnOff(void);
 
 	/**
 	 * @brief Marching cubes function.
-	 * @param una_imagen Volume to transform.
-	 * @param un_numContornos Numbers of contours.
-	 * @param un_umbral_inferior
-	 * @param un_umbral_superior
-	 * @param un_rojo
-	 * @param un_verde
-	 * @param un_azul
-	 * @param una_opacidad
+	 * @param an_image Volume to transform.
+	 * @param a_numContours Numbers of contours.
+	 * @param a_thresholdLower
+	 * @param a_thresholdUpper
+	 * @param a_red
+	 * @param a_green
+	 * @param an_blue
+	 * @param a_opacity
 	*/
-	void imagenAIsoSurface(itk::Image<unsigned short,3>::Pointer una_imagen,
-									  int un_numContornos = 20, 
-									  int un_umbral_inferior = 0,
-									  int un_umbral_superior = 100,
-									  double un_rojo = 1.0,
-									  double un_verde = 1.0,
-									  double un_azul = 1.0,
-									  double una_opacidad = 1.0
+	void prImageToIsoSurface(itk::Image<unsigned short,3>::Pointer an_image,
+									  int a_numContours = 20, 
+									  int a_thresholdLower = 0,
+									  int a_thresholdUpper = 100,
+									  double a_red = 1.0,
+									  double a_green = 1.0,
+									  double an_blue = 1.0,
+									  double a_opacity = 1.0
 									  );
 	
 	/**
 	 * @brief Enable/Diable stereoscopy vision.
 	*/
-	void StActivo(void);
+	void prActiveStereo(void);
 
 	/**
 	 * @brief Enable/Diable passive stereo.
 	*/
-	void StPasivo(void);
+	void prStereoPassive(void);
 
 	/**
 	 * @brief More separation of images in stereoscopy vision.
 	*/
-	void StAumentar(void);
+	void prStereoMoreSeparation(void);
 
 	/**
 	 * @brief Less separation of images in stereoscopy vision.
 	*/
-	void StDisminuir(void);
+	void prStereoLessSeparation(void);
 
 	/**
 	 * @brief Reset position and orientation of camera.
 	*/
-	void NavResetCamara(void);
+	void prNavResetCamara(void);
 
 	/**
 	 * @brief Trackball camera.
 	*/
-	void NavTrackball(void);
+	void prNavTrackball(void);
 
 	/**
 	 * @brief Joystick camera.
 	*/
-	void NavJoystick(void);
+	void prNavJoystick(void);
 
 	/**
 	 * @brief Flight camera.
 	*/
-	void NavFlight(void);
+	void prNavFlight(void);
 
 	/**
 	 * @brief unicam camera.
 	*/
-	void NavUnicam(void);
+	void prNavUnicam(void);
 
 	/**
 	 * @brief Triangle mesh.
 	*/
-	void PolyTriangle( void );
+	void prPolyTriangle( void );
 
 	/**
 	 * @brief Decimate mesh.
 	*/
-	void PolyDecimate( void );
+	void prPolyDecimate( void );
 
 	/**
 	 * @brief Smooth mesh.
 	*/
-	void PolySmooth( void );
+	void prPolySmooth( void );
 
 	/**
 	 * @brief Recalc normals.
 	*/
-	void PolyNormals( void );
+	void prPolyNormals( void );
 
 	/**
 	 * @brief Deform mesh.
 	*/
-	void PolyDeform( void );
+	void prPolyDeform( void );
 
 	/**
 	 * @brief Snapshot view.

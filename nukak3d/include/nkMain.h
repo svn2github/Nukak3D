@@ -40,7 +40,7 @@ public:
 	 */
 	virtual int OnExit();
 protected:
-    wxLocale mi_locale; // locale we'll be using
+    wxLocale pro_wxLocLanguage; // locale we'll be using
 };
 
 #endif //_NKMAIN_H_

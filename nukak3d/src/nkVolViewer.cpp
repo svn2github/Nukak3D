@@ -139,16 +139,16 @@ nkVolViewer::~nkVolViewer(){
 	prv_auiManager.UnInit();
 }
 
-void nkVolViewer::setNombreArchivo(wxString nombreArchivo){
-	this->prv_nombreArchivo = nombreArchivo;
+void nkVolViewer::seta_fileName(wxString a_fileName){
+	this->prv_a_fileName = a_fileName;
 }
 
-wxString nkVolViewer::getNombreArchivo(void){
-	return this->prv_nombreArchivo;
+wxString nkVolViewer::geta_fileName(void){
+	return this->prv_a_fileName;
 }
 
-void nkVolViewer::setImagen(itk::Image<unsigned short,3>::Pointer una_imagen){
-	this->prv_imagen = una_imagen;
+void nkVolViewer::setImagen(itk::Image<unsigned short,3>::Pointer an_image){
+	this->prv_imagen = an_image;
 }
 
 itk::Image<unsigned short,3>::Pointer nkVolViewer::getImagen(void){
@@ -159,7 +159,7 @@ vtkImageData* nkVolViewer::getVtkImagen(void){
 	return this->prv_vista3D->GetImage();
 }
 
-void nkVolViewer::Configurar(void){
+void nkVolViewer::Configure(void){
 	prv_vistaAxial->SetInteractionStyle (vtkViewImage2D::SELECT_INTERACTION);
 	prv_vistaAxial->SetWheelInteractionStyle(vtkViewImage2D::ZOOM_INTERACTION);
 	prv_vistaAxial->SetMiddleButtonInteractionStyle (vtkViewImage2D::ZOOM_INTERACTION);
@@ -198,25 +198,25 @@ void nkVolViewer::Configurar(void){
 	prv_vistaSagital->AddChild (prv_vistaAxial); 
 }
 
-void nkVolViewer::configurarITKimage(
-		wxString un_nombreArchivo, 
-		itk::Image<unsigned short,3>::Pointer una_imagen){
-	this->prv_nombreArchivo = un_nombreArchivo;
-	this->prv_imagen = una_imagen;
+void nkVolViewer::ConfigureITKimage(
+		wxString un_a_fileName, 
+		itk::Image<unsigned short,3>::Pointer an_image){
+	this->prv_a_fileName = un_a_fileName;
+	this->prv_imagen = an_image;
 	this->prv_vistaAxial->SetITKImage (this->prv_imagen);
 	this->prv_vistaCoronal->SetITKImage ( this->prv_imagen);
 	this->prv_vistaSagital->SetITKImage ( this->prv_imagen);
 	this->prv_vista3D->SetITKImage ( this->prv_imagen);
 	this->prv_vistaAxial->SyncResetCurrentPoint();
 	this->prv_vistaAxial->SyncResetWindowLevel();
-	this->BoundingBox();
+	this->prBoundingBox();
 }
 
-void nkVolViewer::abrirArchivo(wxString nombreArchivo){
+void nkVolViewer::prOpenFile(wxString a_fileName){
 	itk::ImageFileReader<nkVolViewer::ImageType>::Pointer reader;
 	reader = itk::ImageFileReader<nkVolViewer::ImageType>::New();
 	itk::AnalyzeImageIOFactory::RegisterOneFactory();
-	reader->SetFileName (nombreArchivo.c_str());
+	reader->SetFileName (a_fileName.c_str());
 	try	{
 		reader->Update();
 	}catch (itk::ExceptionObject & e){
@@ -229,15 +229,15 @@ void nkVolViewer::abrirArchivo(wxString nombreArchivo){
 		return;
 	}
 
-	this->configurarITKimage(nombreArchivo, reader->GetOutput());
+	this->ConfigureITKimage(a_fileName, reader->GetOutput());
 }
 
-void nkVolViewer::abrirArchivo_vol(wxString nombreArchivo){
+void nkVolViewer::prOpenFile_vol(wxString a_fileName){
 	FILE *fp;
 	int x[3];
 	float s[2];
-	fp = fopen(nombreArchivo.c_str(),"rb");
-	setNombreArchivo(nombreArchivo);
+	fp = fopen(a_fileName.c_str(),"rb");
+	seta_fileName(a_fileName);
 	fread(x,4,3,fp);
 	#ifndef VTK_WORDS_BIGENDIAN
 		vtkByteSwap::SwapVoidRange(x,3,4);
@@ -268,7 +268,7 @@ void nkVolViewer::abrirArchivo_vol(wxString nombreArchivo){
 	itk::ImageFileReader<nkVolViewer::ImageType>::Pointer reader;
 	reader = itk::ImageFileReader<ImageType>::New();
 	reader->SetImageIO( rawImageIO ); 
-	reader->SetFileName( nombreArchivo.c_str()); 
+	reader->SetFileName( a_fileName.c_str()); 
 
 	try{
 		reader->Update();
@@ -282,10 +282,10 @@ void nkVolViewer::abrirArchivo_vol(wxString nombreArchivo){
 		return;
 	}
 
-	this->configurarITKimage(nombreArchivo, reader->GetOutput());
+	this->ConfigureITKimage(a_fileName, reader->GetOutput());
 }
 
-void nkVolViewer::abrirArchivo_dicom(wxString nombreArchivo, wxVtkDICOMImporter* myimporter, int un_index){
+void nkVolViewer::prOpenFile_dicom(wxString a_fileName, wxVtkDICOMImporter* myimporter, int un_index){
 
 	#ifdef __WXMAC__
 		typedef itk::GDCMImporter::FloatImageType   DImageType; // vtkInria3D anterior
@@ -307,7 +307,7 @@ void nkVolViewer::abrirArchivo_dicom(wxString nombreArchivo, wxVtkDICOMImporter*
 	}
 	this->prv_vista3D->SetShift ( rescaler->GetShift() );
 	this->prv_vista3D->SetScale ( rescaler->GetScale() );
-	this->configurarITKimage(nombreArchivo, rescaler->GetOutput());
+	this->ConfigureITKimage(a_fileName, rescaler->GetOutput());
 }
 
 void nkVolViewer::cambiarPaletaColor(vtkLookupTable* una_paleta){
@@ -344,7 +344,7 @@ void nkVolViewer::cambiarFormaDeProcesamiento (int un_modo, int textura_o_mrc){
 	prv_vista3D->Render();
 }
 
-void nkVolViewer::guardarArchivo(wxString nombreArchivo){
+void nkVolViewer::prSaveFile(wxString a_fileName){
 	itk::VTKImageToImageFilter<nkVolViewer::ImageType>::Pointer myConverter =
     itk::VTKImageToImageFilter<nkVolViewer::ImageType>::New();
     
@@ -375,11 +375,11 @@ void nkVolViewer::guardarArchivo(wxString nombreArchivo){
 
 	itk::ImageFileWriter<ImageType>::Pointer writer
 	= itk::ImageFileWriter<ImageType>::New();
-	writer->SetFileName (nombreArchivo);
+	writer->SetFileName (a_fileName);
 	writer->SetInput(itkimage);
 
 	try{
-		std::cout << "writing : " << nombreArchivo << std::endl;
+		std::cout << "writing : " << a_fileName << std::endl;
 		writer->Update();
 	}catch (itk::ExceptionObject & e){
 		std::cerr << e;
@@ -389,13 +389,13 @@ void nkVolViewer::guardarArchivo(wxString nombreArchivo){
 	image->Delete();
 }
 
-void nkVolViewer::BoundingBox()
+void nkVolViewer::prBoundingBox()
 {
-	vtkOutlineFilter *boundingBox = vtkOutlineFilter::New(); //! Bounding Box creation
-	boundingBox->SetInput(this->getVtkImagen());
+	vtkOutlineFilter *prBoundingBox = vtkOutlineFilter::New(); //! Bounding Box creation
+	prBoundingBox->SetInput(this->getVtkImagen());
 
 	vtkPolyDataMapper *prv_bboxMapper = vtkPolyDataMapper::New(); //! Bounding Box mapper
-	prv_bboxMapper->SetInput(boundingBox->GetOutput());
+	prv_bboxMapper->SetInput(prBoundingBox->GetOutput());
 
 	prv_bboxActor = vtkActor::New(); //! Bounding Box actor
 	prv_bboxActor->SetMapper(prv_bboxMapper);
@@ -406,7 +406,7 @@ void nkVolViewer::BoundingBox()
 
 }
 
-void nkVolViewer::BoundingBoxOnOff()
+void nkVolViewer::prBoundingBoxOnOff()
 {
 	if(prv_bboxActor->GetVisibility()==false )
 		prv_bboxActor->VisibilityOn();
@@ -487,7 +487,7 @@ void nkVolViewer::Area(void){
 //*****************************************************************************************
 //		ACTIVE STEREO
 //*****************************************************************************************
-void nkVolViewer::StActivo(void){
+void nkVolViewer::prActiveStereo(void){
 
 	if(!prv_wxVtkVista3D->GetRenderWindow()->GetStereoRender()) {
 		prv_wxVtkVista3D->GetRenderWindow()->SetStereoTypeToCrystalEyes();
@@ -504,7 +504,7 @@ void nkVolViewer::StActivo(void){
 //*****************************************************************************************
 //		PASIVE STEREO
 //*****************************************************************************************
-void nkVolViewer::StPasivo(void){
+void nkVolViewer::prStereoPassive(void){
 
 	if(!prv_wxVtkVista3D->GetRenderWindow()->GetStereoRender()) {
 		prv_wxVtkVista3D->GetRenderWindow()->SetStereoTypeToAnaglyph();
@@ -521,7 +521,7 @@ void nkVolViewer::StPasivo(void){
 //*****************************************************************************************
 //		STEREO INCREASE - Increase stereo separation
 //*****************************************************************************************
-void nkVolViewer::StAumentar( void )
+void nkVolViewer::prStereoMoreSeparation( void )
 {
 	double	sep,
 			inc=0.1;
@@ -535,7 +535,7 @@ void nkVolViewer::StAumentar( void )
 //*****************************************************************************************
 //		STEREO DECREASE - Decrease stereo separation
 //*****************************************************************************************
-void nkVolViewer::StDisminuir( void )
+void nkVolViewer::prStereoLessSeparation( void )
 {
 	double	sep,
 			inc=0.1;
@@ -549,7 +549,7 @@ void nkVolViewer::StDisminuir( void )
 //*****************************************************************************************
 //		MENU -> RESET CAMERA
 //*****************************************************************************************
-void nkVolViewer::NavResetCamara( void )
+void nkVolViewer::prNavResetCamara( void )
 {
 	prv_render3D->ResetCamera();
 	prv_wxVtkVista3D->Render();
@@ -559,7 +559,7 @@ void nkVolViewer::NavResetCamara( void )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> TRACKBALL
 //*****************************************************************************************
-void nkVolViewer::NavTrackball( )
+void nkVolViewer::prNavTrackball( )
 {
 	vtkInteractorStyleTrackballCamera *l_style = vtkInteractorStyleTrackballCamera::New();
 	prv_wxVtkVista3D->SetInteractorStyle(l_style);
@@ -568,7 +568,7 @@ void nkVolViewer::NavTrackball( )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> JOYSTICK
 //*****************************************************************************************
-void nkVolViewer::NavJoystick( )
+void nkVolViewer::prNavJoystick( )
 {
 	vtkInteractorStyleJoystickCamera *l_style = vtkInteractorStyleJoystickCamera::New();
 	prv_wxVtkVista3D->SetInteractorStyle(l_style);
@@ -577,7 +577,7 @@ void nkVolViewer::NavJoystick( )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> FLIGHT
 //*****************************************************************************************
-void nkVolViewer::NavFlight(  )
+void nkVolViewer::prNavFlight(  )
 {
 	vtkInteractorStyleFlight  *l_style = vtkInteractorStyleFlight ::New();
 	prv_wxVtkVista3D->SetInteractorStyle(l_style);
@@ -586,7 +586,7 @@ void nkVolViewer::NavFlight(  )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> UNICAM
 //*****************************************************************************************
-void nkVolViewer::NavUnicam( ) 
+void nkVolViewer::prNavUnicam( ) 
 {
 	vtkInteractorStyleUnicam *l_style = vtkInteractorStyleUnicam::New();
 	l_style->SetWorldUpVector(0.0, 0.0, 1.0);
@@ -654,8 +654,8 @@ void nkVolViewer::FilVolGaussian( wxAuiNotebook * p_libro )
 			prv_castOutLevetSet->Update();
 			
 			nkVolViewer * mivol = new nkVolViewer(p_libro);
-			mivol->Configurar();
-			mivol->configurarITKimage(_T("Gaussian filter"),prv_castOutLevetSet->GetOutput());
+			mivol->Configure();
+			mivol->ConfigureITKimage(_T("Gaussian filter"),prv_castOutLevetSet->GetOutput());
 			p_libro->AddPage(mivol, _T("Gaussian filter"),true );
 
 		}
@@ -725,8 +725,8 @@ void nkVolViewer::FilVolMedian( wxAuiNotebook * p_libro )
 			filter->Update();
 			
 			nkVolViewer * mivol = new nkVolViewer(p_libro);
-			mivol->Configurar();
-			mivol->configurarITKimage(_T("Filtro mediana"),filter->GetOutput());
+			mivol->Configure();
+			mivol->ConfigureITKimage(_T("Filtro mediana"),filter->GetOutput());
 			p_libro->AddPage(mivol, _T("Filtro mediana"),true );
 
 		}
@@ -791,10 +791,10 @@ wxString nkVolViewer::VideoCard( )
 void nkVolViewer::NuevoLevelSets(wxAuiNotebook * p_libro){
 	nkLevelSets * miLS = new nkLevelSets(this, p_libro);
 	miLS->SetInput(prv_imagen);
-	miLS->Configurar();
+	miLS->Configure();
 	miLS->CrearAsistente();
 	miLS->WriteGradientImage();
-	if(miLS->ConfigurarLevelSet()){
+	if(miLS->ConfigureLevelSet()){
 		miLS->UpdateLevelSets();
 	}
 }

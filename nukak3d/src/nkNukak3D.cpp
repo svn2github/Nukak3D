@@ -22,7 +22,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 		wxFrame(parent, id, title, pos, size, style)
 {
 	#ifdef __WXMAC__
-		wxApp::s_macAboutMenuItemId = nkNukak3D::ID_ACERCA_DE_MAC;
+		wxApp::s_macAboutMenuItemId = nkNukak3D::ID_ABOUT_MAC;
 	#endif
 
 	prv_auiManager.SetManagedWindow(this);
@@ -47,7 +47,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	
 	// File Menu Bar -> Botton
 	wxMenu * mi_wxMenuArchivo = new wxMenu(_T(""), wxMENU_TEAROFF);
-	mi_wxMenuArchivo->Append(nkNukak3D::ID_SALIR, _("E&xit\tAlt-X"), _("Close application."));
+	mi_wxMenuArchivo->Append(nkNukak3D::ID_EXIT, _("E&xit\tAlt-X"), _("Close application."));
 	mi_wxMBMenu->Append(mi_wxMenuArchivo, _("&File"));
 
 	// Tools Menu Bar -> Botton
@@ -57,61 +57,61 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 
 	// Help Menu Bar -> Botton
 	wxMenu * mi_wxMenuAyuda = new wxMenu;  
-	mi_wxMenuAyuda->Append(nkNukak3D::ID_ACERCA_DE, _("&About Nukak3D...\tCtrl-A"), _("Show information of authors."));
+	mi_wxMenuAyuda->Append(nkNukak3D::ID_ABOUT, _("&About Nukak3D...\tCtrl-A"), _("Show information of authors."));
 	mi_wxMBMenu->Append(mi_wxMenuAyuda, _("Help"));
 
 	//////////////////////////////////
 	// ToolBar Tools, // Menu Open
-	mi_nkHerramientas = new nkToolBar(this, nkNukak3D::ID_ARBOL, wxDefaultPosition, wxDefaultSize);
+	prv_nkToolBarTools = new nkToolBar(this, nkNukak3D::ID_TREE, wxDefaultPosition, wxDefaultSize);
 
-	nkMenuTool * mi_nkMenuVolume = mi_nkHerramientas->insertarMenu(-1, _("Open volume images"));
-	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO,_("Volume"), wxNullBitmap, _("Open a single file.")));
-	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO_DICOM,_("Dicom Directory"), wxNullBitmap, _("Open directory with Dicom images.")));
+	nkMenuTool * mi_nkMenuVolume = prv_nkToolBarTools->insertarMenu(-1, _("Open volume images"));
+	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_OPEN_FILE,_("Volume"), wxNullBitmap, _("Open a single file.")));
+	mi_nkMenuVolume->insertarTool(new nkTool(nkNukak3D::ID_OPEN_FILE_DICOM,_("Dicom Directory"), wxNullBitmap, _("Open directory with Dicom images.")));
 
-	nkMenuTool * mi_nkMenuObj3D = mi_nkHerramientas->insertarMenu(-1, _("Open Mesh 3D"));
-	mi_nkMenuObj3D->insertarTool(new nkTool(nkNukak3D::ID_ABRIR_ARCHIVO_MALLA3D,_("Polygon Mesh"), wxNullBitmap, _("Open file vtk.")));
+	nkMenuTool * mi_nkMenuObj3D = prv_nkToolBarTools->insertarMenu(-1, _("Open Mesh 3D"));
+	mi_nkMenuObj3D->insertarTool(new nkTool(nkNukak3D::ID_OPEN_FILE_MESH3D,_("Polygon Mesh"), wxNullBitmap, _("Open file vtk.")));
 
 	// Menu Save
-	nkMenuTool * mi_nkMenuGuardar = mi_nkHerramientas->insertarMenu(-1, _("Save"));
-	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_GUARDARVOL,_("Save Volume"), wxNullBitmap, _("Save volume of images.")));
-	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_GUARDARMALLA3D,_("Save Mesh 3D."), wxNullBitmap, _("Save mesh 3D in vtk file format.")));
+	nkMenuTool * mi_nkMenuGuardar = prv_nkToolBarTools->insertarMenu(-1, _("Save"));
+	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_SAVE_VOL,_("Save Volume"), wxNullBitmap, _("Save volume of images.")));
+	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_SAVE_MESH3D,_("Save Mesh 3D."), wxNullBitmap, _("Save mesh 3D in vtk file format.")));
 
 	// Menu capture screen
-	nkMenuTool * mi_nkMenuCaptura = mi_nkHerramientas->insertarMenu(-1, _("Capture Screen"));
+	nkMenuTool * mi_nkMenuCaptura = prv_nkToolBarTools->insertarMenu(-1, _("Capture Screen"));
 	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOT3D,_("Save 3D View"), wxNullBitmap, _("Save snapshot of 3d view.")));
 	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTAXIAL,_("Save Axial View"), wxNullBitmap, _("Save snapshot of axial view.")));
 	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTSAGITAL,_("Save Sagital View"), wxNullBitmap, _("Save snapshot of sagital view.")));
 	mi_nkMenuCaptura->insertarTool(new nkTool(nkNukak3D::ID_SNAPSHOTCORONAL,_("Save Coronal View"), wxNullBitmap, _("Save snapshot of coronal view.")));
 
 	// Menu information
-	nkMenuTool * mi_nkMenuInfo = mi_nkHerramientas->insertarMenu(-1, _("Information"));
-	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARIMAGE,_("Volume 3D"), wxNullBitmap, _("Information of volume 3D.")));
-	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARPOLYGON,_("Polygon mesh"), wxNullBitmap, _("Information of polygon mesh.")));
-	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_PARVIDEO,_("Video card"), wxNullBitmap, _("Information of videocard in system.")));
+	nkMenuTool * mi_nkMenuInfo = prv_nkToolBarTools->insertarMenu(-1, _("Information"));
+	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_INFORMATION_IMAGE,_("Volume 3D"), wxNullBitmap, _("Information of volume 3D.")));
+	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_INFORMATION_POLYGON,_("Polygon mesh"), wxNullBitmap, _("Information of polygon mesh.")));
+	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_INFORMATION_VIDEO_CARD,_("Video card"), wxNullBitmap, _("Information of videocard in system.")));
 	mi_nkMenuInfo->insertarTool(new nkTool(nkNukak3D::ID_FPS,_("Frames per second"), wxNullBitmap, _("Frames per second of the renderer.")));
 	//////////////////////////////////
 
 	// Toolbar Image
-	mi_nkImageViewer = new nkToolBar(this, nkNukak3D::ID_ARBOL, wxDefaultPosition, wxDefaultSize);
+	prv_nkToolBarImageViewer = new nkToolBar(this, nkNukak3D::ID_TREE, wxDefaultPosition, wxDefaultSize);
 
 	// Menu Lookup table.
-	nkMenuTool * mi_nkMenuImageViewer = mi_nkImageViewer->insertarMenu(-1, _("Lookup Table"));
+	nkMenuTool * mi_nkMenuImageViewer = prv_nkToolBarImageViewer->insertarMenu(-1, _("Lookup Table"));
 	mi_nkMenuImageViewer->insertarTool(
-		new nkTool(nkNukak3D::ID_REINICIAR_PALETA,
+		new nkTool(nkNukak3D::ID_RESET_LOOKUP_TABLE,
 			_("Reset Lookup Table"), 
 			wxNullBitmap, 
 			_("Load window and level by default for this lookup table.")));
 	std::vector<std::string> lutNames = vtkLookupTableManager::GetAvailableLookupTables();
 	for( unsigned int i=0; i<lutNames.size(); i++){
 		mi_nkMenuImageViewer->insertarTool(
-			new nkTool(nkNukak3D::ID_ULTIMO + i,
+			new nkTool(nkNukak3D::ID_LAST_LOOKUP_TABLE + i,
 			wxT(lutNames[i].c_str()), 
 			wxNullBitmap, 
 			_("Change Lookup table.")));
 	}
 	
 	// Menu rendering mode.
-	nkMenuTool * mi_nkMenuVol3DMode = mi_nkImageViewer->insertarMenu(-1, _("View volume 3D"));
+	nkMenuTool * mi_nkMenuVol3DMode = prv_nkToolBarImageViewer->insertarMenu(-1, _("View volume 3D"));
 	
 	mi_nkMenuVol3DMode->insertarTool(
 		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_ESCALAR,
@@ -120,7 +120,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 			_("View 3 ortogonal planes over volume 3D.")));
 			
 	mi_nkMenuVol3DMode->insertarTool(
-		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_TEXTURA,
+		new nkTool(nkNukak3D::ID_VOLVIEWER_RENDERING_TEXTURE,
 			_("3D: Texture Mapping"), 
 			wxNullBitmap, 
 			_("Rendering volume with Texture Mapping method.")));
@@ -144,7 +144,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 			_("RayCasting - Isosurface")));
 			
 	mi_nkMenuVol3DMode->insertarTool(
-		new nkTool(nkNukak3D::ID_BOUNDINGBOX,
+		new nkTool(nkNukak3D::ID_prBoundingBox,
 			_("Show/hide bounding box"), 
 			wxNullBitmap, 
 			_("Show/hide bounding box")));
@@ -156,14 +156,14 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 			_("Show/hide box widget")));
 
 	// Menu rendering mode.
-	nkMenuTool * mi_nkMenuIsoSuperficie = mi_nkImageViewer->insertarMenu(-1, _("IsoSurface"));
+	nkMenuTool * mi_nkMenuIsoSuperficie = prv_nkToolBarImageViewer->insertarMenu(-1, _("IsoSurface"));
 	mi_nkMenuIsoSuperficie->insertarTool(new nkTool(nkNukak3D::ID_MARCHING_CUBES,_("3D: Marching Cubes"), wxNullBitmap, _("Reconstruction surface with Marching Cubes method.")));
 
 
 	/////////////////////////////////////////////////
 
 	// Menu image filters.
-	nkMenuTool * mi_nkMenuVolUtilidades = mi_nkImageViewer->insertarMenu(-1, _("Filter and Segmentation"));
+	nkMenuTool * mi_nkMenuVolUtilidades = prv_nkToolBarImageViewer->insertarMenu(-1, _("Filter and Segmentation"));
 	
 	mi_nkMenuVolUtilidades->insertarTool(
 		new nkTool(nkNukak3D::ID_LSLEVELSETSCOMPLETO,
@@ -192,10 +192,10 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	/////////////////////////////////////////////////
 
 	// Menu Mesh 3D.
-	nkMenuTool * mi_nkMenuFiltrosPoly = mi_nkImageViewer->insertarMenu(-1, _("Modifiers For Mesh 3D"));
+	nkMenuTool * mi_nkMenuFiltrosPoly = prv_nkToolBarImageViewer->insertarMenu(-1, _("Modifiers For Mesh 3D"));
 	
 	mi_nkMenuFiltrosPoly->insertarTool(
-		new nkTool(nkNukak3D::ID_BOUNDINGBOX,
+		new nkTool(nkNukak3D::ID_prBoundingBox,
 			_("Show/hide bounding box"), 
 			wxNullBitmap, 
 			_("Show/hide bounding box")));
@@ -232,7 +232,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 
 
 	// Menu Navitation.
-	nkMenuTool * mi_nkMenuNavegacion = mi_nkImageViewer->insertarMenu(-1, _("Navigation"));
+	nkMenuTool * mi_nkMenuNavegacion = prv_nkToolBarImageViewer->insertarMenu(-1, _("Navigation"));
 	
 	mi_nkMenuNavegacion->insertarTool(
 		new nkTool(nkNukak3D::ID_NAVRESET,
@@ -266,34 +266,34 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 
 	
 	// Menu stereoscopy vision
-	nkMenuTool * mi_nkMenuEstereo = mi_nkImageViewer->insertarMenu(-1, _("Stereoscopy"));
+	nkMenuTool * mi_nkMenuEstereo = prv_nkToolBarImageViewer->insertarMenu(-1, _("Stereoscopy"));
 	
 	mi_nkMenuEstereo->insertarTool(
-		new nkTool(nkNukak3D::ID_STACTIVO,
+		new nkTool(nkNukak3D::ID_STEREO_ACTIVE,
 			_("Enable Stereoscopy Vision"), 
 			wxNullBitmap, 
 			_("Enable/Disable Stereoscopy vision.")));
 
 	mi_nkMenuEstereo->insertarTool(
-		new nkTool(nkNukak3D::ID_STPASIVO,
+		new nkTool(nkNukak3D::ID_STEREO_PASSIVE,
 			_("Stereo passive"), 
 			wxNullBitmap, 
 			_("Enable/Disable Stereo passive.")));
 
 	mi_nkMenuEstereo->insertarTool(
-		new nkTool(nkNukak3D::ID_STAUMENTAR,
+		new nkTool(nkNukak3D::ID_STEREO_MORE_SEPARATION,
 			_("More separation +"), 
 			wxNullBitmap, 
 			_("More separation between images in Stereoscopy vision")));
 
 	mi_nkMenuEstereo->insertarTool(
-		new nkTool(nkNukak3D::ID_STDISMINUIR,
+		new nkTool(nkNukak3D::ID_STEREO_LESS_SEPARATION,
 			_("Less separation -"), 
 			wxNullBitmap, 
 			_("Less separation between images in Stereoscopy vision")));
 			
 	//Menu grupo "configuración" -> Colisiones -> lateral
-	nkMenuTool * mi_nkMenuColisiones = mi_nkImageViewer->insertarMenu(-1, _("Collision detection"));
+	nkMenuTool * mi_nkMenuColisiones = prv_nkToolBarImageViewer->insertarMenu(-1, _("Collision detection"));
 	
 	mi_nkMenuColisiones->insertarTool(
 		new nkTool(nkNukak3D::ID_CAMERAPOS,
@@ -307,19 +307,19 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 			_("Endoscopic camera")));
 	
 	// Insert nkToolBar Tools
-	this->insertarToolBar(mi_nkHerramientas, _("Tools"), _("Tools"));
+	this->prInsertToolBar(prv_nkToolBarTools, _("Tools"), _("Tools"));
 	// Insert nkToolBar Configuration
-	this->insertarToolBar(mi_nkImageViewer, _("Configuration"), _("Configuration"));
+	this->prInsertToolBar(prv_nkToolBarImageViewer, _("Configuration"), _("Configuration"));
 
 
-	prv_libro = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
+	prv_wxAuiNotebook = new wxAuiNotebook(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, 
 		wxAUI_NB_DEFAULT_STYLE | 
 		wxAUI_NB_TAB_EXTERNAL_MOVE | 
 		wxAUI_NB_WINDOWLIST_BUTTON |
 		wxAUI_NB_CLOSE_ON_ALL_TABS |
 		wxNO_BORDER);
 
-	prv_auiManager.AddPane(prv_libro, wxAuiPaneInfo().
+	prv_auiManager.AddPane(prv_wxAuiNotebook, wxAuiPaneInfo().
                   Name(_("Nukak3d Workspace")).Caption(_("Nukak 3D Files")).
 				  CenterPane().
 				  PaneBorder(false));
@@ -344,62 +344,62 @@ nkNukak3D::~nkNukak3D()
 //		TABLE OF EVENTS
 //*****************************************************************************************
 BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
-	EVT_TREE_ITEM_ACTIVATED(nkNukak3D::ID_ARBOL, nkNukak3D::eventoArbol)
-	EVT_MENU(nkNukak3D::ID_SALIR, nkNukak3D::eventoSalir)
-	EVT_MENU(nkNukak3D::ID_ACERCA_DE, nkNukak3D::eventoAcercaDe)
-	EVT_MENU(nkNukak3D::ID_ACERCA_DE_MAC, nkNukak3D::eventoAcercaDeMAC)
-	EVT_MENU(nkNukak3D::ID_ABRIR_ARCHIVO, nkNukak3D::eventoAbrirVolumen)
-	EVT_MENU(nkNukak3D::ID_ABRIR_ARCHIVO_DICOM, nkNukak3D::eventoAbrirVolumenDicom)
-	EVT_MENU(nkNukak3D::ID_ABRIR_ARCHIVO_MALLA3D, nkNukak3D::eventoAbrirMalla3D)
-	EVT_MENU(nkNukak3D::ID_BOUNDINGBOX, nkNukak3D::eventoBoundingBox)
-	EVT_MENU(nkNukak3D::ID_BOXWIDGET, nkNukak3D::eventoBoxWidget)
-	EVT_MENU(nkNukak3D::ID_GUARDARVOL, nkNukak3D::eventoGuardarVol)
-	EVT_MENU(nkNukak3D::ID_GUARDARMALLA3D, nkNukak3D::eventoGuardarMalla3D)
-	EVT_MENU(nkNukak3D::ID_MARCHING_CUBES, nkNukak3D::eventoMarchingCubes)
-	EVT_MENU(nkNukak3D::ID_REINICIAR_PALETA, nkNukak3D::eventoReiniciarPaleta)
-	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_ESCALAR, nkNukak3D::eventoVolViewerRenderingEscalar)
-	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_MIP, nkNukak3D::eventoVolViewerRenderingMRCmip)
-	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_COMP, nkNukak3D::eventoVolViewerRenderingMRCcomp)
-	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_ISO, nkNukak3D::eventoVolViewerRenderingMRCiso)
-	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_TEXTURA, nkNukak3D::eventoVolViewerRenderingTextura)
-	EVT_MENU(nkNukak3D::ID_LSLEVELSETSCOMPLETO, nkNukak3D::eventolsLevelsetsCompleto)
-	EVT_MENU(nkNukak3D::ID_AREA, nkNukak3D::eventoArea)
-	EVT_MENU(nkNukak3D::ID_NAVRESET, nkNukak3D::eventoNavResetCamara)
-	EVT_MENU(nkNukak3D::ID_NAVTRACKBALL,nkNukak3D::eventoNavTrackball)
-	EVT_MENU(nkNukak3D::ID_NAVJOYSTICK,nkNukak3D::eventoNavJoystick)
-	EVT_MENU(nkNukak3D::ID_NAVFLIGHT,nkNukak3D::eventoNavFlight)
-	EVT_MENU(nkNukak3D::ID_NAVUNICAM,nkNukak3D::eventoNavUnicam)
-	EVT_MENU(nkNukak3D::ID_STACTIVO, nkNukak3D::eventoStActivo)
-	EVT_MENU(nkNukak3D::ID_STPASIVO, nkNukak3D::eventoStPasivo)
-	EVT_MENU(nkNukak3D::ID_STAUMENTAR, nkNukak3D::eventoStAumentar)
-	EVT_MENU(nkNukak3D::ID_STDISMINUIR, nkNukak3D::eventoStDisminuir)
-	EVT_MENU(nkNukak3D::ID_FILVOLGAUSSIAN, nkNukak3D::eventoFilVolGaussian)
-	EVT_MENU(nkNukak3D::ID_FILVOLMEDIAN, nkNukak3D::eventoFilVolMedian)
-	EVT_MENU(nkNukak3D::ID_FILVOLGRADIENT, nkNukak3D::eventoFilVolGradient)
-	EVT_MENU(nkNukak3D::ID_FILVOLTHRESHOLD, nkNukak3D::eventoFilVolThreshold)
-	EVT_MENU(nkNukak3D::ID_FILPOLYTRIANGLE, nkNukak3D::eventoFilPolyTriangle)
-	EVT_MENU(nkNukak3D::ID_FILPOLYDECIMATE, nkNukak3D::eventoFilPolyDecimate)
-	EVT_MENU(nkNukak3D::ID_FILPOLYSMOOTH, nkNukak3D::eventoFilPolySmooth)
-	EVT_MENU(nkNukak3D::ID_FILPOLYNORMALS, nkNukak3D::eventoFilPolyNormals)
-	EVT_MENU(nkNukak3D::ID_FILPOLYDEFORM, nkNukak3D::eventoFilPolyDeform)
-	EVT_MENU(nkNukak3D::ID_SNAPSHOT3D, nkNukak3D::eventoSnapshot3D)
-	EVT_MENU(nkNukak3D::ID_SNAPSHOTAXIAL, nkNukak3D::eventoSnapshotAxial)
-	EVT_MENU(nkNukak3D::ID_SNAPSHOTSAGITAL, nkNukak3D::eventoSnapshotSagital)
-	EVT_MENU(nkNukak3D::ID_SNAPSHOTCORONAL, nkNukak3D::eventoSnapshotCoronal)
-	EVT_MENU(nkNukak3D::ID_SETLANGUAGE, nkNukak3D::eventoLanguage)
-	EVT_MENU(nkNukak3D::ID_PARIMAGE, nkNukak3D::eventoParImage)
-	EVT_MENU(nkNukak3D::ID_PARPOLYGON, nkNukak3D::eventoParPolygon)
-	EVT_MENU(nkNukak3D::ID_PARVIDEO,  nkNukak3D::eventoParVideo)
-	EVT_MENU(nkNukak3D::ID_CAMERAPOS, nkNukak3D::eventoCameraPos)
-	EVT_MENU(nkNukak3D::ID_NAVENDOSCOPE, nkNukak3D::eventoNavEndoscope)
-	EVT_MENU(nkNukak3D::ID_FPS, nkNukak3D::eventoFPS)
-	EVT_MENU(wxID_ANY, nkNukak3D::eventoPaletaColor)
+	EVT_TREE_ITEM_ACTIVATED(nkNukak3D::ID_TREE, nkNukak3D::prEventTree)
+	EVT_MENU(nkNukak3D::ID_EXIT, nkNukak3D::prEventExit)
+	EVT_MENU(nkNukak3D::ID_ABOUT, nkNukak3D::prEventAbout)
+	EVT_MENU(nkNukak3D::ID_ABOUT_MAC, nkNukak3D::prEventAboutMAC)
+	EVT_MENU(nkNukak3D::ID_OPEN_FILE, nkNukak3D::prEventOpenVolumen)
+	EVT_MENU(nkNukak3D::ID_OPEN_FILE_DICOM, nkNukak3D::prEventOpenVolumenDicom)
+	EVT_MENU(nkNukak3D::ID_OPEN_FILE_MESH3D, nkNukak3D::prEventOpenMesh3D)
+	EVT_MENU(nkNukak3D::ID_prBoundingBox, nkNukak3D::prEventprBoundingBox)
+	EVT_MENU(nkNukak3D::ID_BOXWIDGET, nkNukak3D::prEventBoxWidget)
+	EVT_MENU(nkNukak3D::ID_SAVE_VOL, nkNukak3D::prEventSaveVol)
+	EVT_MENU(nkNukak3D::ID_SAVE_MESH3D, nkNukak3D::prEventSaveMesh3D)
+	EVT_MENU(nkNukak3D::ID_MARCHING_CUBES, nkNukak3D::prEventMarchingCubes)
+	EVT_MENU(nkNukak3D::ID_RESET_LOOKUP_TABLE, nkNukak3D::prEventResetLookupTable)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_ESCALAR, nkNukak3D::prEventVolViewerRenderingEscalar)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_MIP, nkNukak3D::prEventVolViewerRenderingMRCmip)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_COMP, nkNukak3D::prEventVolViewerRenderingMRCcomp)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_MRC_ISO, nkNukak3D::prEventVolViewerRenderingMRCiso)
+	EVT_MENU(nkNukak3D::ID_VOLVIEWER_RENDERING_TEXTURE, nkNukak3D::prEventVolViewerRenderingTextura)
+	EVT_MENU(nkNukak3D::ID_LSLEVELSETSCOMPLETO, nkNukak3D::prEventLevelSets)
+	EVT_MENU(nkNukak3D::ID_AREA, nkNukak3D::prEventCalcArea)
+	EVT_MENU(nkNukak3D::ID_NAVRESET, nkNukak3D::prEventprNavResetCamara)
+	EVT_MENU(nkNukak3D::ID_NAVTRACKBALL,nkNukak3D::prEventprNavTrackball)
+	EVT_MENU(nkNukak3D::ID_NAVJOYSTICK,nkNukak3D::prEventprNavJoystick)
+	EVT_MENU(nkNukak3D::ID_NAVFLIGHT,nkNukak3D::prEventprNavFlight)
+	EVT_MENU(nkNukak3D::ID_NAVUNICAM,nkNukak3D::prEventprNavUnicam)
+	EVT_MENU(nkNukak3D::ID_STEREO_ACTIVE, nkNukak3D::prEventprActiveStereo)
+	EVT_MENU(nkNukak3D::ID_STEREO_PASSIVE, nkNukak3D::prEventprStereoPassive)
+	EVT_MENU(nkNukak3D::ID_STEREO_MORE_SEPARATION, nkNukak3D::prEventStMoreSeparation)
+	EVT_MENU(nkNukak3D::ID_STEREO_LESS_SEPARATION, nkNukak3D::prEventStLessSeparation)
+	EVT_MENU(nkNukak3D::ID_FILVOLGAUSSIAN, nkNukak3D::prEventFilVolGaussian)
+	EVT_MENU(nkNukak3D::ID_FILVOLMEDIAN, nkNukak3D::prEventFilVolMedian)
+	EVT_MENU(nkNukak3D::ID_FILVOLGRADIENT, nkNukak3D::prEventFilVolGradient)
+	EVT_MENU(nkNukak3D::ID_FILVOLTHRESHOLD, nkNukak3D::prEventFilVolThreshold)
+	EVT_MENU(nkNukak3D::ID_FILPOLYTRIANGLE, nkNukak3D::prEventFilprPolyTriangle)
+	EVT_MENU(nkNukak3D::ID_FILPOLYDECIMATE, nkNukak3D::prEventFilprPolyDecimate)
+	EVT_MENU(nkNukak3D::ID_FILPOLYSMOOTH, nkNukak3D::prEventFilprPolySmooth)
+	EVT_MENU(nkNukak3D::ID_FILPOLYNORMALS, nkNukak3D::prEventFilprPolyNormals)
+	EVT_MENU(nkNukak3D::ID_FILPOLYDEFORM, nkNukak3D::prEventFilprPolyDeform)
+	EVT_MENU(nkNukak3D::ID_SNAPSHOT3D, nkNukak3D::prEventSnapshot3D)
+	EVT_MENU(nkNukak3D::ID_SNAPSHOTAXIAL, nkNukak3D::prEventSnapshotAxial)
+	EVT_MENU(nkNukak3D::ID_SNAPSHOTSAGITAL, nkNukak3D::prEventSnapshotSagital)
+	EVT_MENU(nkNukak3D::ID_SNAPSHOTCORONAL, nkNukak3D::prEventSnapshotCoronal)
+	EVT_MENU(nkNukak3D::ID_SETLANGUAGE, nkNukak3D::prEventChangeLanguage)
+	EVT_MENU(nkNukak3D::ID_INFORMATION_IMAGE, nkNukak3D::prEventInformationImage)
+	EVT_MENU(nkNukak3D::ID_INFORMATION_POLYGON, nkNukak3D::prEventInformationPolygon)
+	EVT_MENU(nkNukak3D::ID_INFORMATION_VIDEO_CARD,  nkNukak3D::prEventInformationVideoCard)
+	EVT_MENU(nkNukak3D::ID_CAMERAPOS, nkNukak3D::prEventPositionCamera)
+	EVT_MENU(nkNukak3D::ID_NAVENDOSCOPE, nkNukak3D::prEventNavEndoscope)
+	EVT_MENU(nkNukak3D::ID_FPS, nkNukak3D::prEventFPS)
+	EVT_MENU(wxID_ANY, nkNukak3D::prEventLookupTable)
 END_EVENT_TABLE()
 
 //*****************************************************************************************
 //		INSERT TOOLBAR
 //*****************************************************************************************
-void nkNukak3D::insertarToolBar(wxWindow* window, wxString un_nombre, wxString una_etiqueta){
+void nkNukak3D::prInsertToolBar(wxWindow* window, wxString a_name, wxString a_label){
 	int separacion = 15;
 #ifdef __WIN32__
 	separacion = 15;
@@ -407,9 +407,9 @@ void nkNukak3D::insertarToolBar(wxWindow* window, wxString un_nombre, wxString u
 	separacion = 50;
 #endif //__WIN32__
 	prv_auiManager.AddPane(window, wxAuiPaneInfo().
-              Name(un_nombre).
+              Name(a_name).
 			  Left().
-			  Caption(una_etiqueta).
+			  Caption(a_label).
 			  TopDockable(false).
 			  BottomDockable(false).
 			  CloseButton(false).
@@ -425,13 +425,13 @@ void nkNukak3D::insertarToolBar(wxWindow* window, wxString un_nombre, wxString u
 //*****************************************************************************************
 //		MENU -> ARCHIVO -> SALIR
 //*****************************************************************************************
-void nkNukak3D::eventoSalir(wxCommandEvent& WXUNUSED(event)){
+void nkNukak3D::prEventExit(wxCommandEvent& WXUNUSED(event)){
 	Close(TRUE);
 }
 //*****************************************************************************************
 //		MENU -> AYUDA -> ACERCA DE
 //*****************************************************************************************
-void nkNukak3D::eventoAcercaDe(wxCommandEvent& WXUNUSED(event)){
+void nkNukak3D::prEventAbout(wxCommandEvent& WXUNUSED(event)){
 	nkAcercaDe * miAcercaDe = new nkAcercaDe(this);
 	miAcercaDe->ShowModal();
 	delete miAcercaDe;
@@ -439,7 +439,7 @@ void nkNukak3D::eventoAcercaDe(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> AYUDA -> ACERCA DE    Version MAC
 //*****************************************************************************************
-void nkNukak3D::eventoAcercaDeMAC(wxCommandEvent& WXUNUSED(event)){
+void nkNukak3D::prEventAboutMAC(wxCommandEvent& WXUNUSED(event)){
 	nkAcercaDe * miAcercaDe = new nkAcercaDe(this);
 	miAcercaDe->ShowModal();
 	delete miAcercaDe;
@@ -447,7 +447,7 @@ void nkNukak3D::eventoAcercaDeMAC(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> ABRIR -> VOLUMEN
 //*****************************************************************************************
-void nkNukak3D::eventoAbrirVolumen(wxCommandEvent& WXUNUSED(event)){
+void nkNukak3D::prEventOpenVolumen(wxCommandEvent& WXUNUSED(event)){
 
 	const wxString miWxFilter =
 	wxT ("Image File (*.hdr;*.inr;*.inr.gz;*.gipl;*.mha;*.mhd;*.vtk;*.nrrd;*.nhdr;*.nii;*.nii.gz;*.jpg;*.tif)|*.hdr;*.inr;*.inr.gz;*.gipl;*.mha;*.mhd;*.vtk;*.vol;*.nrrd;*.nhdr;*.nii;*.nii.gz;*.jpg;*.tif|")
@@ -481,21 +481,21 @@ void nkNukak3D::eventoAbrirVolumen(wxCommandEvent& WXUNUSED(event)){
 	wxBeginBusyCursor();
     
 	unsigned int Nimages = nombresArchivos.Count();
-	wxString extension, nombreArchivo;
+	wxString extension, a_fileName;
 
 	for( unsigned int i=0; i<Nimages; i++ )	{
-		nombreArchivo = nombresArchivos[i];
-		extension = nombreArchivo.Mid(nombreArchivo.Length()-3,3);
+		a_fileName = nombresArchivos[i];
+		extension = a_fileName.Mid(a_fileName.Length()-3,3);
 		if( extension == "vol" ){
-			nkVolViewer * mivol = new nkVolViewer(prv_libro);
-			mivol->Configurar();
-			mivol->abrirArchivo_vol(nombreArchivo);
-			prv_libro->AddPage(mivol, nombreArchivo,true );
+			nkVolViewer * mivol = new nkVolViewer(prv_wxAuiNotebook);
+			mivol->Configure();
+			mivol->prOpenFile_vol(a_fileName);
+			prv_wxAuiNotebook->AddPage(mivol, a_fileName,true );
 		}else{
-			nkVolViewer * mivol = new nkVolViewer(prv_libro);
-			mivol->Configurar();
-			mivol->abrirArchivo(nombreArchivo);
-			prv_libro->AddPage(mivol, nombreArchivo,true );
+			nkVolViewer * mivol = new nkVolViewer(prv_wxAuiNotebook);
+			mivol->Configure();
+			mivol->prOpenFile(a_fileName);
+			prv_wxAuiNotebook->AddPage(mivol, a_fileName,true );
 		}
 	}
 
@@ -504,7 +504,7 @@ void nkNukak3D::eventoAbrirVolumen(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> OPEN -> VOLUME DICOM
 //*****************************************************************************************
-void nkNukak3D::eventoAbrirVolumenDicom(wxCommandEvent& WXUNUSED(event)){
+void nkNukak3D::prEventOpenVolumenDicom(wxCommandEvent& WXUNUSED(event)){
 	wxVtkDICOMImporter* miImporter = new wxVtkDICOMImporter (this);
 
 	if( miImporter->GetReturnCode()!=wxID_OK ){
@@ -521,11 +521,11 @@ void nkNukak3D::eventoAbrirVolumenDicom(wxCommandEvent& WXUNUSED(event)){
 		if (!miImporter->GetOutput(i)){
 		continue;
 		}
-		nkVolViewer * mi_Vol2 = new nkVolViewer(prv_libro, wxID_ANY);
-		mi_Vol2->Configurar();
+		nkVolViewer * mi_Vol2 = new nkVolViewer(prv_wxAuiNotebook, wxID_ANY);
+		mi_Vol2->Configure();
 		wxString basename = wxT (miImporter->GetDescription (i).c_str());
-		prv_libro->AddPage(mi_Vol2, basename,true );
-		mi_Vol2->abrirArchivo_dicom(basename, miImporter, i);
+		prv_wxAuiNotebook->AddPage(mi_Vol2, basename,true );
+		mi_Vol2->prOpenFile_dicom(basename, miImporter, i);
 	}
 	miImporter->Destroy();
 
@@ -534,7 +534,7 @@ void nkNukak3D::eventoAbrirVolumenDicom(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> OPEN -> MESH 3D
 //*****************************************************************************************
-void nkNukak3D::eventoAbrirMalla3D(wxCommandEvent& WXUNUSED(event)){
+void nkNukak3D::prEventOpenMesh3D(wxCommandEvent& WXUNUSED(event)){
 	const wxString miWxFilter =
 	wxT ("VTK (*.vtk)|*.vtk|")
 	wxT ("All (*)|*");
@@ -546,7 +546,7 @@ void nkNukak3D::eventoAbrirMalla3D(wxCommandEvent& WXUNUSED(event)){
                                                   miWxFilter,
                                                   wxFD_OPEN|wxFD_CHANGE_DIR|wxFD_MULTIPLE, wxDefaultPosition);
     wxArrayString nombresArchivos;
-	wxString nombreArchivo;
+	wxString a_fileName;
     nombresArchivos.Empty();
     int OK = miFileDialog->ShowModal();
     
@@ -560,21 +560,21 @@ void nkNukak3D::eventoAbrirMalla3D(wxCommandEvent& WXUNUSED(event)){
 	unsigned int Nimages = nombresArchivos.Count();
 
 	for( unsigned int i=0; i<Nimages; i++ )	{
-		nombreArchivo = nombresArchivos[i];
-		nkObj3DViewer * miobj = new nkObj3DViewer(prv_libro);
-		miobj->Configurar();
-		miobj->abrirArchivo(nombreArchivo);
-		prv_libro->AddPage(miobj, nombreArchivo,true );
+		a_fileName = nombresArchivos[i];
+		nkObj3DViewer * miobj = new nkObj3DViewer(prv_wxAuiNotebook);
+		miobj->Configure();
+		miobj->prOpenFile(a_fileName);
+		prv_wxAuiNotebook->AddPage(miobj, a_fileName,true );
 	}
 	wxEndBusyCursor();
 }
 //*****************************************************************************************
 //		MENU -> OPEN -> VOLUME
 //*****************************************************************************************
-void nkNukak3D::eventoGuardarVol(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventSaveVol(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			const wxString miWxFilter =
 				wxT ("Image File (*.hdr;*.inr;*.inr.gz;*.gipl;*.mha;*.mhd;*.vtk;*.nrrd;*.nhdr;*.nii;*.nii.gz;*.jpg;*.tif)|*.hdr;*.inr;*.inr.gz;*.gipl;*.mha;*.mhd;*.vtk;*.nrrd;*.nhdr;*.nii;*.nii.gz;*.jpg;*.tif|")
@@ -593,21 +593,21 @@ void nkNukak3D::eventoGuardarVol(wxCommandEvent& WXUNUSED(event)){
                                                   wxT(""), wxT(""),
                                                   miWxFilter,
                                                   wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
-			wxString nombreArchivo;
-			nombreArchivo.Empty();
+			wxString a_fileName;
+			a_fileName.Empty();
 			int OK = myFileDialog->ShowModal();
 		    
 			if( OK==wxID_OK )
-			nombreArchivo = myFileDialog->GetPath();
+			a_fileName = myFileDialog->GetPath();
 		    
 			myFileDialog->Destroy();
-			if( nombreArchivo.IsEmpty() )
+			if( a_fileName.IsEmpty() )
 			{
 				return;
 			}
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->guardarArchivo(nombreArchivo);
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prSaveFile(a_fileName);
 			wxEndBusyCursor();
 		}
 	}
@@ -615,10 +615,10 @@ void nkNukak3D::eventoGuardarVol(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> SAVE -> MESH 3D
 //*****************************************************************************************
-void nkNukak3D::eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventSaveMesh3D(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
 			const wxString miWxFilter =
 				wxT ("Poligon mesh File (*.vtk)|")				
@@ -629,21 +629,21 @@ void nkNukak3D::eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event)){
                                                   wxT(""), wxT(""),
                                                   miWxFilter,
                                                   wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
-			wxString nombreArchivo;
-			nombreArchivo.Empty();
+			wxString a_fileName;
+			a_fileName.Empty();
 			int OK = myFileDialog->ShowModal();
 		    
 			if( OK==wxID_OK )
-			nombreArchivo = myFileDialog->GetPath();
+			a_fileName = myFileDialog->GetPath();
 		    
 			myFileDialog->Destroy();
-			if( nombreArchivo.IsEmpty() )
+			if( a_fileName.IsEmpty() )
 			{
 				return;
 			}
 			wxBeginBusyCursor();
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->guardarArchivo(nombreArchivo);
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prSaveFile(a_fileName);
 			wxEndBusyCursor();
 		}
 	}
@@ -651,45 +651,45 @@ void nkNukak3D::eventoGuardarMalla3D(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		EVENT TREE
 //*****************************************************************************************
-void nkNukak3D::eventoArbol(wxTreeEvent& event){
+void nkNukak3D::prEventTree(wxTreeEvent& event){
 	wxCommandEvent mievento;
 #ifdef __WIN32__
 	wxString mi_item = wxT("NULL");
 #else //MAC O UNIX
-	wxString mi_item = mi_nkHerramientas->GetItemText(event.GetItem());
+	wxString mi_item = prv_nkToolBarTools->GetItemText(event.GetItem());
 #endif //__WIN32__
-	if (mi_item == _("Activate/deactivate collision detection")) eventoCameraPos(mievento);
-	else if (mi_item == _("Area of Axial Image")) eventoArea(mievento);
-	else if (mi_item == _("Decimate Mesh 3D")) eventoFilPolyDecimate(mievento);
-	else if (mi_item == _("Deform")) eventoFilPolyDeform(mievento);
-	else if (mi_item == _("Dicom Directory")) eventoAbrirVolumenDicom(mievento);
-	else if (mi_item == _("Enable Stereoscopy Vision")) eventoStActivo(mievento);
-	else if (mi_item == _("Endoscopic camera")) eventoNavEndoscope(mievento);
-	else if (mi_item == _("Flight")) eventoNavFlight(mievento);
-	else if (mi_item == _("Gaussian Filter")) eventoFilVolGaussian(mievento);
-	else if (mi_item == _("Joystick")) eventoNavJoystick(mievento);
-	else if (mi_item == _("Less separation -")) eventoStDisminuir(mievento);
-	else if (mi_item == _("Median Filter")) eventoFilVolMedian(mievento);
-	else if (mi_item == _("More separation +")) eventoStAumentar(mievento);
-	else if (mi_item == _("Normals")) eventoFilPolyNormals(mievento);
-	else if (mi_item == _("Polygon Mesh")) eventoAbrirMalla3D(mievento);
-	else if (mi_item == _("Reset Lookup Table")) eventoReiniciarPaleta(mievento);
-	else if (mi_item == _("Segmentation with Levelsets")) eventolsLevelsetsCompleto(mievento);
-	else if (mi_item == _("Reset Camera")) eventoNavResetCamara(mievento);
-	else if (mi_item == _("Scalar: Ortogonal planes")) eventoVolViewerRenderingEscalar(mievento);
-	else if (mi_item == _("Smooth")) eventoFilPolySmooth(mievento);
-	else if (mi_item == _("Show/hide bounding box")) eventoBoundingBox(mievento);
-	else if (mi_item == _("Show/hide box widget")) eventoBoxWidget(mievento);
-	else if (mi_item == _("Stereo passive")) eventoStPasivo(mievento);
-	else if (mi_item == _("Trackball")) eventoNavTrackball(mievento);
-	else if (mi_item == _("Triangulated")) eventoFilPolyTriangle(mievento);
-	else if (mi_item == _("Unicam")) eventoNavUnicam(mievento);
-	else if (mi_item == _("Volume")) eventoAbrirVolumen(mievento);
-	else if (mi_item == _("3D: Marching Cubes")) eventoMarchingCubes(mievento);
-	else if (mi_item == _("3D: Raycasting MIP")) eventoVolViewerRenderingMRCmip(mievento);
-	else if (mi_item == _("3D: Raycasting composite")) eventoVolViewerRenderingMRCcomp(mievento);
-	else if (mi_item == _("3D: Raycasting isosurface")) eventoVolViewerRenderingMRCiso(mievento);
-	else if (mi_item == _("3D: Texture Mapping")) eventoVolViewerRenderingTextura(mievento);
+	if (mi_item == _("Activate/deactivate collision detection")) prEventPositionCamera(mievento);
+	else if (mi_item == _("Area of Axial Image")) prEventCalcArea(mievento);
+	else if (mi_item == _("Decimate Mesh 3D")) prEventFilprPolyDecimate(mievento);
+	else if (mi_item == _("Deform")) prEventFilprPolyDeform(mievento);
+	else if (mi_item == _("Dicom Directory")) prEventOpenVolumenDicom(mievento);
+	else if (mi_item == _("Enable Stereoscopy Vision")) prEventprActiveStereo(mievento);
+	else if (mi_item == _("Endoscopic camera")) prEventNavEndoscope(mievento);
+	else if (mi_item == _("Flight")) prEventprNavFlight(mievento);
+	else if (mi_item == _("Gaussian Filter")) prEventFilVolGaussian(mievento);
+	else if (mi_item == _("Joystick")) prEventprNavJoystick(mievento);
+	else if (mi_item == _("Less separation -")) prEventStLessSeparation(mievento);
+	else if (mi_item == _("Median Filter")) prEventFilVolMedian(mievento);
+	else if (mi_item == _("More separation +")) prEventStMoreSeparation(mievento);
+	else if (mi_item == _("Normals")) prEventFilprPolyNormals(mievento);
+	else if (mi_item == _("Polygon Mesh")) prEventOpenMesh3D(mievento);
+	else if (mi_item == _("Reset Lookup Table")) prEventResetLookupTable(mievento);
+	else if (mi_item == _("Segmentation with Levelsets")) prEventLevelSets(mievento);
+	else if (mi_item == _("Reset Camera")) prEventprNavResetCamara(mievento);
+	else if (mi_item == _("Scalar: Ortogonal planes")) prEventVolViewerRenderingEscalar(mievento);
+	else if (mi_item == _("Smooth")) prEventFilprPolySmooth(mievento);
+	else if (mi_item == _("Show/hide bounding box")) prEventprBoundingBox(mievento);
+	else if (mi_item == _("Show/hide box widget")) prEventBoxWidget(mievento);
+	else if (mi_item == _("Stereo passive")) prEventprStereoPassive(mievento);
+	else if (mi_item == _("Trackball")) prEventprNavTrackball(mievento);
+	else if (mi_item == _("Triangulated")) prEventFilprPolyTriangle(mievento);
+	else if (mi_item == _("Unicam")) prEventprNavUnicam(mievento);
+	else if (mi_item == _("Volume")) prEventOpenVolumen(mievento);
+	else if (mi_item == _("3D: Marching Cubes")) prEventMarchingCubes(mievento);
+	else if (mi_item == _("3D: Raycasting MIP")) prEventVolViewerRenderingMRCmip(mievento);
+	else if (mi_item == _("3D: Raycasting composite")) prEventVolViewerRenderingMRCcomp(mievento);
+	else if (mi_item == _("3D: Raycasting isosurface")) prEventVolViewerRenderingMRCiso(mievento);
+	else if (mi_item == _("3D: Texture Mapping")) prEventVolViewerRenderingTextura(mievento);
 
 	std::vector<std::string> lutNames = vtkLookupTableManager::GetAvailableLookupTables();
 	int val = -1;
@@ -697,37 +697,37 @@ void nkNukak3D::eventoArbol(wxTreeEvent& event){
 		if (mi_item == _(lutNames[i].c_str())) val = i;
 	}
 	if (val>-1){
-		wxCommandEvent event(0, val +nkNukak3D::ID_ULTIMO);
-		eventoPaletaColor(event);
+		wxCommandEvent event(0, val +nkNukak3D::ID_LAST_LOOKUP_TABLE);
+		prEventLookupTable(event);
 	}
 }
 
 //*****************************************************************************************
 //		SHOW/HIDE BOUNDING BOX
 //*****************************************************************************************
-void nkNukak3D::eventoBoundingBox(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventprBoundingBox(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->BoundingBoxOnOff();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prBoundingBoxOnOff();
 		}
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->BoundingBoxOnOff();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prBoundingBoxOnOff();
 		}
 	}
 }
 //*****************************************************************************************
 //		SHOW/HIDE BOX WIDGET
 //*****************************************************************************************
-void nkNukak3D::eventoBoxWidget(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventBoxWidget(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->BoxWidgetOnOff();
 		}
 	}
@@ -736,13 +736,13 @@ void nkNukak3D::eventoBoxWidget(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> LOOKUP TABLE -> RESET
 //*****************************************************************************************
-void nkNukak3D::eventoReiniciarPaleta(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventResetLookupTable(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->reiniciarNiveleseDePaleta();
 			wxEndBusyCursor();
 		}
@@ -751,14 +751,14 @@ void nkNukak3D::eventoReiniciarPaleta(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> LOOKUP TABLE -> SELECT
 //*****************************************************************************************
-void nkNukak3D::eventoPaletaColor(wxCommandEvent& event){
-	if (event.GetId() >= nkNukak3D::ID_ULTIMO){
-		if ((int)prv_libro->GetPageCount() > 0){
-			int mi_pagina = prv_libro->GetSelection();
-			wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventLookupTable(wxCommandEvent& event){
+	if (event.GetId() >= nkNukak3D::ID_LAST_LOOKUP_TABLE){
+		if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+			int mi_pagina = prv_wxAuiNotebook->GetSelection();
+			wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			if (pagina->GetName() == wxT("nkVolViewer")){
-				nkVolViewer *page = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-				int val = event.GetId() - nkNukak3D::ID_ULTIMO;
+				nkVolViewer *page = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+				int val = event.GetId() - nkNukak3D::ID_LAST_LOOKUP_TABLE;
 				vtkLookupTable* lut = vtkLookupTableManager::GetLookupTable(val);
 				if( lut && page ){
 					wxBeginBusyCursor();
@@ -773,13 +773,13 @@ void nkNukak3D::eventoPaletaColor(wxCommandEvent& event){
 //*****************************************************************************************
 //		MENU -> VISUALIZACION DE VOLUMENES 3D -> ESCALAR (PLANOS ORTOGONALES)
 //*****************************************************************************************
-void nkNukak3D::eventoVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->cambiarFormaDeProcesamiento(vtkViewImage3D::PLANAR_RENDERING);
 			wxEndBusyCursor();
 		}
@@ -788,13 +788,13 @@ void nkNukak3D::eventoVolViewerRenderingEscalar(wxCommandEvent& WXUNUSED(event))
 //*****************************************************************************************
 //		MENU -> VISUALIZACION DE VOLUMENES 3D -> RAY CASTING MIP
 //*****************************************************************************************
-void nkNukak3D::eventoVolViewerRenderingMRCmip(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventVolViewerRenderingMRCmip(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->cambiarFormaDeProcesamiento(vtkViewImage3D::VOLUME_RENDERING, 2);
 			wxEndBusyCursor();
 		}
@@ -803,13 +803,13 @@ void nkNukak3D::eventoVolViewerRenderingMRCmip(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> VISUALIZACION DE VOLUMENES 3D -> RAY CASTING COMPOSITE
 //*****************************************************************************************
-void nkNukak3D::eventoVolViewerRenderingMRCcomp(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventVolViewerRenderingMRCcomp(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->cambiarFormaDeProcesamiento(vtkViewImage3D::VOLUME_RENDERING, 3);
 			wxEndBusyCursor();
 		}
@@ -818,13 +818,13 @@ void nkNukak3D::eventoVolViewerRenderingMRCcomp(wxCommandEvent& WXUNUSED(event))
 //*****************************************************************************************
 //		MENU -> VISUALIZACION DE VOLUMENES 3D -> RAY CASTING ISOSURFACE
 //*****************************************************************************************
-void nkNukak3D::eventoVolViewerRenderingMRCiso(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventVolViewerRenderingMRCiso(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->cambiarFormaDeProcesamiento(vtkViewImage3D::VOLUME_RENDERING, 4);
 			wxEndBusyCursor();
 		}
@@ -833,13 +833,13 @@ void nkNukak3D::eventoVolViewerRenderingMRCiso(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> VISUALIZACION DE VOLUMENES 3D -> TEXTURE RENDERING
 //*****************************************************************************************
-void nkNukak3D::eventoVolViewerRenderingTextura(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventVolViewerRenderingTextura(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->cambiarFormaDeProcesamiento(vtkViewImage3D::VOLUME_RENDERING, 1);
 			wxEndBusyCursor();
 		}
@@ -848,12 +848,12 @@ void nkNukak3D::eventoVolViewerRenderingTextura(wxCommandEvent& WXUNUSED(event))
 //*****************************************************************************************
 //		MENU -> ISOSUPERFICIE -> MARCHING CUBES
 //*****************************************************************************************
-void nkNukak3D::eventoMarchingCubes(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventMarchingCubes(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 			wxString etiquetas[100];
 			const int num_datos=3;
@@ -878,18 +878,18 @@ void nkNukak3D::eventoMarchingCubes(wxCommandEvent& WXUNUSED(event)){
 			if(miDlg->GetReturnCode() == wxID_OK){
 				wxBeginBusyCursor();
 
-				nkObj3DViewer * miobj = new nkObj3DViewer(prv_libro);
+				nkObj3DViewer * miobj = new nkObj3DViewer(prv_wxAuiNotebook);
 
 				(miDlg->obtenerValor(0)).ToLong(&num_contornos);
 				(miDlg->obtenerValor(1)).ToLong(&umbralInferior);
 				(miDlg->obtenerValor(2)).ToLong(&umbralSuperior);
 
-				miobj->Configurar();
-				miobj->imagenAIsoSurface(current->getImagen(),
+				miobj->Configure();
+				miobj->prImageToIsoSurface(current->getImagen(),
 					(int)num_contornos, 
 					(int)umbralInferior,  
 					(int)umbralSuperior,1.0,1.0,1.0,1.0);
-				prv_libro->AddPage(miobj, current->getNombreArchivo(),true );
+				prv_wxAuiNotebook->AddPage(miobj, current->geta_fileName(),true );
 				delete miDlg;
 
 				wxEndBusyCursor();
@@ -900,32 +900,32 @@ void nkNukak3D::eventoMarchingCubes(wxCommandEvent& WXUNUSED(event)){
 //*****************************************************************************************
 //		MENU -> SEGMENTAtION -> LEVELSETS
 //*****************************************************************************************
-void nkNukak3D::eventolsLevelsetsCompleto(wxCommandEvent& WXUNUSED(event)){
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+void nkNukak3D::prEventLevelSets(wxCommandEvent& WXUNUSED(event)){
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			//current->lsLevelsetsCompleto( nkNukak3D::getNkNotebook() );			
-			current->NuevoLevelSets(nkNukak3D::getNkNotebook() );			
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			//current->lsLevelsetsCompleto( nkNukak3D::getWxAuiNotebook() );			
+			current->NuevoLevelSets(nkNukak3D::getWxAuiNotebook() );			
 		}
 	}
 }
 
-wxAuiNotebook * nkNukak3D::getNkNotebook(void){
-	return prv_libro;
+wxAuiNotebook * nkNukak3D::getWxAuiNotebook(void){
+	return prv_wxAuiNotebook;
 }
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> CALCULAR AREA AXIAL
 //*****************************************************************************************
-void nkNukak3D::eventoArea(wxCommandEvent& WXUNUSED(event))
+void nkNukak3D::prEventCalcArea(wxCommandEvent& WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
 			wxBeginBusyCursor();
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->Area();	
 			wxEndBusyCursor();
 		}
@@ -935,212 +935,212 @@ void nkNukak3D::eventoArea(wxCommandEvent& WXUNUSED(event))
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> RESET CAMERA
 //*****************************************************************************************
-void nkNukak3D::eventoNavResetCamara(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventprNavResetCamara(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavResetCamara();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavResetCamara();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer")) 
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavResetCamara();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavResetCamara();
 		}
 	}
 }
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> TRACKBALL
 //*****************************************************************************************
-void nkNukak3D::eventoNavTrackball(wxCommandEvent& WXUNUSED(event) )
+void nkNukak3D::prEventprNavTrackball(wxCommandEvent& WXUNUSED(event) )
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavTrackball();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavTrackball();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer")) 
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavTrackball();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavTrackball();
 		}
 	}
 }
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> JOYSTICK
 //*****************************************************************************************
-void nkNukak3D::eventoNavJoystick(wxCommandEvent& WXUNUSED(event))
+void nkNukak3D::prEventprNavJoystick(wxCommandEvent& WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavJoystick();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavJoystick();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer"))
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavJoystick();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavJoystick();
 		}
 	}
 }
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> FLIGHT
 //*****************************************************************************************
-void nkNukak3D::eventoNavFlight(wxCommandEvent& WXUNUSED(event))
+void nkNukak3D::prEventprNavFlight(wxCommandEvent& WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavFlight();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavFlight();
 		}
 		else 
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavFlight();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavFlight();
 		}
 	}
 }
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> UNICAM
 //*****************************************************************************************
-void nkNukak3D::eventoNavUnicam(wxCommandEvent& WXUNUSED(event))
+void nkNukak3D::prEventprNavUnicam(wxCommandEvent& WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavUnicam();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavUnicam();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer"))
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->NavUnicam();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prNavUnicam();
 		}
 	}
 }
 //*****************************************************************************************
 //		ACTIVE STEREO
 //*****************************************************************************************
-void nkNukak3D::eventoStActivo(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventprActiveStereo(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StActivo();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prActiveStereo();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer"))
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StActivo();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prActiveStereo();
 		}
 	}
 }
 //*****************************************************************************************
 //		PASIVE STEREO
 //*****************************************************************************************
-void nkNukak3D::eventoStPasivo(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventprStereoPassive(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StPasivo();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prStereoPassive();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer"))
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StPasivo();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prStereoPassive();
 		}
 	}
 }
 //*****************************************************************************************
 //		STEREO INCREASE - Increase stereo separation
 //*****************************************************************************************
-void nkNukak3D::eventoStAumentar(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventStMoreSeparation(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StAumentar();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prStereoMoreSeparation();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer"))
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StAumentar();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prStereoMoreSeparation();
 		}
 	}
 }
 //*****************************************************************************************
 //		STEREO DECREASE - Decrease stereo separation
 //*****************************************************************************************
-void nkNukak3D::eventoStDisminuir(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventStLessSeparation(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StDisminuir();
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prStereoLessSeparation();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer"))
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->StDisminuir();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prStereoLessSeparation();
 		}
 	}
 }
 //*****************************************************************************************
 //		FILTER -> GAUSSIAN
 //*****************************************************************************************
-void nkNukak3D::eventoFilVolGaussian(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilVolGaussian(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->FilVolGaussian( nkNukak3D::getNkNotebook() );
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->FilVolGaussian( nkNukak3D::getWxAuiNotebook() );
 		}
 	}
 }
 //*****************************************************************************************
 //		FILTER -> MEDIAN
 //*****************************************************************************************
-void nkNukak3D::eventoFilVolMedian(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilVolMedian(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->FilVolMedian( nkNukak3D::getNkNotebook() );
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->FilVolMedian( nkNukak3D::getWxAuiNotebook() );
 		}
 	}
 }
 //*****************************************************************************************
 //		FILTER -> GRADIENT
 //*****************************************************************************************
-void nkNukak3D::eventoFilVolGradient(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilVolGradient(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->FilVolGradient();
 		}
 	}
@@ -1148,13 +1148,13 @@ void nkNukak3D::eventoFilVolGradient(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		FILTER -> THRESHOLD
 //*****************************************************************************************
-void nkNukak3D::eventoFilVolThreshold(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilVolThreshold(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->FilVolThreshold();
 		}
 	}
@@ -1163,81 +1163,81 @@ void nkNukak3D::eventoFilVolThreshold(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		FILTER -> TRIANGULATE
 //*****************************************************************************************
-void nkNukak3D::eventoFilPolyTriangle(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilprPolyTriangle(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->PolyTriangle();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prPolyTriangle();
 		}
 	}
 }
 //*****************************************************************************************
 //		FILTER -> DECIMATE
 //*****************************************************************************************
-void nkNukak3D::eventoFilPolyDecimate(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilprPolyDecimate(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->PolyDecimate();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prPolyDecimate();
 		}
 	}
 }
 //*****************************************************************************************
 //		FILTER -> SMOOTH
 //*****************************************************************************************
-void nkNukak3D::eventoFilPolySmooth(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilprPolySmooth(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->PolySmooth();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prPolySmooth();
 		}
 	}
 }
 //*****************************************************************************************
 //		FILTER -> NORMALS
 //*****************************************************************************************
-void nkNukak3D::eventoFilPolyNormals(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilprPolyNormals(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->PolyNormals();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prPolyNormals();
 		}
 	}
 }
 //*****************************************************************************************
 //		FILTER -> DEFORM
 //*****************************************************************************************
-void nkNukak3D::eventoFilPolyDeform(wxCommandEvent &WXUNUSED(event)) 
+void nkNukak3D::prEventFilprPolyDeform(wxCommandEvent &WXUNUSED(event)) 
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
-			current->PolyDeform();
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			current->prPolyDeform();
 		}
 	}
 }
 //*****************************************************************************************
 //		CAPTURE SNAPSHOT 3D
 //*****************************************************************************************
-void nkNukak3D::eventoSnapshot3D(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventSnapshot3D(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 		const wxString miWxFilter =	
 			wxT ("Jpeg (*.jpg)|*.jpg|")
@@ -1248,15 +1248,15 @@ void nkNukak3D::eventoSnapshot3D(wxCommandEvent &WXUNUSED(event))
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
-		wxString nombreArchivo;
-		nombreArchivo.Empty();
+		wxString a_fileName;
+		a_fileName.Empty();
 		int OK = myFileDialog->ShowModal();
 	    
 		if( OK==wxID_OK )
-		nombreArchivo = myFileDialog->GetPath();
+		a_fileName = myFileDialog->GetPath();
 	    
 		myFileDialog->Destroy();
-		if( nombreArchivo.IsEmpty() )
+		if( a_fileName.IsEmpty() )
 		{
 			return;
 		}
@@ -1264,34 +1264,34 @@ void nkNukak3D::eventoSnapshot3D(wxCommandEvent &WXUNUSED(event))
 		vtkWindowToImageFilter* l_w2i = vtkWindowToImageFilter::New();
 
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			l_w2i = current->Snapshot();
 		}
 		else if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			l_w2i = current->Snapshot(0);
 		}
 
-		if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "jpg" ){
+		if( a_fileName.Mid(a_fileName.Length()-3,3)== "jpg" ){
 			vtkJPEGWriter*	l_snapshot = vtkJPEGWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "bmp" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "bmp" ){
 			vtkBMPWriter*	l_snapshot = vtkBMPWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "tif" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "tif" ){
 			vtkTIFFWriter*	l_snapshot = vtkTIFFWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
@@ -1301,11 +1301,11 @@ void nkNukak3D::eventoSnapshot3D(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		CAPTURE SNAPSHOT AXIAL VIEW
 //*****************************************************************************************
-void nkNukak3D::eventoSnapshotAxial(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventSnapshotAxial(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 		if (pagina->GetName() != wxT("nkVolViewer")){
 			return;
@@ -1321,43 +1321,43 @@ void nkNukak3D::eventoSnapshotAxial(wxCommandEvent &WXUNUSED(event))
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
-		wxString nombreArchivo;
-		nombreArchivo.Empty();
+		wxString a_fileName;
+		a_fileName.Empty();
 		int OK = myFileDialog->ShowModal();
 	    
 		if( OK==wxID_OK )
-		nombreArchivo = myFileDialog->GetPath();
+		a_fileName = myFileDialog->GetPath();
 	    
 		myFileDialog->Destroy();
-		if( nombreArchivo.IsEmpty() )
+		if( a_fileName.IsEmpty() )
 		{
 			return;
 		}
 
 		vtkWindowToImageFilter* l_w2i = vtkWindowToImageFilter::New();					
-		nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+		nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		l_w2i = current->Snapshot(1);
 
-		 if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "jpg" ){
+		 if( a_fileName.Mid(a_fileName.Length()-3,3)== "jpg" ){
 			vtkJPEGWriter*	l_snapshot = vtkJPEGWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "bmp" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "bmp" ){
 			vtkBMPWriter*	l_snapshot = vtkBMPWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "tif" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "tif" ){
 			vtkTIFFWriter*	l_snapshot = vtkTIFFWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
@@ -1368,11 +1368,11 @@ void nkNukak3D::eventoSnapshotAxial(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		CAPTURE SNAPSHOT CORONAL VIEW
 //*****************************************************************************************
-void nkNukak3D::eventoSnapshotCoronal(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventSnapshotCoronal(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 		if (pagina->GetName() != wxT("nkVolViewer")){
 			return;
@@ -1388,43 +1388,43 @@ void nkNukak3D::eventoSnapshotCoronal(wxCommandEvent &WXUNUSED(event))
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
-		wxString nombreArchivo;
-		nombreArchivo.Empty();
+		wxString a_fileName;
+		a_fileName.Empty();
 		int OK = myFileDialog->ShowModal();
 	    
 		if( OK==wxID_OK )
-		nombreArchivo = myFileDialog->GetPath();
+		a_fileName = myFileDialog->GetPath();
 	    
 		myFileDialog->Destroy();
-		if( nombreArchivo.IsEmpty() )
+		if( a_fileName.IsEmpty() )
 		{
 			return;
 		}
 
 		vtkWindowToImageFilter* l_w2i = vtkWindowToImageFilter::New();					
-		nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+		nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		l_w2i = current->Snapshot(2);
 
-		 if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "jpg" ){
+		 if( a_fileName.Mid(a_fileName.Length()-3,3)== "jpg" ){
 			vtkJPEGWriter*	l_snapshot = vtkJPEGWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "bmp" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "bmp" ){
 			vtkBMPWriter*	l_snapshot = vtkBMPWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "tif" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "tif" ){
 			vtkTIFFWriter*	l_snapshot = vtkTIFFWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
@@ -1434,11 +1434,11 @@ void nkNukak3D::eventoSnapshotCoronal(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		CAPTURE SNAPSHOT SAGITAL VIEW
 //*****************************************************************************************
-void nkNukak3D::eventoSnapshotSagital(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventSnapshotSagital(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 		if (pagina->GetName() != wxT("nkVolViewer")){
 			return;
@@ -1454,43 +1454,43 @@ void nkNukak3D::eventoSnapshotSagital(wxCommandEvent &WXUNUSED(event))
                                               wxT(""), wxT(""),
                                               miWxFilter,
                                               wxFD_SAVE|wxFD_CHANGE_DIR|wxFD_OVERWRITE_PROMPT, wxDefaultPosition);
-		wxString nombreArchivo;
-		nombreArchivo.Empty();
+		wxString a_fileName;
+		a_fileName.Empty();
 		int OK = myFileDialog->ShowModal();
 	    
 		if( OK==wxID_OK )
-		nombreArchivo = myFileDialog->GetPath();
+		a_fileName = myFileDialog->GetPath();
 	    
 		myFileDialog->Destroy();
-		if( nombreArchivo.IsEmpty() )
+		if( a_fileName.IsEmpty() )
 		{
 			return;
 		}
 
 		vtkWindowToImageFilter* l_w2i = vtkWindowToImageFilter::New();					
-		nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+		nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		l_w2i = current->Snapshot(3);
 
-		 if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "jpg" ){
+		 if( a_fileName.Mid(a_fileName.Length()-3,3)== "jpg" ){
 			vtkJPEGWriter*	l_snapshot = vtkJPEGWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "bmp" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "bmp" ){
 			vtkBMPWriter*	l_snapshot = vtkBMPWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
 		}
-		else if( nombreArchivo.Mid(nombreArchivo.Length()-3,3)== "tif" ){
+		else if( a_fileName.Mid(a_fileName.Length()-3,3)== "tif" ){
 			vtkTIFFWriter*	l_snapshot = vtkTIFFWriter::New();
 			l_snapshot->SetInputConnection(l_w2i->GetOutputPort());
-			l_snapshot->SetFileName(nombreArchivo);
+			l_snapshot->SetFileName(a_fileName);
 			l_snapshot->Write();
 			l_snapshot->Delete();
 			l_w2i->Delete();
@@ -1500,14 +1500,14 @@ void nkNukak3D::eventoSnapshotSagital(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		IMAGE INFORMATION
 //*****************************************************************************************
-void nkNukak3D::eventoParImage(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventInformationImage(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 			int		*d;			//! Get image size
 			double	*s;			//! Get image spacing
@@ -1547,14 +1547,14 @@ void nkNukak3D::eventoParImage(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		MESH INFORMATION
 //*****************************************************************************************
-void nkNukak3D::eventoParPolygon(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventInformationPolygon(wxCommandEvent &WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			
 			long  l_strips = current->GetPolyData()->GetNumberOfStrips();
 			long  l_polys = current->GetPolyData()->GetNumberOfPolys();
@@ -1581,15 +1581,15 @@ void nkNukak3D::eventoParPolygon(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		VIDEO CARD INFORMATION
 //*****************************************************************************************
-void nkNukak3D::eventoParVideo(wxCommandEvent &WXUNUSED(event))
+void nkNukak3D::prEventInformationVideoCard(wxCommandEvent &WXUNUSED(event))
 {	
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		wxString l_text;
 
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			l_text = current->VideoCard();
 			nkIODialog * miDlg = new nkIODialog(	this, 
 													l_text,
@@ -1602,7 +1602,7 @@ void nkNukak3D::eventoParVideo(wxCommandEvent &WXUNUSED(event))
 			delete miDlg;
 		}
 		else if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			l_text = current->VideoCard();
 			nkIODialog * miDlg = new nkIODialog(	this, 
 													l_text,
@@ -1624,7 +1624,7 @@ void nkNukak3D::eventoParVideo(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 //		LANGUAGE SELECTION
 //*****************************************************************************************
-void nkNukak3D::eventoLanguage(wxCommandEvent &WXUNUSED(event)){
+void nkNukak3D::prEventChangeLanguage(wxCommandEvent &WXUNUSED(event)){
 	wxDialog * mi_dialogo = new wxDialog(this, wxID_ANY, _("Nukak3D: Choose language"), wxDefaultPosition, wxSize(250,170));
 	wxStaticText * mi_text = new wxStaticText(mi_dialogo, -1, _("Choose language"), wxPoint(20,20));
 	wxString choices[10];
@@ -1667,14 +1667,14 @@ void nkNukak3D::eventoLanguage(wxCommandEvent &WXUNUSED(event)){
 //*****************************************************************************************
 //		Mostrar/guardar posiciones de la camara con colisiones
 //*****************************************************************************************
-void nkNukak3D::eventoCameraPos(wxCommandEvent& WXUNUSED(event))
+void nkNukak3D::prEventPositionCamera(wxCommandEvent& WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->CameraPos();				
 		}
 
@@ -1685,19 +1685,19 @@ void nkNukak3D::eventoCameraPos(wxCommandEvent& WXUNUSED(event))
 //*****************************************************************************************
 //		Interactor para camara endoscopica 
 //*****************************************************************************************
-void nkNukak3D::eventoNavEndoscope(wxCommandEvent& WXUNUSED(event))
+void nkNukak3D::prEventNavEndoscope(wxCommandEvent& WXUNUSED(event))
 {
 
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->NavEndoscope();
 		}
 		//else  if (pagina->GetName() == wxT("nkObj3DViewer")) 
 		//{
-		//	nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+		//	nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		//	current->NavEndoscope();
 		//}
 	}
@@ -1706,18 +1706,18 @@ void nkNukak3D::eventoNavEndoscope(wxCommandEvent& WXUNUSED(event))
 //*****************************************************************************************
 //		Frames per second
 //*****************************************************************************************
-void nkNukak3D::eventoFPS(wxCommandEvent& WXUNUSED(event))
+void nkNukak3D::prEventFPS(wxCommandEvent& WXUNUSED(event))
 {
-	if ((int)prv_libro->GetPageCount() > 0){
-		int mi_pagina = prv_libro->GetSelection();
-		wxWindow * pagina = prv_libro->GetPage(size_t( mi_pagina));
+	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+		int mi_pagina = prv_wxAuiNotebook->GetSelection();
+		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
-			nkVolViewer *current = (nkVolViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->FPS();
 		}
 		else  if (pagina->GetName() == wxT("nkObj3DViewer")) 
 		{
-			nkObj3DViewer *current = (nkObj3DViewer*)prv_libro->GetPage(size_t( mi_pagina));
+			nkObj3DViewer *current = (nkObj3DViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			current->FPS();
 		}
 	}

@@ -3,7 +3,7 @@
 nkLevelSets::nkLevelSets(nkVolViewer * un_volViewer, wxAuiNotebook * p_libro){
 
 	this->prv_nkVolViewer = un_volViewer;
-	this->prv_libro = p_libro;
+	this->prv_wxAuiNotebook = p_libro;
 	prv_CurrentDataSets = -1;
 
 	prv_castUnShortToFloat = CastFilterInType::New();
@@ -21,7 +21,7 @@ nkLevelSets::nkLevelSets(nkVolViewer * un_volViewer, wxAuiNotebook * p_libro){
 	prv_shapeDetectionLevelSet->AddObserver( itk::IterationEvent(), prv_iterationCommand );
 }
 
-void nkLevelSets::Configurar(){
+void nkLevelSets::Configure(){
 
 	prv_castUnShortToFloat->SetInput(prv_imgInput);
 	prv_gradientMagnitude->SetInput(prv_castUnShortToFloat->GetOutput() );
@@ -31,7 +31,7 @@ void nkLevelSets::Configurar(){
 	prv_sigmoid->SetOutputMaximum(  1.0  );
 }
 
-bool nkLevelSets::ConfigurarLevelSet(){
+bool nkLevelSets::ConfigureLevelSet(){
 	bool ConfiguracionOK = false;
 	if (ObtenerDatosLevelSet()){
 
@@ -115,10 +115,10 @@ void nkLevelSets::UpdateLevelSets(){
 			prv_sigmoid->Update();
 				
 			prv_castOutLevetSet->Update();
-			nkVolViewer * mivol2 = new nkVolViewer(prv_libro);
-			mivol2->Configurar();
-			mivol2->configurarITKimage(_T("Segmentation"),prv_castOutLevetSet->GetOutput());
-			prv_libro->AddPage(mivol2, _T("Segmentation"),false );
+			nkVolViewer * mivol2 = new nkVolViewer(prv_wxAuiNotebook);
+			mivol2->Configure();
+			mivol2->ConfigureITKimage(_T("Segmentation"),prv_castOutLevetSet->GetOutput());
+			prv_wxAuiNotebook->AddPage(mivol2, _T("Segmentation"),false );
 		}
 
 	}catch( itk::ExceptionObject & excep ){
@@ -168,8 +168,8 @@ bool nkLevelSets::ObtenerDatosLevelSet(){
 }
 
 
-void nkLevelSets::SetInput(itk::Image<unsigned short,3>::Pointer una_imagen){
-	prv_imgInput = una_imagen;
+void nkLevelSets::SetInput(itk::Image<unsigned short,3>::Pointer an_image){
+	prv_imgInput = an_image;
 }
 
 void nkLevelSets::UpdateGradient(itk::NumericTraits<float>::RealType un_sigma){
@@ -201,7 +201,7 @@ itk::Image<float, 3>::Pointer nkLevelSets::GetOutputSigmoid(){
 }
 
 void nkLevelSets::CrearAsistente(){
-	prv_asistente = new wxWizard(prv_libro, 
+	prv_asistente = new wxWizard(prv_wxAuiNotebook, 
 					-1, 
 					_("Nukak3D: Level Sets Segmentation Configuration Wizard."), 
 					wxBitmap(logoLS_xpm), wxDefaultPosition, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER);
@@ -220,7 +220,7 @@ void nkLevelSets::CrearAsistente(){
 		mi_2page, NULL, wxNullBitmap, this);
 	nkLevelSetsPageSeeds * mi_4page = new nkLevelSetsPageSeeds(prv_asistente,
 		mi_3page, NULL, wxNullBitmap, this);
-	mi_4page->Configurar();
+	mi_4page->Configure();
 
 	mi_1Page->SetNext(mi_2page);
 	mi_2page->SetNext(mi_3page);
@@ -230,10 +230,10 @@ void nkLevelSets::CrearAsistente(){
 
 void nkLevelSets::WriteGradientImage(){
 	prv_castOutLevetSetVelocity->Update();
-	prv_nkVVSigmoid = new nkVolViewer(prv_libro);
-	prv_nkVVSigmoid->Configurar();
-	prv_nkVVSigmoid->configurarITKimage(_T("Level Set Veocity"), prv_castOutLevetSetVelocity->GetOutput());
-	prv_libro->AddPage(prv_nkVVSigmoid, _T("Level Set Velocity"),true );
+	prv_nkVVSigmoid = new nkVolViewer(prv_wxAuiNotebook);
+	prv_nkVVSigmoid->Configure();
+	prv_nkVVSigmoid->ConfigureITKimage(_T("Level Set Veocity"), prv_castOutLevetSetVelocity->GetOutput());
+	prv_wxAuiNotebook->AddPage(prv_nkVVSigmoid, _T("Level Set Velocity"),true );
 }
 
 void nkLevelSets::ActualizarSegmentacionLevelSet(){
@@ -267,11 +267,11 @@ void nkLevelSets::ActualizarSegmentacionLevelSet(){
 	}
 }
 
-void nkLevelSets::SetUpdateOverlappingImage(vtkImageData * una_vtkImage, double una_opacidad, int un_dataSet){
+void nkLevelSets::SetUpdateOverlappingImage(vtkImageData * una_vtkImage, double a_opacity, int un_dataSet){
 	prv_isoSurfaceManager->SetInput (una_vtkImage);
 	prv_vectorDataSets[prv_CurrentDataSets] = una_vtkImage;
 	prv_isoSurfaceManager->GenerateData();
-	prv_isoSurfaceManager->SetOpacity (una_opacidad);
+	prv_isoSurfaceManager->SetOpacity (a_opacity);
 	if ((prv_nkVVSigmoid->getVistaAxial())->GetDataSet(un_dataSet)){
 		(prv_nkVVSigmoid->getVistaAxial())->RemoveDataSet((prv_nkVVSigmoid->getVistaAxial())->GetDataSet(un_dataSet));
 		(prv_nkVVSigmoid->getVistaCoronal())->RemoveDataSet((prv_nkVVSigmoid->getVistaCoronal())->GetDataSet(un_dataSet));
@@ -299,11 +299,11 @@ void nkLevelSets::SetUpdateOverlappingImage(vtkImageData * una_vtkImage, double 
 	(prv_nkVVSigmoid->getVista3D())->Render();
 }
 
-void nkLevelSets::AddOverlappingImage(vtkImageData * una_vtkImage, double una_opacidad, int un_dataSet){
+void nkLevelSets::AddOverlappingImage(vtkImageData * una_vtkImage, double a_opacity, int un_dataSet){
 	prv_isoSurfaceManager->SetInput (una_vtkImage);
 	prv_vectorDataSets[prv_CurrentDataSets] = una_vtkImage;
 	prv_isoSurfaceManager->GenerateData();
-	prv_isoSurfaceManager->SetOpacity (una_opacidad);
+	prv_isoSurfaceManager->SetOpacity (a_opacity);
 	if ((prv_nkVVSigmoid->getVistaAxial())->GetDataSet(un_dataSet)){
 		(prv_nkVVSigmoid->getVistaAxial())->RemoveDataSet((prv_nkVVSigmoid->getVistaAxial())->GetDataSet(un_dataSet));
 		(prv_nkVVSigmoid->getVistaCoronal())->RemoveDataSet((prv_nkVVSigmoid->getVistaCoronal())->GetDataSet(un_dataSet));
@@ -314,8 +314,8 @@ void nkLevelSets::AddOverlappingImage(vtkImageData * una_vtkImage, double una_op
 		vtkProperty* property2 = vtkProperty::New();
 		property->DeepCopy (prv_isoSurfaceManager->GetIsosurfaces()[i]->GetActor()->GetProperty());
 		property2->SetColor(property->GetColor());
-		property2->SetOpacity (una_opacidad);
-		property->SetOpacity (una_opacidad);
+		property2->SetOpacity (a_opacity);
+		property->SetOpacity (a_opacity);
 		property->SetAmbient (1.0);
 		property->SetDiffuse (0.0);
 		property->SetSpecular (0.0);
@@ -664,7 +664,7 @@ nkLevelSetsPageSeeds::nkLevelSetsPageSeeds(wxWizard* parent,
 	this->Layout();
 }
 
-void nkLevelSetsPageSeeds::Configurar(){
+void nkLevelSetsPageSeeds::Configure(){
 	prv_vistaAxial->SetInteractionStyle (vtkViewImage2D::SELECT_INTERACTION);
 	prv_vistaAxial->SetWheelInteractionStyle(vtkViewImage2D::ZOOM_INTERACTION);
 	prv_vistaAxial->SetMiddleButtonInteractionStyle (vtkViewImage2D::ZOOM_INTERACTION);

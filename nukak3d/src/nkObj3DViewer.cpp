@@ -77,17 +77,17 @@ nkObj3DViewer::~nkObj3DViewer(){
 //*****************************************************************************************
 //		CONFIG VIEW
 //*****************************************************************************************
-void nkObj3DViewer::Configurar(void){
+void nkObj3DViewer::Configure(void){
 	prv_vista3D->SetBackgroundColor (0.0,0.0,0.0);
 	prv_vista3D->SetRenderingModeToPlanar();
-	this->BoundingBox();
+	this->prBoundingBox();
 }
 //*****************************************************************************************
 //		OPEN FILE
 //*****************************************************************************************
-void nkObj3DViewer::abrirArchivo(wxString nombreArchivo){
+void nkObj3DViewer::prOpenFile(wxString a_fileName){
 	vtkPolyDataReader* mi_vtkReader = vtkPolyDataReader::New();
-	mi_vtkReader->SetFileName(nombreArchivo.c_str());
+	mi_vtkReader->SetFileName(a_fileName.c_str());
 	mi_vtkReader->Update();
 
 	prv_actor = vtkActor::New();
@@ -100,7 +100,7 @@ void nkObj3DViewer::abrirArchivo(wxString nombreArchivo){
 	prv_mapper->ScalarVisibilityOff();
 	
 	prv_render3D->AddActor(prv_actor);
-	this->BoundingBox();
+	this->prBoundingBox();
 	prv_render3D->ResetCamera();
 
 	prv_render3D->Render();
@@ -110,7 +110,7 @@ void nkObj3DViewer::abrirArchivo(wxString nombreArchivo){
 //*****************************************************************************************
 //		MESH CONFIG
 //*****************************************************************************************
-void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
+void nkObj3DViewer::prConfigureMesh3D(vtkPolyData* input){
 
 
 	prv_actor = vtkActor::New();
@@ -124,7 +124,7 @@ void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
 	prv_mapper->ScalarVisibilityOff();
 	
 	prv_render3D->AddActor(prv_actor);
-	this->BoundingBox();
+	this->prBoundingBox();
 	prv_render3D->ResetCamera();
 
 	prv_render3D->Render();
@@ -136,13 +136,13 @@ void nkObj3DViewer::configurarMalla3D(vtkPolyData* input){
 //*****************************************************************************************
 //		Boundig box de la imagen 3D
 //*****************************************************************************************
-void nkObj3DViewer::BoundingBox()
+void nkObj3DViewer::prBoundingBox()
 {
-	vtkOutlineFilter *boundingBox = vtkOutlineFilter::New(); //! Bounding Box creation
-	boundingBox->SetInput(prv_data);
+	vtkOutlineFilter *prBoundingBox = vtkOutlineFilter::New(); //! Bounding Box creation
+	prBoundingBox->SetInput(prv_data);
 
 	vtkPolyDataMapper *prv_bboxMapper = vtkPolyDataMapper::New(); //! Bounding Box mapper
-	prv_bboxMapper->SetInput(boundingBox->GetOutput());
+	prv_bboxMapper->SetInput(prBoundingBox->GetOutput());
 
 	prv_bboxActor = vtkActor::New(); //! Bounding Box actor
 	prv_bboxActor->SetMapper(prv_bboxMapper);
@@ -159,7 +159,7 @@ void nkObj3DViewer::BoundingBox()
 //*****************************************************************************************
 //		Boundig box de la imagen 3D
 //*****************************************************************************************
-void nkObj3DViewer::BoundingBoxOnOff()
+void nkObj3DViewer::prBoundingBoxOnOff()
 {
 	if(prv_bboxActor->GetVisibility()==false )
 		prv_bboxActor->VisibilityOn();
@@ -181,14 +181,14 @@ vtkPolyData* nkObj3DViewer::GetPolyData()
 //*****************************************************************************************
 //		MARCHING CUBES
 //*****************************************************************************************
-void nkObj3DViewer::imagenAIsoSurface(itk::Image<unsigned short,3>::Pointer una_imagen,
-									  int un_numContornos, 
-									  int un_umbral_inferior,
-									  int un_umbral_superior,
-									  double un_rojo,
-									  double un_verde,
-									  double un_azul,
-									  double una_opacidad
+void nkObj3DViewer::prImageToIsoSurface(itk::Image<unsigned short,3>::Pointer an_image,
+									  int a_numContours, 
+									  int a_thresholdLower,
+									  int a_thresholdUpper,
+									  double a_red,
+									  double a_green,
+									  double an_blue,
+									  double a_opacity
 									  ){
 	const int Dimension = 3;
 	typedef unsigned short PixelType;
@@ -196,22 +196,22 @@ void nkObj3DViewer::imagenAIsoSurface(itk::Image<unsigned short,3>::Pointer una_
 	typedef itk::ImageToVTKImageFilter<ImageType> Itk2VtkType;
 	Itk2VtkType::Pointer  m_Itk2Vtk = Itk2VtkType::New();
     
-	m_Itk2Vtk->SetInput(una_imagen);
+	m_Itk2Vtk->SetInput(an_image);
 	m_Itk2Vtk->Update();
 
 	vtkImageMarchingCubes *marcher = vtkImageMarchingCubes::New();
     marcher->SetInput(m_Itk2Vtk->GetOutput());
-	marcher->SetNumberOfContours(un_numContornos);
-    marcher->SetValue(un_umbral_inferior, un_umbral_superior);
+	marcher->SetNumberOfContours(a_numContours);
+    marcher->SetValue(a_thresholdLower, a_thresholdUpper);
     marcher->Update();
 
-	this->configurarMalla3D(marcher->GetOutput());
+	this->prConfigureMesh3D(marcher->GetOutput());
 
 	vtkLookupTable* lut = vtkLookupTableManager::GetLookupTable(1);
 	prv_mapper->SetLookupTable(lut);
 
-	prv_actor->GetProperty()->SetDiffuseColor(un_rojo,un_verde,un_azul);
-	prv_actor->GetProperty()->SetOpacity(una_opacidad);
+	prv_actor->GetProperty()->SetDiffuseColor(a_red,a_green,an_blue);
+	prv_actor->GetProperty()->SetOpacity(a_opacity);
 
 	//! Refresh GUI
 	prv_wxVtkVista3D->Render();
@@ -221,9 +221,9 @@ void nkObj3DViewer::imagenAIsoSurface(itk::Image<unsigned short,3>::Pointer una_
 //*****************************************************************************************
 //		SAVE MESH
 //*****************************************************************************************
-void nkObj3DViewer::guardarArchivo(wxString nombreArchivo){
+void nkObj3DViewer::prSaveFile(wxString a_fileName){
 		vtkPolyDataWriter *l_Writer = vtkPolyDataWriter::New();
-		l_Writer->SetFileName( nombreArchivo );
+		l_Writer->SetFileName( a_fileName );
 		l_Writer->SetInput( (vtkPolyData*)prv_actor->GetMapper()->GetInput() );	
 		l_Writer->Write(); 
 		l_Writer->Delete();
@@ -232,7 +232,7 @@ void nkObj3DViewer::guardarArchivo(wxString nombreArchivo){
 //*****************************************************************************************
 //		ACTIVE STEREO
 //*****************************************************************************************
-void nkObj3DViewer::StActivo(void){
+void nkObj3DViewer::prActiveStereo(void){
 
 	if(!prv_wxVtkVista3D->GetRenderWindow()->GetStereoRender()) {
 		prv_wxVtkVista3D->GetRenderWindow()->SetStereoTypeToCrystalEyes();
@@ -249,7 +249,7 @@ void nkObj3DViewer::StActivo(void){
 //*****************************************************************************************
 //		PASIVE STEREO
 //*****************************************************************************************
-void nkObj3DViewer::StPasivo(void){
+void nkObj3DViewer::prStereoPassive(void){
 
 	if(!prv_wxVtkVista3D->GetRenderWindow()->GetStereoRender()) {
 		prv_wxVtkVista3D->GetRenderWindow()->SetStereoTypeToAnaglyph();
@@ -266,7 +266,7 @@ void nkObj3DViewer::StPasivo(void){
 //*****************************************************************************************
 //		STEREO INCREASE - Increase stereo separation
 //*****************************************************************************************
-void nkObj3DViewer::StAumentar( void )
+void nkObj3DViewer::prStereoMoreSeparation( void )
 {
 	double	sep,
 			inc=0.1;
@@ -280,7 +280,7 @@ void nkObj3DViewer::StAumentar( void )
 //*****************************************************************************************
 //		STEREO DECREASE - Decrease stereo separation
 //*****************************************************************************************
-void nkObj3DViewer::StDisminuir( void )
+void nkObj3DViewer::prStereoLessSeparation( void )
 {
 	double	sep,
 			inc=0.1;
@@ -294,7 +294,7 @@ void nkObj3DViewer::StDisminuir( void )
 //*****************************************************************************************
 //		MENU -> RESET CAMERA
 //*****************************************************************************************
-void nkObj3DViewer::NavResetCamara( void )
+void nkObj3DViewer::prNavResetCamara( void )
 {
 	prv_render3D->ResetCamera();
 	prv_wxVtkVista3D->Render();
@@ -304,7 +304,7 @@ void nkObj3DViewer::NavResetCamara( void )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> TRACKBALL
 //*****************************************************************************************
-void nkObj3DViewer::NavTrackball( )
+void nkObj3DViewer::prNavTrackball( )
 {
 	vtkInteractorStyleTrackballCamera *l_style = vtkInteractorStyleTrackballCamera::New();
 	prv_wxVtkVista3D->SetInteractorStyle(l_style);
@@ -313,7 +313,7 @@ void nkObj3DViewer::NavTrackball( )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> JOYSTICK
 //*****************************************************************************************
-void nkObj3DViewer::NavJoystick( )
+void nkObj3DViewer::prNavJoystick( )
 {
 	vtkInteractorStyleJoystickCamera *l_style = vtkInteractorStyleJoystickCamera::New();
 	prv_wxVtkVista3D->SetInteractorStyle(l_style);
@@ -322,7 +322,7 @@ void nkObj3DViewer::NavJoystick( )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> FLIGHT
 //*****************************************************************************************
-void nkObj3DViewer::NavFlight(  )
+void nkObj3DViewer::prNavFlight(  )
 {
 	vtkInteractorStyleFlight  *l_style = vtkInteractorStyleFlight ::New();
 	prv_wxVtkVista3D->SetInteractorStyle(l_style);
@@ -331,7 +331,7 @@ void nkObj3DViewer::NavFlight(  )
 //*****************************************************************************************
 //		MENU -> NAVIGATION -> UNICAM
 //*****************************************************************************************
-void nkObj3DViewer::NavUnicam( ) 
+void nkObj3DViewer::prNavUnicam( ) 
 {
 	vtkInteractorStyleUnicam *l_style = vtkInteractorStyleUnicam::New();
 	l_style->SetWorldUpVector(0.0, 1.0, 0.0);
@@ -341,7 +341,7 @@ void nkObj3DViewer::NavUnicam( )
 //*****************************************************************************************
 //		FILTRADO DE POLIGONOS -> TRIANGULACION
 //*****************************************************************************************
-void nkObj3DViewer::PolyTriangle( ) 
+void nkObj3DViewer::prPolyTriangle( ) 
 {
 	// Surface triangulation
 	vtkTriangleFilter *l_Triangle = vtkTriangleFilter::New();
@@ -365,7 +365,7 @@ void nkObj3DViewer::PolyTriangle( )
 //*****************************************************************************************
 //		FILTER -> DECIMATE
 //*****************************************************************************************
-void nkObj3DViewer::PolyDecimate( ) 
+void nkObj3DViewer::prPolyDecimate( ) 
 {
 	wxString etiquetas[100];
 	const int num_datos=1;
@@ -393,7 +393,7 @@ void nkObj3DViewer::PolyDecimate( )
 			(miDlg->obtenerValor(i)).ToDouble(&datos[i]);
 
 		// Triangulate fisrt
-		this->PolyTriangle();
+		this->prPolyTriangle();
 
 		// a_Decimate approximation
 		vtkDecimatePro *l_Decimate = vtkDecimatePro::New();
@@ -426,7 +426,7 @@ void nkObj3DViewer::PolyDecimate( )
 //*****************************************************************************************
 //		FILTER -> SMOOTH
 //*****************************************************************************************
-void nkObj3DViewer::PolySmooth(  ) 
+void nkObj3DViewer::prPolySmooth(  ) 
 {
 	wxString etiquetas[100];
 	const int num_datos=1;
@@ -480,7 +480,7 @@ void nkObj3DViewer::PolySmooth(  )
 //*****************************************************************************************
 //		FILTERS -> NORMALS
 //*****************************************************************************************
-void nkObj3DViewer::PolyNormals( ) 
+void nkObj3DViewer::prPolyNormals( ) 
 {
 	wxString etiquetas[100];
 	const int num_datos=1;
@@ -534,7 +534,7 @@ void nkObj3DViewer::PolyNormals( )
 //*****************************************************************************************
 //		FILTER -> DEFORM
 //*****************************************************************************************
-void nkObj3DViewer::PolyDeform(  ) 
+void nkObj3DViewer::prPolyDeform(  ) 
 {
 	wxBeginBusyCursor();
 

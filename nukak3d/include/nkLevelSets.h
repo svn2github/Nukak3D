@@ -58,11 +58,11 @@ public:
 	/**
 	 * @brief Configure preproccesing image for Level Sets.
 	*/
-	void Configurar();
+	void Configure();
 	/**
 	 * @brief Configure params for Level Sets.
 	*/
-	bool ConfigurarLevelSet();
+	bool ConfigureLevelSet();
 	/**
 	 * @brief Get propagation scaling, curvature scaling, number of iterations of input dialog.
 	*/
@@ -70,7 +70,7 @@ public:
 	/**
 	 * @brief Image to segmentation
 	*/
-	void SetInput(itk::Image<unsigned short,3>::Pointer una_imagen);
+	void SetInput(itk::Image<unsigned short,3>::Pointer an_image);
 	/**
 	 * @brief run Update of shape Detection Level Set filter, and show progress dialog.
 	*/
@@ -121,17 +121,17 @@ public:
 	/**
 	 * @brief Remove mesh if exist, and add new isosurface, generated from input image.
 	 * @param una_vtkImage Image for make isosurface.
-	 * @param una_opacidad Alpha channel for Blending image original with this.
+	 * @param a_opacity Alpha channel for Blending image original with this.
 	 * @param un_dataSet Id of image.
 	*/
-	void SetUpdateOverlappingImage(vtkImageData * una_vtkImage, double una_opacidad, int un_dataSet);
+	void SetUpdateOverlappingImage(vtkImageData * una_vtkImage, double a_opacity, int un_dataSet);
 	/**
 	 * @brief Equal to ActualizarSegmentacionLevelSet, but in the end proccess.
 	 * @param una_vtkImage Image for make isosurface.
-	 * @param una_opacidad Alpha channel for Blending image original with this.
+	 * @param a_opacity Alpha channel for Blending image original with this.
 	 * @param un_dataSet Id of image.
 	*/
-	void AddOverlappingImage(vtkImageData * una_vtkImage, double una_opacidad, int un_dataSet);
+	void AddOverlappingImage(vtkImageData * una_vtkImage, double a_opacity, int un_dataSet);
 
 	typedef unsigned short	PixelTypeUShort; //! Pixel data type unsigned short
 	typedef float			PixelTypeFloat;  //! Pixel data type float
@@ -174,7 +174,7 @@ private:
 
 	nkVolViewer * prv_nkVolViewer;
 	nkVolViewer * prv_nkVVSigmoid;
-	wxAuiNotebook * prv_libro;
+	wxAuiNotebook * prv_wxAuiNotebook;
 	ImageUShort3::Pointer prv_imgInput;
 	ImageUShort3::Pointer prv_imgGradient;
 	ImageUShort3::Pointer prv_imgSigmoid;
@@ -256,7 +256,7 @@ public:
 					const wxBitmap& bitmap = wxNullBitmap,
 					nkLevelSets * un_nkLevelSets = NULL);
 	~nkLevelSetsPageSeeds();
-	void Configurar();
+	void Configure();
 	vtkViewImage2DWithTracer*	prv_vistaAxial;
 	vtkViewImage2DWithTracer*	prv_vistaCoronal;
 	vtkViewImage2DWithTracer*	prv_vistaSagital;
