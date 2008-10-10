@@ -1,0 +1,1174 @@
+#LyX 1.5.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass book
+\begin_preamble
+
+\usepackage{helvet,url}
+\usepackage[english]{babel}
+\usepackage{amssymb,amsmath,latexsym}
+\usepackage{fancyhdr}
+%\usepackage[pdftex]{graphicx}
+\pagestyle{fancy}
+
+%\voffset 0.7cm
+%\hoffset -1.0cm
+%\headheight 5.0cm
+%\oddsidemargin 0.0cm 
+%\textheight 24.0cm 
+%\marginparwidth 0.0cm
+
+\fancyhead{}
+\fancyhead[LO,RE]{\includegraphics[width=1.0\textwidth]{logo_Building_Nukak3D.pdf}}
+\fancyfoot{}
+\lfoot{Bioingenium Research Group} 
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\end_preamble
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize default
+\spacing onehalf
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 4cm
+\rightmargin 2cm
+\bottommargin 2cm
+\headheight 2cm
+\headsep 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Building NUKAK3D
+\end_layout
+
+\begin_layout Author
+
+\noun on
+Alexander Pinzon Fernandez
+\end_layout
+
+\begin_layout Chapter*
+Building NUKAK3D
+\end_layout
+
+\begin_layout Section*
+Developer's Guide
+\newline
+
+\newline
+
+\newline
+
+\newline
+
+\end_layout
+
+\begin_layout Standard
+Autor:
+\end_layout
+
+\begin_layout Subsection*
+Alexander Pinzon Fernandez
+\end_layout
+
+\begin_layout Standard
+apinzonf@gmail.com
+\newline
+
+\newline
+
+\end_layout
+
+\begin_layout Standard
+Title:
+\end_layout
+
+\begin_layout Subsection*
+\begin_inset Quotes eld
+\end_inset
+
+Building NUKAK3D
+\begin_inset Quotes erd
+\end_inset
+
+
+\newline
+
+\newline
+
+\newline
+
+\end_layout
+
+\begin_layout Standard
+NATIONAL UNIVERSITY OF COLOMBIA
+\end_layout
+
+\begin_layout Standard
+BIOINGENIUM RESEARCH GROUP
+\end_layout
+
+\begin_layout Standard
+Bogota - Colombia, September of 2008
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename images/logoUN.pdf
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Introduction
+\end_layout
+
+\begin_layout Standard
+This the guide for compilation Nukak3D, we assume that the user is a novice
+ in the work of programming in C and C + + with CMake so that give us all
+ the steps we made for the successful construction software, but if you
+ do not understand some of the terms used or refencia to certain techniques
+ or paradigms of programming you should stop and documented a bit before
+ continuing, as if conducting continuous process and not understand what
+ is at risk of being badly spent his time.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+Nukak3d is a flexible architecture that integrates general-purpose graphics
+ libraries such as VTK, ITK, VTKInria3D, OpenGL, under a graphical user
+ interface (wxWidgets) for three-dimensional visualization and processing
+ of medical images.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+This product has been developed by Bioingenium Research Group, within the
+ frame of the computer graphics project at the National University of Colombia
+ .
+ 
+\newline
+
+\end_layout
+
+\begin_layout Standard
+The system was developed in programming language C and C + +.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+This project was built using CMake
+\begin_inset Foot
+status collapsed
+
+\begin_layout Standard
+CMake, Copyright (c) 2002 Kitware, Inc., Insight Consortium, 
+\begin_inset LatexCommand url
+target "http://www.cmake.org"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ which provides a platform for independent development of the operating
+ system, and many compilers currently can be found for C, C + +.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+We use the version control system Subversion
+\begin_inset Foot
+status collapsed
+
+\begin_layout Standard
+Subversion, Copyright (c) 2000-2006 CollabNet, 
+\begin_inset LatexCommand url
+target "http://subversion.tigris.org"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+ for organizing, structuring and monitoring changes in the source files.
+\newline
+
+\newline
+Based
+ on Open Source libraries
+\end_layout
+
+\begin_layout Itemize
+ITK, Insight Segmentation and Registration Toolkit: 
+\begin_inset LatexCommand url
+target "http://www.itk.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+VTK, Visualization Toolkit: 
+\begin_inset LatexCommand url
+target "http://www.vtk.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+wxWidgets, toolkit for creating graphical user interfaces for cross-platform
+ applications:
+\newline
+
+\begin_inset LatexCommand url
+target "http://www.wxwidgets.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+vtkINRIA3D, Spatiotemporal Data Synchronization, Visualization and Management:
+\newline
+
+\begin_inset LatexCommand url
+target "https://gforge.inria.fr/projects/vtkinria3d"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+OpenGL, Open Graphic Library: 
+\begin_inset LatexCommand url
+target "http://www.opengl.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+XML-Expat: 
+\begin_inset LatexCommand url
+target "html://expat.sourceforge.net"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+LibTIFF: 
+\begin_inset LatexCommand url
+target "html://www.libtiff.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+LibJPEG: 
+\begin_inset LatexCommand url
+target "http://www.ijg.org"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Getting Sources
+\end_layout
+
+\begin_layout Subsection
+Introduction
+\end_layout
+
+\begin_layout Standard
+The source of Nukak3D, is available via web, or in svn repository.
+ You can download the latest stable version in a single file, or observe
+ the latest changes through svn.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+If you want to download via web, it can be found at the following links,
+ here we refer specifically to version 4.6, if you find a new version this
+ manual even be helpful for the construction of Nukak3D.
+\end_layout
+
+\begin_layout Itemize
+File tar.gz:
+\newline
+
+\begin_inset LatexCommand url
+target "http://downloads.sourceforge.net/nukak3d/nukak3d-4.6.0.tar.gz"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+System's with support the RPM Package Manager (Suse, RedHat, etc):
+\newline
+
+\begin_inset LatexCommand url
+target "http://downloads.sourceforge.net/nukak3d/nukak3d-4.6-0.src.rpm"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Subversion Access
+\end_layout
+
+\begin_layout Standard
+Subversion is used by this software to manage changes within their source
+ code.
+ 
+\newline
+
+\end_layout
+
+\begin_layout Standard
+You need svn client to access a Subversion repository, svn clients are available
+ for most any operating system, we use the following clients svn, you use
+ these or one different from their preference.
+\end_layout
+
+\begin_layout Itemize
+For windows, TortoiseSVN x client: 
+\newline
+
+\begin_inset LatexCommand url
+target "http://tortoisesvn.net/downloads"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+For Mac Os, Universal Subversion Binaries for MAC OS X
+\newline
+
+\begin_inset LatexCommand url
+target "http://www.collab.net/downloads/community/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+For GNU/Linux, SubdiverSVN
+\newline
+
+\begin_inset LatexCommand url
+target "http://subdiversvn.sourceforge.net/"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+En la linea de comandos
+\end_layout
+
+\begin_layout Section
+Getting Dependencies
+\end_layout
+
+\begin_layout Standard
+Nukak 3D integrates graphics libraries of general purpose as VTK, ITK, VTKInria3
+D, under a graphical user interface (wxWidgets).
+\newline
+
+\end_layout
+
+\begin_layout Standard
+You need to build Nukak3D obtain and compile each of these libraries.
+ In this guide show how to obtain and compile, configure each of these libraries
+ for use with the Nukak3D.
+\end_layout
+
+\begin_layout Subsection
+Getting ITK
+\end_layout
+
+\begin_layout Standard
+ITK, Insight Segmentation and Registration Toolkit: 
+\begin_inset LatexCommand url
+target "http://www.itk.org"
+
+\end_inset
+
+, is used in Nukak3D for Image Processing.
+\newline
+ITK version 
+\series bold
+3.4
+\series default
+ or higher is required for Nukak3D.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+For download 
+\series bold
+InsightToolkit-3.8.0
+\series default
+, visit this link
+\newline
+
+\begin_inset LatexCommand url
+target "http://voxel.dl.sourceforge.net/sourceforge/itk/InsightToolkit-3.8.0.tar.gz"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Getting VTK
+\end_layout
+
+\begin_layout Standard
+VTK, Visualization Toolkit: 
+\begin_inset LatexCommand url
+target "http://www.vtk.org"
+
+\end_inset
+
+, is used for visualization of the data sets, and polygon meshes.
+\newline
+VTK version
+ 
+\series bold
+5.0.4
+\series default
+ or higher is required for Nukak3D.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+For download 
+\series bold
+vtk-5.2.0
+\series default
+, visit this link
+\newline
+
+\begin_inset LatexCommand url
+target "http://www.vtk.org/files/release/5.2/vtk-5.2.0.tar.gz"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Getting VTKInria3D
+\end_layout
+
+\begin_layout Standard
+VTKInria3D, is used to spatiotemporal data synchronization, visualization
+ and management:
+\newline
+VTKInria3D svn revision 
+\series bold
+827
+\series default
+ or higher is required for Nukak3D.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+For download VTKInria3D, you need register in the site InriaGforge 
+\begin_inset LatexCommand url
+target "https://gforge.inria.fr/account/register.php"
+
+\end_inset
+
+, register is free.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+If you already have the structure list of directories where you will put
+ the source code then you must perform these steps to obtain the source
+ code of vtkinria3d through svn.
+\end_layout
+
+\begin_layout Itemize
+Locate the directory where the files will make the source code of vtkinria3d.
+\newline
+
+\begin_inset Graphics
+	filename images/vtkinria3d_svn.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Right click on the folder vtkinria3d, a dialgo appear similar to this
+\newline
+
+\begin_inset Graphics
+	filename images/vtkinria3d_svn2.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Click the menu option SVN Checkout, which appears in the figure above, and
+ should see a box like this.
+\newline
+
+\begin_inset Graphics
+	filename images/vtkinria3d_svn3.pdf
+	scale 70
+
+\end_inset
+
+
+\newline
+In the text box below the label URLofrepository:, put the following address
+ 
+\newline
+
+\begin_inset LatexCommand url
+target "https://scm.gforge.inria.fr/svn/vtkinria3d"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Click the OK button, then it should see a Authentication dialog similar
+ to this.
+\newline
+
+\begin_inset Graphics
+	filename images/vtkinria3d_svn4.pdf
+	scale 70
+
+\end_inset
+
+
+\newline
+Write your name and password on the register obtained in InriaGforge 
+\begin_inset LatexCommand url
+target "https://gforge.inria.fr/account/register.php"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Click the OK button, then it should see a progress dialog similar to the
+ following.
+\newline
+
+\begin_inset Graphics
+	filename images/vtkinria3d_svn5.pdf
+	scale 70
+
+\end_inset
+
+
+\newline
+Click OK to finish.
+\end_layout
+
+\begin_layout Itemize
+After downloading the source code into the directory vtkinria3d, you should
+ view it a group of folders similar to those
+\newline
+
+\begin_inset Graphics
+	filename images/vtkinria3d_svn6.pdf
+	scale 40
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Access in command line
+\end_layout
+
+\begin_layout Itemize
+Go to the directory where the download vtkinria3d
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+$ cd /home/apinzonf/sources/inria3d/vtkinria3d
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+$ cd ..
+\end_layout
+
+\begin_layout Itemize
+run the following command, in username put obtained name in InriaGforge
+ 
+\begin_inset LatexCommand url
+target "https://gforge.inria.fr/account/register.php"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+$ svn checkout --username login https://scm.gforge.inria.fr/svn/vtkinria3d
+ 
+\end_layout
+
+\begin_layout Subsection
+Getting wxWidgets
+\end_layout
+
+\begin_layout Standard
+wxWidgets, is used in Nukak3D for creating graphical user interfaces for
+ cross-platform applications:
+\newline
+wxWidgets version 
+\series bold
+2.6.4
+\series default
+ or higher is required for Nukak3D.
+\newline
+
+\end_layout
+
+\begin_layout Standard
+For download 
+\series bold
+wxWidgets-2.8.9
+\series default
+, visit this link
+\newline
+
+\begin_inset LatexCommand url
+target "http://prdownloads.sourceforge.net/wxwindows/wxWidgets-2.8.9.tar.gz"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Building Nukak3D on windows
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+bla bla la poposoft
+\end_layout
+
+\begin_layout Section
+Getting Sources
+\end_layout
+
+\begin_layout Standard
+bla bla
+\end_layout
+
+\begin_layout Subsection
+Subversion Access in windows with Tortoise
+\end_layout
+
+\begin_layout Standard
+Si ya tiene lista la estructura de directorios donde usted va a colocar
+ el codigo fuente entonces, debe realizar estos pasos para obtener el codigo
+ fuente del nukak3d mediante svn.
+\end_layout
+
+\begin_layout Itemize
+Localice el directorio donde pondra los archivos del codigo fuente
+\newline
+
+\begin_inset Graphics
+	filename images/svn1.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Haga clic derecho sobre la carpeta nukak3d, aparecera un dialgo similar
+ al este
+\newline
+
+\begin_inset Graphics
+	filename images/svn2.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Haga clic la opcion del menu 
+\series bold
+SVN Checkout
+\series default
+, que aparece en la figura de arriba, y debera aparecer un cuadro similar
+ a este.
+\newline
+
+\begin_inset Graphics
+	filename images/svn3.pdf
+	scale 72
+
+\end_inset
+
+
+\newline
+En el cuadro de texto que aparece abajo de la etiqueta 
+\series bold
+URL of repository:
+\series default
+, coloque la siguiente direccion
+\newline
+
+\begin_inset LatexCommand url
+target "https://nukak3d.svn.sourceforge.net/svnroot/nukak3d/trunk/nukak3d"
+
+\end_inset
+
+
+\newline
+y luego haga clic en el boton OK, entonces debera aparecer un dialogo de
+ progresso similar al siguiente.
+\newline
+
+\begin_inset Graphics
+	filename images/svn4.pdf
+	scale 70
+
+\end_inset
+
+
+\newline
+Haga clic en OK, para finalizar.
+\end_layout
+
+\begin_layout Itemize
+Luego de descargar el codigo fuente dentro del directorio 
+\series bold
+nukak3d
+\series default
+, debe usted visulizar un grupo de carpetas similares a estas
+\newline
+
+\begin_inset Graphics
+	filename images/svn5.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Building Nukak3D on Linux
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+bla bla bla command line blabla
+\end_layout
+
+\begin_layout Section
+Getting Sources
+\end_layout
+
+\begin_layout Standard
+blalblalbal
+\end_layout
+
+\begin_layout Subsection
+Subversion Access in Linux with SubdiverSVN
+\end_layout
+
+\begin_layout Standard
+Si ya tiene lista la estructura de directorios donde usted va a colocar
+ el codigo fuente entonces, debe realizar estos pasos para obtener el codigo
+ fuente del nukak3d mediante svn.
+\end_layout
+
+\begin_layout Itemize
+Localice el directorio donde pondra los archivos del codigo fuente
+\newline
+
+\begin_inset Graphics
+	filename images/svnlinux1.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Haga clic derecho sobre la carpeta nukak3d, aparecera un dialgo similar
+ al este
+\newline
+
+\begin_inset Graphics
+	filename images/svnlinux2.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Haga clic sobre la opcion 
+\series bold
+SubdiverSVN...
+\series default
+, entonces aparecera un dialogo similar a este
+\newline
+
+\begin_inset Graphics
+	filename images/svnlinux3.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Haga clic la opcion del menu 
+\series bold
+checkout
+\series default
+, que aparece en la figura de arriba, y debera aparecer un cuadro similar
+ a este.
+\newline
+
+\begin_inset Graphics
+	filename images/svnlinux4.pdf
+	scale 70
+
+\end_inset
+
+
+\newline
+En el cuadro de texto que aparece al lado de la etiqueta 
+\series bold
+URL :
+\series default
+, coloque la siguiente direccion
+\newline
+
+\begin_inset LatexCommand url
+target "https://nukak3d.svn.sourceforge.net/svnroot/nukak3d/trunk/nukak3d"
+
+\end_inset
+
+
+\newline
+y luego haga clic en el boton 
+\series bold
+Execute
+\series default
+, entonces debera aparecer un dialogo de progresso similar al siguiente.
+\newline
+
+\begin_inset Graphics
+	filename images/svnlinux5-1.pdf
+	scale 70
+
+\end_inset
+
+
+\newline
+Al finalizar la descarga aparecera un dialigo similar al siguiente:
+\newline
+
+\begin_inset Graphics
+	filename images/svnlinux5-2.pdf
+	scale 70
+
+\end_inset
+
+
+\newline
+Haga clic en el boton 
+\series bold
+Cerrar
+\series default
+, para finalizar.
+\end_layout
+
+\begin_layout Itemize
+Luego de descargar el codigo fuente dentro del directorio 
+\series bold
+nukak3d
+\series default
+, debe usted visualizar un grupo de carpetas similares a estas
+\newline
+
+\begin_inset Graphics
+	filename images/svnlinux6.pdf
+	scale 70
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Subversion Access in Linux in command line
+\end_layout
+
+\begin_layout Standard
+Si ya tiene lista la estructura de directorios donde usted va a colocar
+ el codigo fuente entonces, debe realizar estos pasos para obtener el codigo
+ fuente del nukak3d mediante svn.
+\end_layout
+
+\begin_layout Itemize
+Vaya al directorio donde descargara el Nukak3D
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+$ cd /home/apinzonf/sources/nk/nukak3d/
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+$ cd ..
+\end_layout
+
+\begin_layout Itemize
+ejecute el siguiente comando
+\end_layout
+
+\begin_layout LyX-Code
+
+\series bold
+$ svn co https://nukak3d.svn.sourceforge.net/svnroot/nukak3d nukak3d 
+\end_layout
+
+\begin_layout Itemize
+entonces debera aparecer un listado similar al siguiente.
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/nukak3d.ico A 
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/mondrian.xpm A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/CMakeLists.txt A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/resource.h A 
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale A 
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/en A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/en/LC_MESSAGES A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/en/LC_MESSAGES/nukak3d.mo A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/en/LC_MESSAGES/nukak3d.po A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/es A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/es/LC_MESSAGES A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/es/LC_MESSAGES/nukak3d.mo A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/resources/.nukak3d/locale/es/LC_MESSAGES/nukak3d.po A
+\end_layout
+
+\begin_layout LyX-Code
+$ nukak3d/nukak3d/CMakeLists.txt 
+\end_layout
+
+\begin_layout LyX-Code
+$ Revisión obtenida: 68 
+\end_layout
+
+\begin_layout Itemize
+Luego de descargar el codigo fuente dentro del directorio 
+\series bold
+nukak3d
+\series default
+, debe usted visualizar un grupo de carpetas mediante el comando 
+\series bold
+ls
+\series default
+, y aparecera un listado similar a este.:
+\end_layout
+
+\begin_layout LyX-Code
+$
+\series bold
+ ls -l
+\end_layout
+
+\begin_layout LyX-Code
+$ total 32 
+\end_layout
+
+\begin_layout LyX-Code
+-rw-r--r-- 1 apinzonf users 6966 sep 17 13:43 CMakeLists.txt 
+\end_layout
+
+\begin_layout LyX-Code
+drwxr-xr-x 3 apinzonf users 4096 sep 17 13:43 CMakeModules 
+\end_layout
+
+\begin_layout LyX-Code
+drwxr-xr-x 3 apinzonf users 4096 sep 17 13:43 doc 
+\end_layout
+
+\begin_layout LyX-Code
+drwxr-xr-x 3 apinzonf users 4096 sep 17 13:43 include 
+\end_layout
+
+\begin_layout LyX-Code
+drwxr-xr-x 3 apinzonf users 4096 sep 17 13:43 packaging 
+\end_layout
+
+\begin_layout LyX-Code
+drwxr-xr-x 4 apinzonf users 4096 sep 17 13:43 resources 
+\end_layout
+
+\begin_layout LyX-Code
+drwxr-xr-x 3 apinzonf users 4096 sep 17 13:43 src 
+\end_layout
+
+\end_body
+\end_document
