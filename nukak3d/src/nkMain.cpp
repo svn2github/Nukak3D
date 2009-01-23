@@ -65,8 +65,9 @@ bool nkMain::OnInit(){
 
 	//! Show maximize window.
 	this->SetTopWindow (mi_nukak3D);
-	mi_nukak3D->Maximize(true);
+	//mi_nukak3D->Maximize(true);
 	mi_nukak3D->Show (true);
+	mi_nukak3D->Maximize(true);
 	return true;
 }
 

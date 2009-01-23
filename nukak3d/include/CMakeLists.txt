@@ -4,5 +4,6 @@ nkLevelSets.h
 nkMain.h
 nkNukak3D.h
 nkObj3DViewer.h
+nkStoreSCP.h
 nkVolViewer.h
 )

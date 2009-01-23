@@ -82,6 +82,7 @@ public:
 		ID_CLOSE,						/**< Close application. */
 		ID_CLOSE_ALL,					/**< Close application. */
 		ID_COLDET,						/**< Collision detection. */
+		ID_DICOMSERVER,					/**< Dicom listener SCP. */
 		ID_ENDOCAMOBB,					/**< Enable virtual endoscopy. */
 		ID_ENDOCAM,						/**< Enable Virtual endoscopy. */
 		ID_FILPOLYDECIMATE,				/**< To reduce numbers of polygon. */
@@ -141,7 +142,7 @@ public:
 	/**
 	 * @brief Class destructor.
 	*/
-	~nkNukak3D();
+	virtual ~nkNukak3D();
 
 	/**
 	 * @brief Insert Toolbar Botton.
@@ -212,9 +213,14 @@ public:
 	void prEventResetLookupTable(wxCommandEvent& WXUNUSED(event));
 	
 	/**
-	 * @brief Close application.
+	 * @brief Close application mene.
 	*/
 	void prEventExit(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Close application.
+	*/
+	void prOnClose(wxCloseEvent & event);
 
 	/**
 	 * @brief View ortogonal planes rendering.
@@ -420,6 +426,12 @@ public:
 	 * @details Show frames per second of this render
 	*/
 	void prEventFPS(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Dicom SCP Listener
+	 * @details Dicom SCP Listener, bassed on OFFIS DICOM storescp server.
+	*/
+	void prEventDicomListener(wxCommandEvent& WXUNUSED(event));
 
 private:
 	wxAuiNotebook * prv_wxAuiNotebook;		//! notebook for manage pages.

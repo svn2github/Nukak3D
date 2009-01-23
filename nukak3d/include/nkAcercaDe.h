@@ -21,6 +21,7 @@
 #include <wx/bitmap.h>
 #include <wx/statbmp.h>
 #include "wx/intl.h"
+#include "wx/hyperlink.h"
 #include "logo_bioingenium.xpm"
 
 /**
@@ -32,7 +33,7 @@ public:
 	/**
 	 * @brief Class constructor.
 	*/
-	nkAcercaDe(wxWindow* parent): wxDialog(parent, -1, "Nukak3D: About", wxDefaultPosition, wxSize(450,440))
+	nkAcercaDe(wxWindow* parent): wxDialog(parent, -1, "Nukak3D: About", wxDefaultPosition, wxSize(450,600))
 	{
 		new wxStaticBitmap(this, 
 			wxID_ANY,
@@ -59,7 +60,22 @@ public:
 			wxPoint(20,130), 
 			wxDefaultSize);
 
-		new wxButton(this, wxID_OK, _("Ok"),wxPoint(200,370));	
+		new wxStaticText(this, 
+			wxID_ANY,
+			  wxString(_("The name nukak was chosen for this software in honour of the Nukak Maku, yet one"))<<
+			wxString(_("\nof the last survival ethnias from South America and presently towards extintion"))<<
+			wxString(_("\nbecause the drug traffic war. In their cosmology, health is considered as a common"))<<
+			wxString(_("\nproblem so that if one of them falls sick, they consider the whole community is ill"))<<
+			wxString(_("\nand any particular cure must be shared between them all. This simple principle,"))<<
+			wxString(_("\ncurrently forgotten for most western societies."))<<
+			wxString(_("\nWas our main motivation to open up this software project.")),
+			wxPoint(20,370), 
+			wxDefaultSize);
+
+
+		new wxHyperlinkCtrl(this, wxID_ANY, "Link to Nukak-Maku information page.", "http://www.survival.es/indigenas/nukak", wxPoint(20,510));
+		new wxHyperlinkCtrl(this, wxID_ANY, "Link to Bioingenium Research Group.", "http://www.bioingenium.unal.edu.co", wxPoint(20,530));
+		new wxButton(this, wxID_OK, _("Ok"),wxPoint(200,550));	
 	}
 	/**
 	 * @brief Class destructor.

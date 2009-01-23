@@ -28,6 +28,7 @@
  */
 class nkMain : public wxApp{
 public:
+
 	/**
      * @brief Init method of application
 	 * @return bool

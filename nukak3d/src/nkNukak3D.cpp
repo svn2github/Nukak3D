@@ -1,12 +1,13 @@
 /** 
  * @file nkNukak3D.cpp
- * @brief Main windiw of Nukak3D.
+ * @brief Main window of Nukak3D.
  * @details Implementation of gui.
  * @author Alexander Pinzon Fernandez, Byron Perez
  * @version 0.2
  * @date 27/12/2007 03:37 p.m.
 */
 #include "nkNukak3D.h"
+#include "nkStoreSCP.h"
 
 #include "icon_menu_mas.xpm"
 
@@ -49,6 +50,11 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	wxMenu * mi_wxMenuArchivo = new wxMenu(_T(""), wxMENU_TEAROFF);
 	mi_wxMenuArchivo->Append(nkNukak3D::ID_EXIT, _("E&xit\tAlt-X"), _("Close application."));
 	mi_wxMBMenu->Append(mi_wxMenuArchivo, _("&File"));
+
+	// DICOM Menu Bar -> Botton
+	wxMenu * mi_wxMenuDicom = new wxMenu;  
+	mi_wxMenuDicom->Append(nkNukak3D::ID_DICOMSERVER, _("DICOM Listener"), _("Configure and start Dicom Listener."));
+	mi_wxMBMenu->Append(mi_wxMenuDicom, _("DICOM"));
 
 	// Tools Menu Bar -> Botton
 	wxMenu * mi_wxMenuHerramientas = new wxMenu;  
@@ -344,6 +350,7 @@ nkNukak3D::~nkNukak3D()
 //		TABLE OF EVENTS
 //*****************************************************************************************
 BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
+	EVT_CLOSE(nkNukak3D::prOnClose)
 	EVT_TREE_ITEM_ACTIVATED(nkNukak3D::ID_TREE, nkNukak3D::prEventTree)
 	EVT_MENU(nkNukak3D::ID_EXIT, nkNukak3D::prEventExit)
 	EVT_MENU(nkNukak3D::ID_ABOUT, nkNukak3D::prEventAbout)
@@ -393,6 +400,7 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_MENU(nkNukak3D::ID_CAMERAPOS, nkNukak3D::prEventPositionCamera)
 	EVT_MENU(nkNukak3D::ID_NAVENDOSCOPE, nkNukak3D::prEventNavEndoscope)
 	EVT_MENU(nkNukak3D::ID_FPS, nkNukak3D::prEventFPS)
+	EVT_MENU(nkNukak3D::ID_DICOMSERVER, nkNukak3D::prEventDicomListener)
 	EVT_MENU(wxID_ANY, nkNukak3D::prEventLookupTable)
 END_EVENT_TABLE()
 
@@ -428,6 +436,16 @@ void nkNukak3D::prInsertToolBar(wxWindow* window, wxString a_name, wxString a_la
 void nkNukak3D::prEventExit(wxCommandEvent& WXUNUSED(event)){
 	Close(TRUE);
 }
+
+void nkNukak3D::prOnClose(wxCloseEvent & event){
+	nkStoreSCP * miscp =  nkStoreSCP::getInstance(this,115);
+	if(miscp){
+		miscp->ShowModalStop();
+		miscp->Destroy();
+	}
+	event.Skip();
+}
+
 //*****************************************************************************************
 //		MENU -> AYUDA -> ACERCA DE
 //*****************************************************************************************
@@ -435,6 +453,7 @@ void nkNukak3D::prEventAbout(wxCommandEvent& WXUNUSED(event)){
 	nkAcercaDe * miAcercaDe = new nkAcercaDe(this);
 	miAcercaDe->ShowModal();
 	delete miAcercaDe;
+	
 }
 //*****************************************************************************************
 //		MENU -> AYUDA -> ACERCA DE    Version MAC
@@ -1723,3 +1742,7 @@ void nkNukak3D::prEventFPS(wxCommandEvent& WXUNUSED(event))
 	}
 }
 
+void nkNukak3D::prEventDicomListener(wxCommandEvent& WXUNUSED(event)){
+	nkStoreSCP * my_listener = nkStoreSCP::getInstance(this);
+	my_listener->ShowModalAndLog();
+}
