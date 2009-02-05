@@ -7,15 +7,15 @@ NUKAK3D                   ICON    DISCARDABLE     "nukak3d.ico"
 1 VERSIONINFO
 FILETYPE 1
 FILEOS 4
-PRODUCTVERSION 4,6,0
-FILEVERSION 4,6,0
+PRODUCTVERSION 5,0,0
+FILEVERSION 5,0,0
 BEGIN
   BLOCK "StringFileInfo"
   BEGIN
     BLOCK "040904E4"
     BEGIN
       VALUE "CompanyName", "Bioingenium Research Group"
-      VALUE "FileVersion", "4.6.0"
+      VALUE "FileVersion", "5.0.0"
       VALUE "FileDescription", "Nukak3D"
       VALUE "LegalCopyright", "(c) 2008 Bioingenium Research Group"
       VALUE "Authors", "Byron Perez, Alexander Pinzon, Eduardo Romero"

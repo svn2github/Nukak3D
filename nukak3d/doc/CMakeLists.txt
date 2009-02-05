@@ -1,5 +1,6 @@
 INSTALL_FILES(/doc FILES
 Licence.txt
+Licence_DCMTK.txt
 Licence_InsightToolkit-3.4.0.txt
 Licence_vtk-5.0.3.txt
 Licence_vtkInria3D.txt

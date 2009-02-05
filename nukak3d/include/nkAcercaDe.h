@@ -42,17 +42,18 @@ public:
 		new wxStaticText(this, 
 			wxID_ANY,
 			wxString(_("\nNukak3D 2007 "))<<
-			wxString(_("\nVersion 4.6"))<<
+			wxString(_("\nVersion 5.0"))<<
 			wxString(_("\n(c) 2008 Bioingenium Research Group."))<<
 			wxString(_("\n\nThis project has been developed within the research"))<<
 			wxString(_("\nof computer graphics group Bioingenium."))<<
 			wxString(_("\n"))<<
 			wxString(_("\n"))<<
 			wxString(_("\n"))<<
-			wxString(_("\nVersion 4.6 Developed By:"))<<
+			wxString(_("\nVersion 5.0 Developed By:"))<<
 			wxString(_("\n"))<<
 			wxString(_("\nAlexander Pinzon"))<<
 			wxString(_("\nByron Perez"))<<
+			wxString(_("\nProject Manager: "))<<	
 			wxString(_("\nEduardo Romero"))<<
 			wxString(_("\n"))<<
 			wxString(_("\nUniversidad Nacional de Colombia"))
