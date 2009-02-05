@@ -46,6 +46,16 @@ nkInteractorStyleEndoCamera.cpp
 ${CMAKE_SOURCE_DIR}/include/nkInteractorStyleEndoCamera.h
 nkStoreSCP.cpp
 ${CMAKE_SOURCE_DIR}/include/nkStoreSCP.h
+nkFindSCU.cpp
+${CMAKE_SOURCE_DIR}/include/nkFindSCU.h
+nkDICOMDictionary.cpp
+${CMAKE_SOURCE_DIR}/include/nkDICOMDictionary.h
+nkPipedProcess.cpp
+${CMAKE_SOURCE_DIR}/include/nkPipedProcess.h
+nkUtilities.cpp
+${CMAKE_SOURCE_DIR}/include/nkUtilities.h
+nkDICOMServer.cpp
+${CMAKE_SOURCE_DIR}/include/nkDICOMServer.h
 )
 
 IF( WIN32 )

@@ -82,6 +82,7 @@ public:
 		ID_CLOSE,						/**< Close application. */
 		ID_CLOSE_ALL,					/**< Close application. */
 		ID_COLDET,						/**< Collision detection. */
+		ID_DICOMFIND,					/**< Dicom C-FIND. */
 		ID_DICOMSERVER,					/**< Dicom listener SCP. */
 		ID_ENDOCAMOBB,					/**< Enable virtual endoscopy. */
 		ID_ENDOCAM,						/**< Enable Virtual endoscopy. */
@@ -161,6 +162,11 @@ public:
 	 * @brief Open Dicom directories.
 	*/
 	void prEventOpenVolumenDicom(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Open Dicom directories.
+	*/
+	void prOpenVolumenDicom(wxString pathDicom);
 
 	/**
 	 * @brief Open object 3D (vtk structured grid).
@@ -432,6 +438,12 @@ public:
 	 * @details Dicom SCP Listener, bassed on OFFIS DICOM storescp server.
 	*/
 	void prEventDicomListener(wxCommandEvent& WXUNUSED(event));
+
+	/**
+	 * @brief Dicom C-FIND
+	 * @details Dialog for search in Dicom server with C-Find option.
+	*/
+	void prEventDicomFind(wxCommandEvent& WXUNUSED(event));
 
 private:
 	wxAuiNotebook * prv_wxAuiNotebook;		//! notebook for manage pages.

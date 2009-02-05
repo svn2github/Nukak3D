@@ -18,7 +18,10 @@
 #ifndef WX_PRECOMP
     #include "wx/wx.h"
 #endif
+
 #include "wx/intl.h"
+#include "wx/calctrl.h"
+#include "wx/datetime.h"
 
 /** 
  * @brief Generic dialog for input data.
@@ -87,4 +90,20 @@ private:
 	/** Number of controls */
 	int prv_tamanio;
 };
+
+class nkCalendarDialog: public wxDialog{
+public:
+	nkCalendarDialog(wxWindow* parent, 
+					wxWindowID id = wxID_ANY, 
+					wxString title = _("Nukak3D: Calendar"), 
+					wxPoint pos = wxDefaultPosition, 
+					wxSize size = wxDefaultSize, 
+					long style = wxDEFAULT_DIALOG_STYLE, 
+					wxString name = "dialogBox");
+	const wxDateTime & getDate();
+private:
+	wxCalendarCtrl * my_cal;
+	wxButton * my_cmdOk;
+};
+
 #endif _nkIODialog_H_

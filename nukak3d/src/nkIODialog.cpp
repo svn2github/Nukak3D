@@ -70,3 +70,27 @@ wxString nkIODialog::obtenerValor(int un_indice){
 	}
 	return miValor;
 }
+
+nkCalendarDialog::nkCalendarDialog(wxWindow* parent, 
+								   wxWindowID id, 
+								   wxString title, 
+								   wxPoint pos, 
+								   wxSize size, 
+								   long style, 
+								   wxString name):
+		wxDialog(parent, id, title, pos, size, style, name){
+
+	my_cal = new wxCalendarCtrl(this, wxID_ANY);
+	my_cmdOk = new wxButton(this, wxID_OK, _("Ok"));
+	wxFlexGridSizer * my_sizer =  new wxFlexGridSizer(2, 1, 5, 5);
+	my_sizer->Add(my_cal, 0,  wxALL, 5);
+	my_sizer->Add(my_cmdOk, 0, wxALIGN_CENTER_HORIZONTAL , 5);
+	my_sizer->SetMinSize(my_cal->GetSize().GetWidth() + 10, my_cal->GetSize().GetHeight() + 70 );
+	this->SetSizer(my_sizer);
+    my_sizer->Fit(this);
+	this->SetSize(my_cal->GetSize().GetWidth() + 10, my_cal->GetSize().GetHeight() + 70 );
+}
+
+const wxDateTime & nkCalendarDialog::getDate(){
+	return my_cal->GetDate();
+}

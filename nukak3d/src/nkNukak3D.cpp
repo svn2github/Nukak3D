@@ -8,6 +8,7 @@
 */
 #include "nkNukak3D.h"
 #include "nkStoreSCP.h"
+#include "nkFindSCU.h"
 
 #include "icon_menu_mas.xpm"
 
@@ -53,6 +54,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 
 	// DICOM Menu Bar -> Botton
 	wxMenu * mi_wxMenuDicom = new wxMenu;  
+	mi_wxMenuDicom->Append(nkNukak3D::ID_DICOMFIND, _("DICOM Search"), _("Search patient in DICOM server."));
 	mi_wxMenuDicom->Append(nkNukak3D::ID_DICOMSERVER, _("DICOM Listener"), _("Configure and start Dicom Listener."));
 	mi_wxMBMenu->Append(mi_wxMenuDicom, _("DICOM"));
 
@@ -401,6 +403,7 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_MENU(nkNukak3D::ID_NAVENDOSCOPE, nkNukak3D::prEventNavEndoscope)
 	EVT_MENU(nkNukak3D::ID_FPS, nkNukak3D::prEventFPS)
 	EVT_MENU(nkNukak3D::ID_DICOMSERVER, nkNukak3D::prEventDicomListener)
+	EVT_MENU(nkNukak3D::ID_DICOMFIND, nkNukak3D::prEventDicomFind)
 	EVT_MENU(wxID_ANY, nkNukak3D::prEventLookupTable)
 END_EVENT_TABLE()
 
@@ -550,6 +553,38 @@ void nkNukak3D::prEventOpenVolumenDicom(wxCommandEvent& WXUNUSED(event)){
 
 	wxEndBusyCursor();
 }
+
+void nkNukak3D::prOpenVolumenDicom(wxString pathDicom){
+	wxVtkDICOMImporter* miImporter = new wxVtkDICOMImporter (this, true);
+
+	miImporter->LoadDirectory(pathDicom.c_str());
+	miImporter->RunFromPage(2);
+	
+	/*if( miImporter->GetReturnCode()!=wxID_OK ){
+		miImporter->Destroy();
+		return;
+	}*/
+	
+	wxBeginBusyCursor();
+
+	unsigned int Nimages = miImporter->GetOutputs().size();
+	double step = 100.0/(double)(Nimages);
+
+	for (unsigned int i=0; i<Nimages ; i++){
+		if (!miImporter->GetOutput(i)){
+		continue;
+		}
+		nkVolViewer * mi_Vol2 = new nkVolViewer(prv_wxAuiNotebook, wxID_ANY);
+		mi_Vol2->Configure();
+		wxString basename = wxT (miImporter->GetDescription (i).c_str());
+		prv_wxAuiNotebook->AddPage(mi_Vol2, basename,true );
+		mi_Vol2->prOpenFile_dicom(basename, miImporter, i);
+	}
+	miImporter->Destroy();
+
+	wxEndBusyCursor();
+}
+
 //*****************************************************************************************
 //		MENU -> OPEN -> MESH 3D
 //*****************************************************************************************
@@ -1745,4 +1780,11 @@ void nkNukak3D::prEventFPS(wxCommandEvent& WXUNUSED(event))
 void nkNukak3D::prEventDicomListener(wxCommandEvent& WXUNUSED(event)){
 	nkStoreSCP * my_listener = nkStoreSCP::getInstance(this);
 	my_listener->ShowModalAndLog();
+}
+
+void nkNukak3D::prEventDicomFind(wxCommandEvent& WXUNUSED(event)){
+	nkFindSCU * my_find = new nkFindSCU(this, wxID_ANY,"Nukak3D:Find Patient's", wxDefaultPosition, wxSize(800,600));
+	//my_find->ShowModal();
+	prv_wxAuiNotebook->AddPage(my_find, "apaasd",true );
+
 }
