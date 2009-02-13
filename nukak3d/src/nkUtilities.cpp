@@ -20,8 +20,9 @@ nkUtilities::nkUtilities(){
 
 wxString nkUtilities::getNukak3DPath(){
 	if(prv_strNukak3DPath.Length()<1){
-		prv_strNukak3DPath = (wxStandardPaths::Get().GetExecutablePath())
-			.Left(wxStandardPaths::Get().GetExecutablePath().Find("nukak3d"));
+		prv_strNukak3DPath = wxStandardPaths::Get().GetExecutablePath();
+		prv_strNukak3DPath = prv_strNukak3DPath.Left(prv_strNukak3DPath.find_last_of("nukak3d"));
+		prv_strNukak3DPath = prv_strNukak3DPath.Left(prv_strNukak3DPath.Len() - 7);
 	}
 	return prv_strNukak3DPath;
 }
@@ -45,21 +46,46 @@ wxString nkUtilities::getNukak3DDataDir(){
 			}
 		}
 		if(buscar){
-			a_dataDirConfigSystem = wxStandardPaths::Get().GetUserLocalDataDir() + wxFileName::GetPathSeparator() + wxString("data");
-			if (!mkDir(a_dataDirConfigSystem)){
-				a_dataDirConfigSystem = wxStandardPaths::Get().GetDocumentsDir() + wxFileName::GetPathSeparator() + 
-						wxString("Nukak3D") +  wxFileName::GetPathSeparator() + 
-						wxString("data");
-				if (!mkDir(a_dataDirConfigSystem)){
-					a_dataDirConfigSystem = wxStandardPaths::Get().GetTempDir() + wxFileName::GetPathSeparator() + 
-						wxString("Nukak3D") +  wxFileName::GetPathSeparator() + 
-						wxString("data");
+			a_dataDirConfigSystem = wxStandardPaths::Get().GetUserLocalDataDir();
+			if(mkDir(a_dataDirConfigSystem))
+			{
+				a_dataDirConfigSystem.Append(wxFileName::GetPathSeparator());
+				a_dataDirConfigSystem.Append(wxString("data"));
+				if(!mkDir(a_dataDirConfigSystem))
+				{
+					a_dataDirConfigSystem = "";
+				}
+			}else
+			{
+				a_dataDirConfigSystem = wxStandardPaths::Get().GetDocumentsDir() + wxFileName::GetPathSeparator() + wxString("Nukak3D");
+				if(mkDir(a_dataDirConfigSystem))
+				{
+					a_dataDirConfigSystem.Append(wxFileName::GetPathSeparator());
+					a_dataDirConfigSystem.Append(wxString("data"));
 					mkDir(a_dataDirConfigSystem);
+					if(!mkDir(a_dataDirConfigSystem))
+					{
+						a_dataDirConfigSystem = "";
+					}
+				}else
+				{
+					a_dataDirConfigSystem = wxStandardPaths::Get().GetTempDir() + wxFileName::GetPathSeparator() + wxString("Nukak3D");
+					if (mkDir(a_dataDirConfigSystem)){
+						a_dataDirConfigSystem.Append(wxFileName::GetPathSeparator());
+						a_dataDirConfigSystem.Append(wxString("data"));
+						mkDir(a_dataDirConfigSystem);
+						if(!mkDir(a_dataDirConfigSystem))
+						{
+							a_dataDirConfigSystem = "";
+						}
+					}else{
+						a_dataDirConfigSystem = "";
+					}
 				}
 			}
 		}
 	}
-	if (a_dataDirConfigSystem.Length()>2){
+	if (a_dataDirConfigSystem.Length()>10){
 		prv_strNukak3DDataDir = a_dataDirConfigSystem;
 	}
 	if (isValidDirName(prv_strNukak3DDataDir))	writeConfigBase("Paths/DataDir",prv_strNukak3DDataDir);

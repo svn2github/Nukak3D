@@ -129,7 +129,7 @@ nkFindSCU::nkFindSCU(nkNukak3D *parent, wxWindowID id , const wxString &title, c
 	prv_wxGridPatients->SetColSize( 8, 120 );
 	prv_wxGridPatients->SetColSize( 9, 0 );
 	prv_wxGridPatients->SetColSize( 10, 0 );
-	prv_wxGridPatients->SetColSize( 11, 0 );
+	prv_wxGridPatients->SetColSize( 11, 120 );
 	prv_wxGridPatients->SetColLabelValue(0, _("Patien ID"));
 	prv_wxGridPatients->SetColLabelValue(1, _("Name"));
 	prv_wxGridPatients->SetColLabelValue(2, _("Sex"));
@@ -146,12 +146,12 @@ nkFindSCU::nkFindSCU(nkNukak3D *parent, wxWindowID id , const wxString &title, c
 	prv_wxGridPatients->ForceRefresh();
 
 	prv_auiManager.AddPane(prv_wxGridPatients, wxAuiPaneInfo().
-              Name("Search").
+              Name("SearchGrid").
 			  Center().
 			  CloseButton(false).
 			  PinButton(false).
 			  Floatable(false).
-			  Caption(_("Search")));
+			  Caption(_("Search results: Study's List")));
 
 	prv_auiManager.Update();
 
@@ -310,16 +310,46 @@ void nkFindSCU::prEventSearch(wxCommandEvent& WXUNUSED(event)){
 
 	
 
-	wxString my_path = wxStandardPaths::Get().GetExecutablePath();
-	my_path = my_path.Left(my_path.Find("nukak3d"));
+	//wxString my_path = wxStandardPaths::Get().GetExecutablePath();
+	//my_path = my_path.Left(my_path.Find("nukak3d"));
+	wxString my_pathDestination = nkUtilities::getNukak3DDataDir();
+
+	wxString my_path = "";
+	my_path.Append(my_pathDestination);
 	my_path.Append(wxFileName::GetPathSeparator());
 	my_path.Append("query.txt");
 	wxFile * myfile = new wxFile(my_path, wxFile::write);
 	myfile->Write(my_DicomText);
 	myfile->Close();
 
-	wxString str_dump;
-	str_dump = wxString("dump2dcm -v query.txt query.dcm ");
+	//Copy dump3dcm
+	wxString myDumpExecutableName = "dump2dcm";
+	myDumpExecutableName.Append(nkUtilities::getExecutableExtension());
+	wxString myDumpOriginal = "";
+	
+	myDumpOriginal.Append(nkUtilities::getNukak3DPath());
+	myDumpOriginal.Append(wxFileName::GetPathSeparator());
+	myDumpOriginal.Append(myDumpExecutableName);
+
+	wxString myDumpCopia = "";
+	myDumpCopia.Append(my_pathDestination);
+	myDumpCopia.Append(wxFileName::GetPathSeparator());
+	myDumpCopia.Append(myDumpExecutableName);
+	
+	nkUtilities::copyFile(myDumpOriginal, myDumpCopia);
+
+	wxString myQueryDcm = "";
+	myQueryDcm.Append(nkUtilities::getNukak3DDataDir());
+	myQueryDcm.Append(wxFileName::GetPathSeparator());
+	myQueryDcm.Append("query.dcm");
+
+	wxString str_dump = "";
+	str_dump.Append(myDumpCopia);
+	str_dump.Append( " -v ");
+	str_dump.Append(my_path);
+	str_dump.Append(" ");
+	str_dump.Append(myQueryDcm);
+
 	nkUtilities::setWorkingDirectoryNukak3D();
 	wxProcess *process = wxProcess::Open(str_dump);
 	wxString process_in = "-1";
@@ -335,13 +365,32 @@ void nkFindSCU::prEventSearch(wxCommandEvent& WXUNUSED(event)){
 	if(dumpfile){
 		if(myindexserver != -1){
 			nkDICOMServer *  myDicomS = prv_listServers.Item(myindexserver)->GetData();
-			wxString str_find;
-			str_find = wxString("findscu -S ");
+
+			wxString myFindOriginal, myFindCopy, myFindExecutableName;
+			myFindOriginal = "";
+			myFindCopy = "";
+			myFindExecutableName = "";
+			myFindExecutableName.Append("findscu");
+			myFindExecutableName.Append(nkUtilities::getExecutableExtension());
+
+			myFindOriginal.Append(nkUtilities::getNukak3DPath());
+			myFindOriginal.Append(wxFileName::GetPathSeparator());
+			myFindOriginal.Append(myFindExecutableName);
+
+			myFindCopy.Append(nkUtilities::getNukak3DDataDir());
+			myFindCopy.Append(wxFileName::GetPathSeparator());
+			myFindCopy.Append(myFindExecutableName);
+			nkUtilities::copyFile(myFindOriginal, myFindCopy);
+
+			wxString str_find = "";
+			str_find.Append(myFindCopy);
+			str_find.Append(" -S ");
 			str_find.Append("-aet ");	str_find.Append(myDicomS->AETitle);
 			str_find.Append(" -aec ");	str_find.Append(myDicomS->AECalled);
 			str_find.Append(" ");	str_find.Append(myDicomS->host);
 			str_find.Append(" ");	str_find.Append(wxString::Format("%d", myDicomS->port));
-			str_find.Append(" query.dcm");
+			str_find.Append(" ");
+			str_find.Append(myQueryDcm);
 			nkUtilities::setWorkingDirectoryNukak3D();
 			wxProcess *processFind = wxProcess::Open(str_find);
 			wxString process_infind = "-1";
@@ -351,10 +400,14 @@ void nkFindSCU::prEventSearch(wxCommandEvent& WXUNUSED(event)){
 				process_infind = myfind->m_textIn;
 				analyzeOutput(process_infind);
 			}
+			wxRemoveFile(myFindCopy);
 		}else{
 			wxMessageBox(_("Select a DICOM server"),_("Nukak3D: Alert"));
 		}
 	}
+	wxRemoveFile(myQueryDcm);
+	wxRemoveFile(my_path);
+	wxRemoveFile(myDumpCopia);
 }
 
 int nkFindSCU::getServer(){
@@ -501,8 +554,7 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 		outPathQuertyDCM.Append(wxFileName::GetPathSeparator());
 		outPathQuertyDCM.Append("query.dcm");
 
-		nukakPath = wxStandardPaths::Get().GetExecutablePath();
-		nukakPath = nukakPath.Left(nukakPath.Find("nukak3d"));
+		nukakPath = nkUtilities::getNukak3DPath();
 		nukakPathProgramMoveSCU.Append(nukakPath);
 		nukakPathProgramMoveSCU.Append(wxFileName::GetPathSeparator());
 		nukakPathProgramMoveSCU.Append(nameProgramMoveSCU);
@@ -510,7 +562,7 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 		nkUtilities::copyFile(nukakPathProgramMoveSCU, outPathProgramMoveSCU);
 		
 
-		nukakPathQuertyTXT.Append(nukakPath);
+		nukakPathQuertyTXT.Append(nkUtilities::getNukak3DDataDir());
 		nukakPathQuertyTXT.Append(wxFileName::GetPathSeparator());
 		nukakPathQuertyTXT.Append("query.txt");
 
@@ -519,7 +571,9 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 		myfile->Close();
 
 		wxString str_dump;
-		str_dump = wxString("dump2dcm -v query.txt ");
+		str_dump = wxString("dump2dcm -v ");
+		str_dump.Append(nukakPathQuertyTXT);
+		str_dump.Append(" ");
 		str_dump.Append( outPathQuertyDCM);
 		nkUtilities::setWorkingDirectoryNukak3D();
 		wxProcess *process = wxProcess::Open(str_dump);
@@ -594,6 +648,7 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 		}
 		wxRemoveFile(outPathProgramMoveSCU);
 		wxRemoveFile(outPathQuertyDCM);
+		wxRemoveFile(nukakPathQuertyTXT);
 
 	wxSetWorkingDirectory(nukakPath);
 	}else{

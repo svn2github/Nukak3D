@@ -119,8 +119,8 @@ END_EVENT_TABLE()
 wxProcess * nkStoreSCP::start(){
 	nkUtilities::setWorkingDirectoryNukak3D();
 	if(!my_process){
-		wxString str_echo;
-		str_echo = wxString("echoscu localhost ")<<wxString::Format(wxT("%d"),port);
+		wxString str_echo = nkUtilities::getNukak3DPath() + wxFileName::GetPathSeparator();
+		str_echo.Append("echoscu localhost ")<<wxString::Format(wxT("%d"),port);
 		wxProcess *process = wxProcess::Open(str_echo);
 		wxString process_in = "-1";
 		if(process){
@@ -142,11 +142,11 @@ wxProcess * nkStoreSCP::start(){
 			return my_process;
 		}
 
-		wxString str_storescp;
-		str_storescp = wxString("storescp -aet ")<<aet<<
+		wxString str_storescp = nkUtilities::getNukak3DPath() + wxFileName::GetPathSeparator();
+		str_storescp.Append( wxString("storescp -aet ")<<aet<<
 			wxString(" -od ")<<od<<
 			wxString(" -v ")<<options<<
-			wxString::Format(wxT(" %d"),port);
+			wxString::Format(wxT(" %d"),port));
 		my_process = wxProcess::Open(str_storescp, wxEXEC_ASYNC);
 		if (my_process){
 			my_process->SetNextHandler(this);
@@ -224,8 +224,8 @@ wxString nkStoreSCP::getErrorStream(){
 bool nkStoreSCP::isOk(){
 	bool serverok = false;
 	if(this->my_process){
-		wxString str_echo;
-		str_echo = wxString("echoscu -v localhost ")<<wxString::Format(wxT("%d"),port);
+		wxString str_echo = nkUtilities::getNukak3DPath() + wxFileName::GetPathSeparator();
+		str_echo.Append( wxString("echoscu -v localhost ")<<wxString::Format(wxT("%d"),port));
 		wxProcess *process = wxProcess::Open(str_echo);
 		wxString process_in = "-1";
 		if(process){

@@ -68,8 +68,8 @@ public:
 			wxString(_("\nbecause the drug traffic war. In their cosmology, health is considered as a common"))<<
 			wxString(_("\nproblem so that if one of them falls sick, they consider the whole community is ill"))<<
 			wxString(_("\nand any particular cure must be shared between them all. This simple principle,"))<<
-			wxString(_("\ncurrently forgotten for most western societies."))<<
-			wxString(_("\nWas our main motivation to open up this software project.")),
+			wxString(_("\ncurrently forgotten for most modern societies."))<<
+			wxString(_("\nIt was our main motivation to open up this software project.")),
 			wxPoint(20,370), 
 			wxDefaultSize);
 
