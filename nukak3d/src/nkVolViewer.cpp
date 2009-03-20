@@ -290,7 +290,7 @@ void nkVolViewer::prOpenFile_dicom(wxString a_fileName, wxVtkDICOMImporter* myim
 	#ifdef __WXMAC__
 		typedef itk::GDCMImporter::FloatImageType   DImageType; // vtkInria3D anterior
 	#else //win and unix
-		typedef itk::GDCMImporter::ImageType   DImageType; // vtkInria3D mas reciente
+		typedef itk::GDCMImporter2< itk::Image<unsigned short, 3> >::ImageType DImageType; // vtkInria3D mas reciente
 	#endif
 	
 
