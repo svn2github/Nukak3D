@@ -9,8 +9,7 @@
 
 #include "nkUtilities.h"
 
-wxString nkUtilities::prv_strNukak3DPath = (wxStandardPaths::Get().GetExecutablePath())
-.Left(wxStandardPaths::Get().GetExecutablePath().Find("nukak3d"));
+wxString nkUtilities::prv_strNukak3DPath = wxString("");
 
 wxString nkUtilities::prv_strNukak3DDataDir = wxString("");
 
