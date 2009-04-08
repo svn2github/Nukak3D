@@ -42,7 +42,7 @@ public:
 	*/
 	nkUtilities();
 
-	static enum {
+	enum {
 		ID_OPEN_FILE = wxID_HIGHEST + 1500, /**< Open file. */
 		ID_OTHER_FILE
 	};
