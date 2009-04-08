@@ -99,11 +99,12 @@ public:
 	/**
 	 * @brief Delete the instance.
 	*/
-	static void Destroy(){
+	bool Destroy(){
 		if( _instance != 0 ){
 			delete( _instance );
 			_instance = 0;
 		}
+		return true;
 	}
 	/**
 	 * @brief Class Constructor.
