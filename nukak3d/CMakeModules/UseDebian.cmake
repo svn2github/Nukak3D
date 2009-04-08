@@ -79,12 +79,12 @@ IF(UNIX)
       FILE(WRITE ${CMAKE_BINARY_DIR}/control
 "Package: ${DEBIAN_PACKAGE_NAME}
 Version: ${CPACK_PACKAGE_VERSION}
-Section: devel
+Section: Medical
 Priority: optional
 Architecture: ${DEBIAN_ARCHITECTURE}
 Depends: ${DEBIAN_PACKAGE_DEPENDS}
-Maintainer: ${CPACK_NSIS_CONTACT}
-Description: ${CPACK_PACKAGE_DESCRIPTION_SUMMARY}
+Maintainer: ${DEBIAN_PACKAGE_MAINTAINER}
+Description: ${DEBIAN_PACKAGE_DESCRIPTION}
  .
  ${DEBIAN_PACKAGE_NAME} was packaged by UseDebian and CMake.
  .

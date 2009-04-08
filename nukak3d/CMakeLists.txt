@@ -204,6 +204,7 @@ ELSE(WIN32 OR APPLE)
 
   SET(CPACK_DEBIAN_PACKAGE_NAME "nuakk3d")
   SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libgtk2.0-0 (>= 2.14.4-0ubuntu1), dcmtk (>= 3.5.4-3)")
+  SET(DEBIAN_PACKAGE_DEPENDS "libgtk2.0-0 (>= 2.14.4-0ubuntu1), dcmtk (>= 3.5.4-3)")
   SET(CPACK_DEBIAN_PACKAGE_VERSION "${nukak3d_VERSION_MAJOR}.${nukak3d_VERSION_MINOR}.${nukak3d_VERSION_BUILD}")
   SET(DEBIAN_PACKAGE_MAINTAINER "Alexander Pinzon Fernande apinzonf@gmail.com")
   SET(DEBIAN_PACKAGE_DESCRIPTION "Nukak3d is a flexible architecture that 
