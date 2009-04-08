@@ -198,9 +198,29 @@ ELSE(WIN32 OR APPLE)
   ENDIF(CMAKE_INSTALL_SYSTEM_RUNTIME_LIBS)
   
   INCLUDE(UseRPMTools)
-	IF (RPMTools_FOUND)
-		RPMTools_ADD_RPM_TARGETS(${PROJECT_NAME} "packaging/${PROJECT_NAME}.spec.in")
-	ENDIF (RPMTools_FOUND)
+  IF (RPMTools_FOUND)
+    RPMTools_ADD_RPM_TARGETS(${PROJECT_NAME} "packaging/${PROJECT_NAME}.spec.in")
+  ENDIF (RPMTools_FOUND)
+
+  SET(CPACK_DEBIAN_PACKAGE_NAME "nuakk3d")
+  SET(CPACK_DEBIAN_PACKAGE_DEPENDS "libgtk2.0-0 (>= 2.14.4-0ubuntu1), dcmtk (>= 3.5.4-3)")
+  SET(CPACK_DEBIAN_PACKAGE_VERSION "${nukak3d_VERSION_MAJOR}.${nukak3d_VERSION_MINOR}.${nukak3d_VERSION_BUILD}")
+  SET(DEBIAN_PACKAGE_MAINTAINER "Alexander Pinzon Fernande apinzonf@gmail.com")
+  SET(DEBIAN_PACKAGE_DESCRIPTION "Nukak3d is a flexible architecture that 
+integrates general-purpose graphics libraries such as 
+VTK, ITK, VTKInria3D, OpenGL, under a graphical user 
+interface (wxWidgets) for three-dimensional visualization 
+and processing of medical images.
+ .
+This product has been developed by Bioingenium Research Group, 
+within the frame of the computer graphics project at the 
+National University of Colombia")
+  SET(DEBIAN_PACKAGE_SECTION "Medical")
+  INCLUDE(UseDebian)
+  IF(DEBIAN_FOUND)
+    ADD_DEBIAN_TARGETS(${PROJECT_NAME})
+   ENDIF(DEBIAN_FOUND)
+
 ENDIF(WIN32 OR APPLE)
 
 INCLUDE(CPack)
