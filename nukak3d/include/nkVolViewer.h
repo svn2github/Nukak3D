@@ -82,6 +82,8 @@
 #include "nkNukak3D.h"
 #include "nkIODialog.h"
 #include "nkInteractorStyleEndoCamera.h"
+#include "nkKernel.h"
+#include "nkITKFilterServer.h"
 
 /** STL */
 #include <vector>
@@ -366,6 +368,10 @@ private:
 	*/
 	void prNavUnicam(void);
 
+	/** 
+	 * @brief Plugin filter
+	 * @param p_libro wxAuiNotebook* for make pages.	*/
+	void FilterPluginExecute(wxString pluginName, nukak3d::nkKernel &mKernel, wxAuiNotebook * p_libro);
 	/**
 	 * @brief Gaussian filter.
 	 * @param p_libro wxAuiNotebook* for make pages.

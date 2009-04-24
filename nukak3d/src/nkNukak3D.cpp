@@ -60,6 +60,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 
 	// Tools Menu Bar -> Botton
 	wxMenu * mi_wxMenuHerramientas = new wxMenu;  
+	mi_wxMenuHerramientas->Append(nkNukak3D::ID_ADMIN_PLUGIN_PATH, _("Admin Plugin's"), _("Admin plugin's paths."));
 	mi_wxMenuHerramientas->Append(nkNukak3D::ID_SETLANGUAGE, _("Choose language"), _("Change language for controls."));
 	mi_wxMBMenu->Append(mi_wxMenuHerramientas, _("Tools"));
 
@@ -332,6 +333,28 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 				  CenterPane().
 				  PaneBorder(false));
 
+
+	//nkUtilities::addNukak3DPluginPath(nkUtilities::getNukak3DPath());
+	//nkUtilities::writePluginsPaths();
+	nkUtilities::readPluginsPaths();
+	wxArrayString &strPlugins = nkUtilities::getNukak3DPluginsNames();
+	for(size_t jiu = 0; jiu < strPlugins.size(); jiu++)
+		if(!prv_nkKernel.loadPlugin(strPlugins.Item(jiu).c_str())){
+			wxLogError("Can't load library %s", strPlugins.Item(jiu));
+		}
+
+	//ID_NK_ITK_PLUGIN_FILTER
+
+	nkMenuTool * mi_nkMenuITKPlugins = prv_nkToolBarImageViewer->insertarMenu(-1, _("ITK Plugin's"));
+	
+	for( size_t i=0; i< prv_nkKernel.getnkITKFilterServer().getnkITKFilterCount(); i++){
+		mi_nkMenuITKPlugins->insertarTool(
+			new nkTool(nkNukak3D::ID_NK_ITK_PLUGIN_FILTER + i,
+			wxT(prv_nkKernel.getnkITKFilterServer().getkITKFilter(i).getName()), 
+			wxNullBitmap, 
+			wxT(prv_nkKernel.getnkITKFilterServer().getkITKFilter(i).getDescription())
+			));
+	}
 	prv_auiManager.Update();
 
 }
@@ -404,6 +427,7 @@ BEGIN_EVENT_TABLE(nkNukak3D, wxFrame)
 	EVT_MENU(nkNukak3D::ID_FPS, nkNukak3D::prEventFPS)
 	EVT_MENU(nkNukak3D::ID_DICOMSERVER, nkNukak3D::prEventDicomListener)
 	EVT_MENU(nkNukak3D::ID_DICOMFIND, nkNukak3D::prEventDicomFind)
+	EVT_MENU(nkNukak3D::ID_ADMIN_PLUGIN_PATH, nkNukak3D::prEventAdminPluginsPaths)
 	EVT_MENU(wxID_ANY, nkNukak3D::prEventLookupTable)
 END_EVENT_TABLE()
 
@@ -806,23 +830,39 @@ void nkNukak3D::prEventResetLookupTable(wxCommandEvent& WXUNUSED(event)){
 //		MENU -> LOOKUP TABLE -> SELECT
 //*****************************************************************************************
 void nkNukak3D::prEventLookupTable(wxCommandEvent& event){
-	if (event.GetId() >= nkNukak3D::ID_LAST_LOOKUP_TABLE){
+	int mi_pagina;
+	wxWindow * pagina;
+	nkVolViewer *page;
+	int val;
+	if(event.GetId() >= nkNukak3D::ID_NK_ITK_PLUGIN_FILTER)
+	{
 		if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
-			int mi_pagina = prv_wxAuiNotebook->GetSelection();
-			wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+			mi_pagina = prv_wxAuiNotebook->GetSelection();
+			pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 			if (pagina->GetName() == wxT("nkVolViewer")){
-				nkVolViewer *page = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
-				int val = event.GetId() - nkNukak3D::ID_LAST_LOOKUP_TABLE;
-				vtkLookupTable* lut = vtkLookupTableManager::GetLookupTable(val);
-				if( lut && page ){
-					wxBeginBusyCursor();
-					page->cambiarPaletaColor(lut);
-					lut->Delete();
-					wxEndBusyCursor();
+				nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+				size_t valu = event.GetId() - nkNukak3D::ID_NK_ITK_PLUGIN_FILTER;
+				wxString nameFilter = prv_nkKernel.getnkITKFilterServer().getkITKFilter(valu).getName();
+				current->FilterPluginExecute(nameFilter, prv_nkKernel, nkNukak3D::getWxAuiNotebook());
+			}
+		}
+	}else if (event.GetId() >= nkNukak3D::ID_LAST_LOOKUP_TABLE){
+			if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
+				mi_pagina = prv_wxAuiNotebook->GetSelection();
+				pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+				if (pagina->GetName() == wxT("nkVolViewer")){
+					page = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
+					val = event.GetId() - nkNukak3D::ID_LAST_LOOKUP_TABLE;
+					vtkLookupTable* lut = vtkLookupTableManager::GetLookupTable(val);
+					if( lut && page ){
+						wxBeginBusyCursor();
+						page->cambiarPaletaColor(lut);
+						lut->Delete();
+						wxEndBusyCursor();
+					}
 				}
 			}
 		}
-	}
 }
 //*****************************************************************************************
 //		MENU -> VISUALIZACION DE VOLUMENES 3D -> ESCALAR (PLANOS ORTOGONALES)
@@ -939,6 +979,7 @@ void nkNukak3D::prEventMarchingCubes(wxCommandEvent& WXUNUSED(event)){
 				(miDlg->obtenerValor(2)).ToLong(&umbralSuperior);
 
 				miobj->Configure();
+
 				miobj->prImageToIsoSurface(current->getImagen(),
 					(int)num_contornos, 
 					(int)umbralInferior,  
@@ -1162,12 +1203,37 @@ void nkNukak3D::prEventStLessSeparation(wxCommandEvent &WXUNUSED(event))
 //*****************************************************************************************
 void nkNukak3D::prEventFilVolGaussian(wxCommandEvent &WXUNUSED(event)) 
 {
+	typedef itk::Image<unsigned short, 3> ius;
+	typedef itk::nkImageToImageFilter<ius, ius> iusp;
+	iusp::Pointer pius;
+	ius::Pointer img;
 	if ((int)prv_wxAuiNotebook->GetPageCount() > 0){
 		int mi_pagina = prv_wxAuiNotebook->GetSelection();
 		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkVolViewer")){
+
 			nkVolViewer *current = (nkVolViewer*)prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
-			current->FilVolGaussian( nkNukak3D::getWxAuiNotebook() );
+			/*
+			nkVolViewer * mivol = new nkVolViewer(prv_wxAuiNotebook);
+
+			
+			
+			pius = prv_nkKernel.getnkITKFilterServer().getkITKFilter(0).createitkFilter(((unsigned short)0));
+			pius->SetInput( current->getImagen() );
+			unsigned short * op = new unsigned short(3);
+			
+			pius->setParameter((void *)op);
+			try{
+				pius->Update();
+			}catch(itk::ExceptionObject e){
+			}
+
+			img = pius->GetOutput();
+			mivol->Configure();
+			mivol->ConfigureITKimage("Plugin ", img );
+			prv_wxAuiNotebook->AddPage(mivol, "Plugin...",true );
+			*/
+			current->FilterPluginExecute(wxString("CompositeExampleImageFilter"), prv_nkKernel, nkNukak3D::getWxAuiNotebook());
 		}
 	}
 }
@@ -1787,4 +1853,13 @@ void nkNukak3D::prEventDicomFind(wxCommandEvent& WXUNUSED(event)){
 	//my_find->ShowModal();
 	prv_wxAuiNotebook->AddPage(my_find, "apaasd",true );
 
+}
+
+nukak3d::nkKernel & nkNukak3D::getNukakKernel(void){
+	return prv_nkKernel;
+}
+
+void nkNukak3D::prEventAdminPluginsPaths(wxCommandEvent& WXUNUSED(event)){
+	nkAdminPluginGui * my_admin = new nkAdminPluginGui(this, prv_nkKernel);
+	my_admin->ShowModal();
 }

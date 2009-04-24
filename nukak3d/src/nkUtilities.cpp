@@ -13,6 +13,8 @@ wxString nkUtilities::prv_strNukak3DPath = wxString("");
 
 wxString nkUtilities::prv_strNukak3DDataDir = wxString("");
 
+wxArrayString nkUtilities::prv_strNukak3DPluginsPaths;
+
 nkUtilities::nkUtilities(){
 	//Nothing
 }
@@ -231,4 +233,65 @@ bool nkUtilities::existFile(const wxString& a_file){
 bool nkUtilities::isValidDirName(const wxString& dir){
 	wxFileName my_wxF(dir);
 	return my_wxF.IsOk();
+}
+
+bool nkUtilities::writePluginsPaths(void){
+	wxString strPlugins = "";
+	wxChar charTokenSparater = '|';
+	size_t i, cant = prv_strNukak3DPluginsPaths.size();
+	for (i=0; i<cant; i++){
+		strPlugins  = strPlugins + prv_strNukak3DPluginsPaths.Item(i) + wxString("|");
+	}
+	return writeConfigBase(_("Paths/Plugins"), strPlugins);
+}
+
+bool nkUtilities::readPluginsPaths(void){
+	wxString strPlugins = "";
+	bool readPlugin = readConfigBase(_("Paths/Plugins"), &strPlugins, "");
+	if(readPlugin)	{
+		wxChar charTokenSparater = '|';
+		size_t i, cant = countCharFromString(strPlugins, charTokenSparater);
+		prv_strNukak3DPluginsPaths.Clear();
+		for(i=0; i<cant; i++){
+			prv_strNukak3DPluginsPaths.Add(getStringFromCharToken(strPlugins, charTokenSparater,i));
+		}
+	}
+	return readPlugin;
+}
+
+void nkUtilities::addNukak3DPluginPath(const wxString& dir){
+	bool okAdd = true;
+	if(nkUtilities::existDir(dir)){
+		size_t i, cant = prv_strNukak3DPluginsPaths.size();
+		for(i=0; i<cant; i++){
+			if(prv_strNukak3DPluginsPaths.Item(i).Cmp(dir) == 0){
+				okAdd = false;
+			}
+		}
+		if(okAdd){
+			prv_strNukak3DPluginsPaths.Add(dir);
+		}
+	}
+}
+
+wxArrayString& nkUtilities::getNukak3DPluginsPaths(void){
+	return prv_strNukak3DPluginsPaths;
+}
+
+wxArrayString& nkUtilities::getNukak3DPluginsNames(void){
+	wxArrayString *strPlugins, strPluginsTemp;
+	strPlugins = new wxArrayString();
+	size_t i, j, canPluginsTemp, cantPaths = prv_strNukak3DPluginsPaths.size();
+	wxString pluginEXT = wxString("*") + wxString(wxDynamicLibrary::GetDllExt());
+	strPluginsTemp.Add("");
+	for(i=0; i<cantPaths; i++){
+		strPluginsTemp.Clear();
+		wxDir::GetAllFiles(prv_strNukak3DPluginsPaths.Item(i), &strPluginsTemp, pluginEXT);
+		canPluginsTemp = strPluginsTemp.size();
+		for(j=0; j<canPluginsTemp; j++){
+			strPlugins->Add( strPluginsTemp.Item(j));
+			//prv_strNukak3DPluginsPaths.Item(i)<<wxFileName::GetPathSeparator();
+		}
+	}
+	return *strPlugins;
 }

@@ -56,6 +56,16 @@ nkUtilities.cpp
 ${CMAKE_SOURCE_DIR}/include/nkUtilities.h
 nkDICOMServer.cpp
 ${CMAKE_SOURCE_DIR}/include/nkDICOMServer.h
+nkPlugin.cpp
+${CMAKE_SOURCE_DIR}/include/nkPlugin.h
+nkEngine.cpp
+${CMAKE_SOURCE_DIR}/include/nkEngine.h
+${CMAKE_SOURCE_DIR}/include/nkKernel.h
+${CMAKE_SOURCE_DIR}/include/nkITKFilterServer.h
+${CMAKE_SOURCE_DIR}/include/nkImageToImageFilter.h
+${CMAKE_SOURCE_DIR}/include/nkMacro.h
+nkAdminPluginGui.cpp
+${CMAKE_SOURCE_DIR}/include/nkAdminPluginGui.h
 )
 
 IF( WIN32 )

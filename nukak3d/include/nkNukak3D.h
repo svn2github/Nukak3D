@@ -46,6 +46,8 @@
 #include "nkVolViewer.h"
 #include "nkIODialog.h"
 #include "nkAcercaDe.h"
+#include "nkKernel.h"
+#include "nkAdminPluginGui.h"
 
 //#ifdef __WXMAC__
 #ifdef __WIN32__
@@ -73,6 +75,7 @@ public:
 		ID_OPEN_FILE_VOL,				/**< Open file vol. */
 		ID_ABOUT,						/**< Show Dialog About Nukak3d. */
 		ID_ABOUT_MAC,					/**< Show Dialog About Nukak3d (Only for Mac ) . */
+		ID_ADMIN_PLUGIN_PATH,			/**< Admin plugin's paths. */
 		ID_TREE,						/**< Event launch by nkToolBarMac. */
 		ID_AREA,						/**< Calc area . */
 		ID_prBoundingBox,					/**< Show/hide bounding box. */
@@ -127,7 +130,8 @@ public:
 		ID_VOLVIEWER_RENDERING_MRC_ISO,	/**< Ray Tracing ISOSURFACE. */
 		ID_VOLVIEWER_RENDERING_TEXTURE,	/**< Texture mpping rendering. */
 		ID_FPS,							/**< Frames per second. */
-		ID_LAST_LOOKUP_TABLE = wxID_HIGHEST+3000	/**< Event's for lookup table. */
+		ID_LAST_LOOKUP_TABLE = wxID_HIGHEST+3000,	/**< Event's for lookup table. */
+		ID_NK_ITK_PLUGIN_FILTER  = wxID_HIGHEST+3200
 	};
 
 	/**
@@ -445,11 +449,20 @@ public:
 	*/
 	void prEventDicomFind(wxCommandEvent& WXUNUSED(event));
 
+	/**
+	 * @brief Admin Plugin's paths
+	 * @details Dialog for admin plugin's paths.
+	*/
+	void prEventAdminPluginsPaths(wxCommandEvent& WXUNUSED(event));
+
+
+	nukak3d::nkKernel & getNukakKernel(void);
 private:
 	wxAuiNotebook * prv_wxAuiNotebook;		//! notebook for manage pages.
 	wxAuiManager prv_auiManager;	//! Administrator for Aui.
 	nkToolBar *  prv_nkToolBarTools;	//! nkToolBar for tools.
 	nkToolBar *  prv_nkToolBarImageViewer;	//! nkToolBar for image tools.
+	nukak3d::nkKernel prv_nkKernel;
 
 	DECLARE_EVENT_TABLE()			//! Call macro for declaration of events.
 };

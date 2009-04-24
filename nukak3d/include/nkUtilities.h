@@ -23,6 +23,7 @@
 #include "wx/config.h"
 #include "wx/confbase.h"
 #include "wx/dir.h"
+#include <wx/dynlib.h>
 #include "wx/file.h"
 #include "wx/fileconf.h"
 #include "wx/filefn.h"
@@ -151,9 +152,17 @@ public:
 	*/
 	static bool existFile(const wxString& a_file);
 
+	static void addNukak3DPluginPath(const wxString& dir);
+	static wxArrayString &getNukak3DPluginsPaths(void);
+	static wxArrayString &getNukak3DPluginsNames(void);
+	static bool writePluginsPaths(void);
+	static bool readPluginsPaths(void) ;
+	
+
 private:
 	static wxString prv_strNukak3DPath;			//! Variable to store the default working directory
 	static wxString prv_strNukak3DDataDir;		//! Variable to store the data directory
+	static wxArrayString prv_strNukak3DPluginsPaths;
 };
 
 #endif //_NKUTILITIES_H_

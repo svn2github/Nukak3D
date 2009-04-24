@@ -290,7 +290,7 @@ void nkVolViewer::prOpenFile_dicom(wxString a_fileName, wxVtkDICOMImporter* myim
 	#ifdef __WXMAC__
 		typedef itk::GDCMImporter::FloatImageType   DImageType; // vtkInria3D anterior
 	#else //win and unix
-		typedef itk::GDCMImporter2< itk::Image<unsigned short, 3> >::ImageType DImageType; // vtkInria3D mas reciente
+	typedef itk::GDCMImporter::ImageType  DImageType; // vtkInria3D mas reciente
 	#endif
 	
 
@@ -1000,5 +1000,67 @@ void nkVolViewer::FPS()
 	{
 		prv_render3D->RemoveObserver(vtkCommand::AnyEvent);
 		prv_fpsflag=0;
+	}
+}
+
+void nkVolViewer::FilterPluginExecute(wxString pluginName, nukak3d::nkKernel &mKernel, wxAuiNotebook * p_libro){
+	itk::nkImageToImageFilter<nkVolViewer::ImageType, nkVolViewer::ImageType>::Pointer nkFilter;
+	if(mKernel.getnkITKFilterServer().existITKFilter( std::string( pluginName.c_str())) )
+	{
+		unsigned short mtype = 0;
+		nkFilter = mKernel.getnkITKFilterServer().getkITKFilter(std::string(pluginName.c_str())).createitkFilter(mtype);
+		unsigned int tamParams = nkFilter->getNumberOfParameter();
+		wxString etiquetas[100];
+		const int num_datos=tamParams;
+		for(int i=0; i<num_datos;i++)
+		{
+			char * temp;
+			nkFilter->getParameterDescription(temp, i);
+			etiquetas[i] = wxString(temp);
+		}
+
+	
+		nkIODialog * miDlg = new nkIODialog(	this, 
+													etiquetas,
+													num_datos,
+													-1,
+													pluginName,
+													wxDefaultPosition,
+													wxSize(330,(num_datos+4)*20+40));
+						
+		miDlg->ShowModal();
+
+		if(miDlg->GetReturnCode() == wxID_OK)
+		{	
+			wxBeginBusyCursor();
+			double datos[100]; 
+
+			nkFilter->SetInput(getImagen());
+			for(unsigned int j=0;j<num_datos;j++){
+				(miDlg->obtenerValor(j)).ToDouble(&datos[j]);
+				nkFilter->setParameter((void *)(&datos[j]),j);
+			}
+
+			try
+			{	
+				nkFilter->Update();
+				
+				nkVolViewer * mivol = new nkVolViewer(p_libro);
+				mivol->Configure();
+				mivol->ConfigureITKimage(pluginName,nkFilter->GetOutput());
+				p_libro->AddPage(mivol, pluginName,true );
+
+			}
+			catch( itk::ExceptionObject & excep )
+			{
+				std::cerr << "Exception caught !" << std::endl;
+				std::cerr << excep << std::endl;
+				if(mensajes) vtkOutputWindow::GetInstance()->DisplayText("Exception caught !\n");
+				if(mensajes) vtkOutputWindow::GetInstance()->DisplayText(excep.GetDescription());
+			}
+			wxEndBusyCursor();
+		}
+
+	delete miDlg;
 	}
 }
