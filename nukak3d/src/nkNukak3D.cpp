@@ -83,7 +83,7 @@ nkNukak3D::nkNukak3D(wxWindow* parent, int id,
 	// Menu Save
 	nkMenuTool * mi_nkMenuGuardar = prv_nkToolBarTools->insertarMenu(-1, _("Save"));
 	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_SAVE_VOL,_("Save Volume"), wxNullBitmap, _("Save volume of images.")));
-	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_SAVE_MESH3D,_("Save Mesh 3D."), wxNullBitmap, _("Save mesh 3D in vtk file format.")));
+	mi_nkMenuGuardar->insertarTool(new nkTool(nkNukak3D::ID_SAVE_MESH3D,_("Save Mesh 3D"), wxNullBitmap, _("Save mesh 3D in vtk file format.")));
 
 	// Menu capture screen
 	nkMenuTool * mi_nkMenuCaptura = prv_nkToolBarTools->insertarMenu(-1, _("Capture Screen"));
@@ -698,9 +698,8 @@ void nkNukak3D::prEventSaveMesh3D(wxCommandEvent& WXUNUSED(event)){
 		int mi_pagina = prv_wxAuiNotebook->GetSelection();
 		wxWindow * pagina = prv_wxAuiNotebook->GetPage(size_t( mi_pagina));
 		if (pagina->GetName() == wxT("nkObj3DViewer")){
-			const wxString miWxFilter =
-				wxT ("Poligon mesh File (*.vtk)|")				
-				wxT ("VTK (*.vtk)|*.vtk|")
+			const wxString miWxFilter =			
+				wxT ("Poligon mesh File VTK (*.vtk)|*.vtk|") 
 				wxT ("All (*)|*");
 			wxFileDialog * myFileDialog = new wxFileDialog(this, 
         										  _("Save as"),
