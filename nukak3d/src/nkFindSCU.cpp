@@ -1,3 +1,29 @@
+/**
+ * ***** BEGIN GPL LICENSE BLOCK *****
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 3
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+ *
+ * The Original Code is Copyright (C) 2007-2010 by Bioingenium Research Group.
+ * Bogota - Colombia
+ * All rights reserved.
+ *
+ * Author(s): Alexander Pinzón Fernández.
+ *
+ * ***** END GPL LICENSE BLOCK *****
+ */
+
 /** 
  * @file nkFindSCU.cpp
  * @brief DICOM C-Find.
@@ -127,8 +153,10 @@ nkFindSCU::nkFindSCU(nkNukak3D *parent, wxWindowID id , const wxString &title, c
 	prv_wxGridPatients->SetColSize( 6, 70 );
 	prv_wxGridPatients->SetColSize( 7, 120 );
 	prv_wxGridPatients->SetColSize( 8, 120 );
-	prv_wxGridPatients->SetColSize( 9, 0 );
-	prv_wxGridPatients->SetColSize( 10, 0 );
+	//0
+	prv_wxGridPatients->SetColSize( 9, 40 );
+	//0
+	prv_wxGridPatients->SetColSize( 10, 40 );
 	prv_wxGridPatients->SetColSize( 11, 120 );
 	prv_wxGridPatients->SetColLabelValue(0, _("Patien ID"));
 	prv_wxGridPatients->SetColLabelValue(1, _("Name"));
@@ -283,7 +311,8 @@ void nkFindSCU::prEventSearch(wxCommandEvent& WXUNUSED(event)){
 	my_DicomText.Append("(0008,0050) SH [");
 		my_DicomText.Append(my_textAccessionNumber->GetValue());
 		my_DicomText.Append("] # AccessionNumber\n");
-	my_DicomText.Append("(0008,0052) CS [STUDY] # QueryRetrieveLevel\n");
+	//my_DicomText.Append("(0008,0052) CS [STUDY] # QueryRetrieveLevel\n");
+		my_DicomText.Append("(0008,0052) CS [SERIES] # QueryRetrieveLevel\n");
 	my_DicomText.Append("(0008,0061) CS [] # ModalitiesInStudy\n");
 	my_DicomText.Append("(0008,0080) LO [");
 		my_DicomText.Append(my_textInstitutionName->GetValue());
@@ -504,7 +533,8 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 		
 
 		my_DicomText.Append("(0008,0005) CS [] # SpecificCharacterSet\n");
-		my_DicomText.Append("(0008,0052) CS [STUDY] # QueryRetrieveLevel\n");
+		//my_DicomText.Append("(0008,0052) CS [STUDY] # QueryRetrieveLevel\n");
+		my_DicomText.Append("(0008,0052) CS [SERIES] # QueryRetrieveLevel\n");
 		my_DicomText.Append("(0010,0010) PN [");
 			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 1) );
 			my_DicomText.Append("] # PatientsName\n");
@@ -513,9 +543,11 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 			my_DicomText.Append("] # PatientID\n");
 
 		my_DicomText.Append("(0020,000D) UI [");
+		wxLogError("] # StudyInstanceUID\n" + prv_wxGridPatients->GetCellValue(my_selectedCell, 9));
 			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 9) );
 			my_DicomText.Append("] # StudyInstanceUID\n");
 		my_DicomText.Append("(0020,000E) UI [");
+			wxLogError("] # SeriesInstanceUID\n" + prv_wxGridPatients->GetCellValue(my_selectedCell, 10));
 			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 10) );
 			my_DicomText.Append("] # SeriesInstanceUID\n");
 		my_DicomText.Append("(0020,0010) SH [");
