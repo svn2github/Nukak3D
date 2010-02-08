@@ -86,8 +86,8 @@ nkServersDialog::nkServersDialog(wxWindow *parent,
 
 BEGIN_EVENT_TABLE(nkServersDialog, wxDialog)	
 	EVT_BUTTON(nkServersDialog::ID_ADD_SERVER, nkServersDialog::eventAddServer)
-	EVT_BUTTON(nkServersDialog::ID_CHANGE_SERVER, nkServersDialog::prEventChangeServer)
-	EVT_BUTTON(nkServersDialog::ID_DELETE_SERVER, nkServersDialog::prEventDeleteServer)
+	EVT_BUTTON(nkServersDialog::ID_CHANGE_SERVER, nkServersDialog::eventChangeServer)
+	EVT_BUTTON(nkServersDialog::ID_DELETE_SERVER, nkServersDialog::eventDeleteServer)
 	EVT_GRID_SELECT_CELL(nkServersDialog::prEventSelectCell)
 END_EVENT_TABLE()
 
@@ -136,7 +136,7 @@ void nkServersDialog::eventAddServer(wxCommandEvent& WXUNUSED(event)){
 	miDlg->Destroy();
 }
 
-void nkServersDialog::prEventChangeServer(wxCommandEvent& WXUNUSED(event)){
+void nkServersDialog::eventChangeServer(wxCommandEvent& WXUNUSED(event)){
 	int my_rowGrid=0;
 	int my_colGrid=0;
 	int cantRow = prv_wxGridServers->GetNumberRows();
@@ -189,7 +189,7 @@ void nkServersDialog::prEventChangeServer(wxCommandEvent& WXUNUSED(event)){
 		miDlg->Destroy();
 	}
 }
-void nkServersDialog::prEventDeleteServer(wxCommandEvent& WXUNUSED(event)){
+void nkServersDialog::eventDeleteServer(wxCommandEvent& WXUNUSED(event)){
 	int my_rowGrid=0;
 	int my_colGrid=0;
 	int cantRow = prv_wxGridServers->GetNumberRows();

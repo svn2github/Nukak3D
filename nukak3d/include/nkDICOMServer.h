@@ -93,11 +93,11 @@ protected:
 	/**
 	 * @brief Manager for change server.
 	*/
-	void prEventChangeServer(wxCommandEvent& WXUNUSED(event));
+	void eventChangeServer(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Manager for delete server.
 	*/
-	void prEventDeleteServer(wxCommandEvent& WXUNUSED(event));
+	void eventDeleteServer(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Capture number of cell selected.
 	*/
