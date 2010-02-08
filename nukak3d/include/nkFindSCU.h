@@ -123,39 +123,39 @@ protected:
 	/**
 	 * @brief Event Manager for use date from.
 	*/
-	void prEventUseDateFrom(wxCommandEvent& WXUNUSED(event));
+	void eventUseDateFrom(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Event Manager for use date to.
 	*/
-	void prEventUseDateTo(wxCommandEvent& WXUNUSED(event));
+	void eventUseDateTo(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Event manager to display calendar dialog.
 	*/
-	void prEventChangeDateFrom(wxCommandEvent& WXUNUSED(event));
+	void eventChangeDateFrom(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Event manager to display calendar dialog.
 	*/
-	void prEventChangeDateTo(wxCommandEvent& WXUNUSED(event));
+	void eventChangeDateTo(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Display dialog for set serve's.
 	*/
-	void prEventServerLocation(wxCommandEvent& WXUNUSED(event));
+	void eventServerLocation(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Event manager for clear the fields..
 	*/
-	void prEventClear(wxCommandEvent& WXUNUSED(event));
+	void eventClear(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Event manager to search a patient.
 	*/
-	void prEventSearch(wxCommandEvent& WXUNUSED(event));
+	void eventSearch(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Event manager to retrieve study.
 	*/
-	void prEventGetStudy(wxCommandEvent& WXUNUSED(event));
+	void eventGetStudy(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Manage event to capture number of row grid selected.
 	*/
-	void prEventSelectCell(wxGridEvent &event);
+	void eventSelectCell(wxGridEvent &event);
 	/**
 	 * @brief Get selected server of the list box.
 	*/
@@ -167,27 +167,27 @@ protected:
 private:
 	nkListDICOMServer prv_listServers;
 
-	wxPanel * my_searchPanel;				//! Panel fields to search
-	wxButton * my_cmdServerLocaltion;		//! Button to change server's
-	wxListBox * my_listServerLocaltion;		//! List for display server's
-	wxTextCtrl * my_textPatienID;			//! Search field to patient id.
-	wxTextCtrl * my_textFirstName;			//! Search field to first name.
-	wxTextCtrl * my_textAccessionNumber;	//! Search field to accession number.
-	wxCheckBox * my_chkStudyDateFrom;		//! Checkout to use date from.
-	wxButton * my_cmdStudyDateFrom;			//! Button to call calendar dialog.
-	wxTextCtrl * my_textStudyDateFrom;		//! Search field to date from.
-	wxCheckBox * my_chkStudyDateTo;			//! Checkout to use date to.
-	wxButton * my_cmdStudyDateTo;			//! Button to call calendar dialog.
-	wxTextCtrl * my_textStudyDateTo;		//! Search field to date from.
-	wxTextCtrl * my_textstudyDescription;	//! Search field to study description.
-	wxTextCtrl * my_textInstitutionName;	//! Search field to Institution name.
-	wxButton * my_cmdSearch;				//! Command button to start search.
-	wxButton * my_cmdClear;					//! Command button to clear fields.
-	wxButton * my_getStudy;					//! Command button to get study.
-	wxGrid * prv_wxGridPatients;			//! Grid to view patient's.
-	int my_selectedCell;					//! Variable to save selected study in grid.
-	nkNukak3D * my_parent;					//! Pointer to Nukak3D to load DICOM images.
-	wxAuiManager prv_auiManager;			//! Administrator for Aui.
+	wxPanel * search_panel;				//! Panel fields to search
+	wxButton * cmd_server_localtion;		//! Button to change server's
+	wxListBox * list_server_localtion;		//! List for display server's
+	wxTextCtrl * text_patien_ID;			//! Search field to patient id.
+	wxTextCtrl * text_first_name;			//! Search field to first name.
+	wxTextCtrl * text_accession_number;	//! Search field to accession number.
+	wxCheckBox * chk_study_date_from;		//! Checkout to use date from.
+	wxButton * cmd_study_date_from;			//! Button to call calendar dialog.
+	wxTextCtrl * text_study_date_from;		//! Search field to date from.
+	wxCheckBox * chk_study_date_to;			//! Checkout to use date to.
+	wxButton * cmd_study_date_to;			//! Button to call calendar dialog.
+	wxTextCtrl * text_study_date_to;		//! Search field to date from.
+	wxTextCtrl * text_study_description;	//! Search field to study description.
+	wxTextCtrl * text_institution_name;	//! Search field to Institution name.
+	wxButton * cmd_search;				//! Command button to start search.
+	wxButton * cmd_clear;					//! Command button to clear fields.
+	wxButton * cmd_get_study;					//! Command button to get study.
+	wxGrid * grid_patients;			//! Grid to view patient's.
+	int selected_cell;					//! Variable to save selected study in grid.
+	nkNukak3D * parent;					//! Pointer to Nukak3D to load DICOM images.
+	wxAuiManager aui_manager;			//! Administrator for Aui.
 	DECLARE_EVENT_TABLE()					//! Macro for declare events.
 };
 

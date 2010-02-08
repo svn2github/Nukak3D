@@ -101,7 +101,7 @@ protected:
 	/**
 	 * @brief Capture number of cell selected.
 	*/
-	void prEventSelectCell(wxGridEvent &event);
+	void eventSelectCell(wxGridEvent &event);
 private:
 	wxGrid * grid_servers;		//! Grid for dislay servers.
 	wxButton * cmd_add_server;		//! Button for Add Server.

@@ -41,90 +41,90 @@ using namespace std;
 nkFindSCU::nkFindSCU(nkNukak3D *parent, wxWindowID id , const wxString &title, const wxPoint &pos, const wxSize &size ):
 	//wxPanel(parent, id , title, pos, size, wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP ){
 	wxPanel(parent, id , pos, size, wxDEFAULT_FRAME_STYLE | wxSTAY_ON_TOP ){
-	prv_auiManager.SetManagedWindow(this);
-	prv_auiManager.SetFlags(prv_auiManager.GetFlags()|
+	aui_manager.SetManagedWindow(this);
+	aui_manager.SetFlags(aui_manager.GetFlags()|
 		wxAUI_MGR_ALLOW_ACTIVE_PANE|
 		wxAUI_MGR_HINT_FADE|
 		wxAUI_MGR_TRANSPARENT_HINT);
 
-	my_parent =  parent;
-	this->my_searchPanel = new wxPanel(this, wxID_ANY);
+	parent =  parent;
+	this->search_panel = new wxPanel(this, wxID_ANY);
 	
-	my_cmdServerLocaltion = new wxButton(my_searchPanel,nkFindSCU::ID_SERVER_LOCATION, _("Server Location") );
+	cmd_server_localtion = new wxButton(search_panel,nkFindSCU::ID_SERVER_LOCATION, _("Server Location") );
 
-	my_listServerLocaltion = new wxListBox(my_searchPanel, wxID_ANY, wxDefaultPosition, wxSize(130,60));
+	list_server_localtion = new wxListBox(search_panel, wxID_ANY, wxDefaultPosition, wxSize(130,60));
 	loadServers();
 
-	my_textPatienID = new wxTextCtrl(my_searchPanel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
+	text_patien_ID = new wxTextCtrl(search_panel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
 	
-	my_textFirstName = new wxTextCtrl(my_searchPanel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
-	my_textAccessionNumber= new wxTextCtrl(my_searchPanel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
+	text_first_name = new wxTextCtrl(search_panel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
+	text_accession_number= new wxTextCtrl(search_panel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
 
 
-	my_chkStudyDateFrom = new wxCheckBox(my_searchPanel, nkFindSCU::ID_CHECK_STUDY_DATE_FROM, _("Use Study Date(From)")) ;
-	my_cmdStudyDateFrom = new wxButton(my_searchPanel, nkFindSCU::ID_CALENDAR_STUDY_DATE_FROM, _("Change")) ;
-	my_cmdStudyDateFrom->Disable();
-	my_textStudyDateFrom = new wxTextCtrl(my_searchPanel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
-	my_textStudyDateFrom->SetEditable(false);
-	my_textStudyDateFrom->Disable();
+	chk_study_date_from = new wxCheckBox(search_panel, nkFindSCU::ID_CHECK_STUDY_DATE_FROM, _("Use Study Date(From)")) ;
+	cmd_study_date_from = new wxButton(search_panel, nkFindSCU::ID_CALENDAR_STUDY_DATE_FROM, _("Change")) ;
+	cmd_study_date_from->Disable();
+	text_study_date_from = new wxTextCtrl(search_panel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
+	text_study_date_from->SetEditable(false);
+	text_study_date_from->Disable();
 
-	my_chkStudyDateTo = new wxCheckBox(my_searchPanel, nkFindSCU::ID_CHECK_STUDY_DATE_TO, _("Use Study Date(To)")) ;
-	my_cmdStudyDateTo = new wxButton(my_searchPanel, nkFindSCU::ID_CALENDAR_STUDY_DATE_TO, _("Change")) ;
-	my_cmdStudyDateTo->Disable();
-	my_textStudyDateTo = new wxTextCtrl(my_searchPanel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
-	my_textStudyDateTo->SetEditable(false);
-	my_textStudyDateTo->Disable();
+	chk_study_date_to = new wxCheckBox(search_panel, nkFindSCU::ID_CHECK_STUDY_DATE_TO, _("Use Study Date(To)")) ;
+	cmd_study_date_to = new wxButton(search_panel, nkFindSCU::ID_CALENDAR_STUDY_DATE_TO, _("Change")) ;
+	cmd_study_date_to->Disable();
+	text_study_date_to = new wxTextCtrl(search_panel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
+	text_study_date_to->SetEditable(false);
+	text_study_date_to->Disable();
 
-	my_textstudyDescription = new wxTextCtrl(my_searchPanel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
-	my_textInstitutionName = new wxTextCtrl(my_searchPanel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
+	text_study_description = new wxTextCtrl(search_panel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
+	text_institution_name = new wxTextCtrl(search_panel, wxID_ANY, "", wxDefaultPosition, wxSize(130, 20));
 
 	wxSizer * sizerServers = new wxGridSizer(1, 2, 1, 1);
-	sizerServers->Add(my_cmdServerLocaltion, 0,  wxALL, 2);
-	sizerServers->Add(my_listServerLocaltion, 1,  wxGROW | wxALL, 2);
+	sizerServers->Add(cmd_server_localtion, 0,  wxALL, 2);
+	sizerServers->Add(list_server_localtion, 1,  wxGROW | wxALL, 2);
 
 	wxSizer *sizerServer = new wxGridSizer(9, 2, 1, 1);
 
-	sizerServer->Add(new wxStaticText(my_searchPanel, wxID_ANY, _("Patien ID:")), 0,  wxALL, 2);
-	sizerServer->Add(my_textPatienID, 1,  wxGROW | wxALL, 2);
+	sizerServer->Add(new wxStaticText(search_panel, wxID_ANY, _("Patien ID:")), 0,  wxALL, 2);
+	sizerServer->Add(text_patien_ID, 1,  wxGROW | wxALL, 2);
 
-	sizerServer->Add(new wxStaticText(my_searchPanel, wxID_ANY, _("Name:")), 0,  wxALL, 2);
-	sizerServer->Add(my_textFirstName, 1,  wxGROW | wxALL, 2);
+	sizerServer->Add(new wxStaticText(search_panel, wxID_ANY, _("Name:")), 0,  wxALL, 2);
+	sizerServer->Add(text_first_name, 1,  wxGROW | wxALL, 2);
 
 
-	sizerServer->Add(new wxStaticText(my_searchPanel, wxID_ANY, _("Accession Number:")), 0,  wxALL, 2);
-	sizerServer->Add(my_textAccessionNumber, 1,  wxGROW | wxALL, 2);
+	sizerServer->Add(new wxStaticText(search_panel, wxID_ANY, _("Accession Number:")), 0,  wxALL, 2);
+	sizerServer->Add(text_accession_number, 1,  wxGROW | wxALL, 2);
 
-	sizerServer->Add(my_chkStudyDateFrom, 0,  wxALL, 2);
-	sizerServer->Add(my_cmdStudyDateFrom, 0,  wxALL, 2);
-	sizerServer->Add(new wxStaticText(my_searchPanel, wxID_ANY, _("Study Date(From)")), 0,  wxALL, 2);
-	sizerServer->Add(my_textStudyDateFrom, 1,  wxGROW | wxALL, 2);
+	sizerServer->Add(chk_study_date_from, 0,  wxALL, 2);
+	sizerServer->Add( cmd_study_date_from, 0,  wxALL, 2);
+	sizerServer->Add(new wxStaticText(search_panel, wxID_ANY, _("Study Date(From)")), 0,  wxALL, 2);
+	sizerServer->Add(text_study_date_from, 1,  wxGROW | wxALL, 2);
 
-	sizerServer->Add(my_chkStudyDateTo, 0,  wxALL, 2);
-	sizerServer->Add(my_cmdStudyDateTo, 0,  wxALL, 2);
-	sizerServer->Add(new wxStaticText(my_searchPanel, wxID_ANY, _("Study Date(To)")), 0,  wxALL, 2);
-	sizerServer->Add(my_textStudyDateTo, 1,  wxGROW | wxALL, 2);
+	sizerServer->Add(chk_study_date_to, 0,  wxALL, 2);
+	sizerServer->Add(cmd_study_date_to, 0,  wxALL, 2);
+	sizerServer->Add(new wxStaticText(search_panel, wxID_ANY, _("Study Date(To)")), 0,  wxALL, 2);
+	sizerServer->Add(text_study_date_to, 1,  wxGROW | wxALL, 2);
 
-	sizerServer->Add(new wxStaticText(my_searchPanel, wxID_ANY, _("Study Description:")), 0,  wxALL, 2);
-	sizerServer->Add(my_textstudyDescription, 1,  wxGROW | wxALL, 2);
-	sizerServer->Add(new wxStaticText(my_searchPanel, wxID_ANY, _("Institution Name:")), 0,  wxALL, 2);
-	sizerServer->Add(my_textInstitutionName, 1,  wxGROW | wxALL, 2);
+	sizerServer->Add(new wxStaticText(search_panel, wxID_ANY, _("Study Description:")), 0,  wxALL, 2);
+	sizerServer->Add(text_study_description, 1,  wxGROW | wxALL, 2);
+	sizerServer->Add(new wxStaticText(search_panel, wxID_ANY, _("Institution Name:")), 0,  wxALL, 2);
+	sizerServer->Add(text_institution_name, 1,  wxGROW | wxALL, 2);
 
-	my_cmdSearch = new wxButton(my_searchPanel,nkFindSCU::ID_SEARCH, _("Search") );
-	my_cmdClear = new wxButton(my_searchPanel,nkFindSCU::ID_CLEAR, _("Clear") );
-	my_getStudy = new wxButton(my_searchPanel,nkFindSCU::ID_GET_STUDY, _("Get selected patient") );
+	cmd_search = new wxButton(search_panel,nkFindSCU::ID_SEARCH, _("Search") );
+	cmd_clear = new wxButton(search_panel,nkFindSCU::ID_CLEAR, _("Clear") );
+	cmd_get_study = new wxButton(search_panel,nkFindSCU::ID_GET_STUDY, _("Get selected patient") );
 	
 	wxSizer * sizerSearch = new wxBoxSizer(wxVERTICAL);
 	sizerSearch->Add(sizerServers, 0,  wxALL, 1);
 	sizerSearch->Add(sizerServer, 0,  wxALL, 1);
-	sizerSearch->Add(my_cmdSearch, 0,  wxALL, 1);
-	sizerSearch->Add(my_cmdClear, 0,  wxALL, 1);
-	sizerSearch->Add(my_getStudy, 0,  wxALL, 1);
+	sizerSearch->Add(cmd_search, 0,  wxALL, 1);
+	sizerSearch->Add(cmd_clear, 0,  wxALL, 1);
+	sizerSearch->Add(cmd_get_study, 0,  wxALL, 1);
 
-	my_searchPanel->SetSizer(sizerSearch);
-	sizerSearch->Fit(my_searchPanel);
+	search_panel->SetSizer(sizerSearch);
+	sizerSearch->Fit(search_panel);
 
 
-	prv_auiManager.AddPane(my_searchPanel, wxAuiPaneInfo().
+	aui_manager.AddPane(search_panel, wxAuiPaneInfo().
               Name("Search").
 			  Left().
 			  Caption(_("Search")).
@@ -141,39 +141,39 @@ nkFindSCU::nkFindSCU(nkNukak3D *parent, wxWindowID id , const wxString &title, c
 
 	//wxTextCtrl * miy = new wxTextCtrl(this, wxID_ANY, "asdasd");
 
-	prv_wxGridPatients = new wxGrid(this,wxID_ANY, wxPoint(0,0), wxSize(400,220));
-	prv_wxGridPatients->SetColMinimalAcceptableWidth(0);
-	prv_wxGridPatients->CreateGrid(0 , 12 );
-	prv_wxGridPatients->SetColSize( 0, 120 );
-	prv_wxGridPatients->SetColSize( 1, 160 );
-	prv_wxGridPatients->SetColSize( 2, 30 );
-	prv_wxGridPatients->SetColSize( 3, 30 );
-	prv_wxGridPatients->SetColSize( 4, 120 );
-	prv_wxGridPatients->SetColSize( 5, 120 );
-	prv_wxGridPatients->SetColSize( 6, 70 );
-	prv_wxGridPatients->SetColSize( 7, 120 );
-	prv_wxGridPatients->SetColSize( 8, 120 );
+	grid_patients = new wxGrid(this,wxID_ANY, wxPoint(0,0), wxSize(400,220));
+	grid_patients->SetColMinimalAcceptableWidth(0);
+	grid_patients->CreateGrid(0 , 12 );
+	grid_patients->SetColSize( 0, 120 );
+	grid_patients->SetColSize( 1, 160 );
+	grid_patients->SetColSize( 2, 30 );
+	grid_patients->SetColSize( 3, 30 );
+	grid_patients->SetColSize( 4, 120 );
+	grid_patients->SetColSize( 5, 120 );
+	grid_patients->SetColSize( 6, 70 );
+	grid_patients->SetColSize( 7, 120 );
+	grid_patients->SetColSize( 8, 120 );
 	//0
-	prv_wxGridPatients->SetColSize( 9, 40 );
+	grid_patients->SetColSize( 9, 40 );
 	//0
-	prv_wxGridPatients->SetColSize( 10, 40 );
-	prv_wxGridPatients->SetColSize( 11, 120 );
-	prv_wxGridPatients->SetColLabelValue(0, _("Patien ID"));
-	prv_wxGridPatients->SetColLabelValue(1, _("Name"));
-	prv_wxGridPatients->SetColLabelValue(2, _("Sex"));
-	prv_wxGridPatients->SetColLabelValue(3, _("Age"));
-	prv_wxGridPatients->SetColLabelValue(4, _("Study Date"));
-	prv_wxGridPatients->SetColLabelValue(5, _("Description"));
-	prv_wxGridPatients->SetColLabelValue(6, _("Acceccion #"));
-	prv_wxGridPatients->SetColLabelValue(7, _("Modality"));
-	prv_wxGridPatients->SetColLabelValue(8, _("Institution Name"));
-	prv_wxGridPatients->SetColLabelValue(9, _("Study Instance UID"));
-	prv_wxGridPatients->SetColLabelValue(10, _("Series Instance UID"));
-	prv_wxGridPatients->SetColLabelValue(11, _("Study ID"));
-	prv_wxGridPatients->SetEditable(false);
-	prv_wxGridPatients->ForceRefresh();
+	grid_patients->SetColSize( 10, 40 );
+	grid_patients->SetColSize( 11, 120 );
+	grid_patients->SetColLabelValue(0, _("Patien ID"));
+	grid_patients->SetColLabelValue(1, _("Name"));
+	grid_patients->SetColLabelValue(2, _("Sex"));
+	grid_patients->SetColLabelValue(3, _("Age"));
+	grid_patients->SetColLabelValue(4, _("Study Date"));
+	grid_patients->SetColLabelValue(5, _("Description"));
+	grid_patients->SetColLabelValue(6, _("Acceccion #"));
+	grid_patients->SetColLabelValue(7, _("Modality"));
+	grid_patients->SetColLabelValue(8, _("Institution Name"));
+	grid_patients->SetColLabelValue(9, _("Study Instance UID"));
+	grid_patients->SetColLabelValue(10, _("Series Instance UID"));
+	grid_patients->SetColLabelValue(11, _("Study ID"));
+	grid_patients->SetEditable(false);
+	grid_patients->ForceRefresh();
 
-	prv_auiManager.AddPane(prv_wxGridPatients, wxAuiPaneInfo().
+	aui_manager.AddPane(grid_patients, wxAuiPaneInfo().
               Name("SearchGrid").
 			  Center().
 			  CloseButton(false).
@@ -181,66 +181,66 @@ nkFindSCU::nkFindSCU(nkNukak3D *parent, wxWindowID id , const wxString &title, c
 			  Floatable(false).
 			  Caption(_("Search results: Study's List")));
 
-	prv_auiManager.Update();
+	aui_manager.Update();
 
-	my_selectedCell = -1;
+	selected_cell = -1;
 
 }
 
 BEGIN_EVENT_TABLE(nkFindSCU, wxPanel)
-	EVT_CHECKBOX(nkFindSCU::ID_CHECK_STUDY_DATE_FROM, nkFindSCU::prEventUseDateFrom)
-	EVT_CHECKBOX(nkFindSCU::ID_CHECK_STUDY_DATE_TO, nkFindSCU::prEventUseDateTo)
-	EVT_BUTTON(nkFindSCU::ID_CALENDAR_STUDY_DATE_FROM, nkFindSCU::prEventChangeDateFrom)
-	EVT_BUTTON(nkFindSCU::ID_CALENDAR_STUDY_DATE_TO, nkFindSCU::prEventChangeDateTo)
-	EVT_BUTTON(nkFindSCU::ID_SERVER_LOCATION, nkFindSCU::prEventServerLocation)
-	EVT_BUTTON(nkFindSCU::ID_CLEAR, nkFindSCU::prEventClear)
-	EVT_BUTTON(nkFindSCU::ID_SEARCH, nkFindSCU::prEventSearch)
-	EVT_BUTTON(nkFindSCU::ID_GET_STUDY, nkFindSCU::prEventGetStudy)
-	EVT_GRID_SELECT_CELL(nkFindSCU::prEventSelectCell)
+	EVT_CHECKBOX(nkFindSCU::ID_CHECK_STUDY_DATE_FROM, nkFindSCU::eventUseDateFrom)
+	EVT_CHECKBOX(nkFindSCU::ID_CHECK_STUDY_DATE_TO, nkFindSCU::eventUseDateTo)
+	EVT_BUTTON(nkFindSCU::ID_CALENDAR_STUDY_DATE_FROM, nkFindSCU::eventChangeDateFrom)
+	EVT_BUTTON(nkFindSCU::ID_CALENDAR_STUDY_DATE_TO, nkFindSCU::eventChangeDateTo)
+	EVT_BUTTON(nkFindSCU::ID_SERVER_LOCATION, nkFindSCU::eventServerLocation)
+	EVT_BUTTON(nkFindSCU::ID_CLEAR, nkFindSCU::eventClear)
+	EVT_BUTTON(nkFindSCU::ID_SEARCH, nkFindSCU::eventSearch)
+	EVT_BUTTON(nkFindSCU::ID_GET_STUDY, nkFindSCU::eventGetStudy)
+	EVT_GRID_SELECT_CELL(nkFindSCU::eventSelectCell)
 END_EVENT_TABLE()
 
 nkFindSCU::~nkFindSCU(){
 	if(!prv_listServers.IsEmpty())	prv_listServers.DeleteContents(true);
 	//this->DestroyChildren();
-	prv_auiManager.UnInit();
+	aui_manager.UnInit();
 }
 
-void nkFindSCU::prEventUseDateFrom(wxCommandEvent& WXUNUSED(event)){
-	if(my_chkStudyDateFrom->GetValue()){
-		my_cmdStudyDateFrom->Enable();
-		my_textStudyDateFrom->Enable();
+void nkFindSCU::eventUseDateFrom(wxCommandEvent& WXUNUSED(event)){
+	if(chk_study_date_from->GetValue()){
+		 cmd_study_date_from->Enable();
+		text_study_date_from->Enable();
 	}else{
-		my_cmdStudyDateFrom->Disable();
-		my_textStudyDateFrom->Disable();
+		 cmd_study_date_from->Disable();
+		text_study_date_from->Disable();
 	}
 }
 
-void nkFindSCU::prEventUseDateTo(wxCommandEvent& WXUNUSED(event)){
-	if(my_chkStudyDateTo->GetValue()){
-		my_cmdStudyDateTo->Enable();
-		my_textStudyDateTo->Enable();
+void nkFindSCU::eventUseDateTo(wxCommandEvent& WXUNUSED(event)){
+	if(chk_study_date_to->GetValue()){
+		cmd_study_date_to->Enable();
+		text_study_date_to->Enable();
 	}else{
-		my_cmdStudyDateTo->Disable();
-		my_textStudyDateTo->Disable();
+		cmd_study_date_to->Disable();
+		text_study_date_to->Disable();
 	}
 }
 
-void nkFindSCU::prEventChangeDateFrom(wxCommandEvent& WXUNUSED(event)){
+void nkFindSCU::eventChangeDateFrom(wxCommandEvent& WXUNUSED(event)){
 	nkCalendarDialog * my_calDialog = new nkCalendarDialog(this);
 	my_calDialog->ShowModal();
-	my_textStudyDateFrom->SetLabel(my_calDialog->getDate().Format("%Y%m%d"));
+	text_study_date_from->SetLabel(my_calDialog->getDate().Format("%Y%m%d"));
 	my_calDialog->Destroy();
 }
 
-void nkFindSCU::prEventChangeDateTo(wxCommandEvent& WXUNUSED(event)){
+void nkFindSCU::eventChangeDateTo(wxCommandEvent& WXUNUSED(event)){
 	nkCalendarDialog * my_calDialog = new nkCalendarDialog(this);
 	my_calDialog->ShowModal();
-	my_textStudyDateTo->SetLabel(my_calDialog->getDate().Format("%Y%m%d"));
+	text_study_date_to->SetLabel(my_calDialog->getDate().Format("%Y%m%d"));
 	my_calDialog->Destroy();
 }
 
 
-void nkFindSCU::prEventServerLocation(wxCommandEvent& WXUNUSED(event)){
+void nkFindSCU::eventServerLocation(wxCommandEvent& WXUNUSED(event)){
 	nkServersDialog * my_servers = new nkServersDialog(this);
 	my_servers->ShowModal();
 	my_servers->Destroy();
@@ -251,37 +251,37 @@ void nkFindSCU::loadServers(){
 	wxString my_servers = nkDICOMServer::readConfigSystem();
 	int cant = nkDICOMServer::countServers(my_servers);
 	int i;
-	my_listServerLocaltion->Clear();
+	list_server_localtion->Clear();
 	for (i=0; i<cant;i++){
 		nkDICOMServer * myDS = nkDICOMServer::getDicomServer(my_servers,i);
 		prv_listServers.Append(myDS);
-		my_listServerLocaltion->Append(myDS->name);
+		list_server_localtion->Append(myDS->name);
 	}
 }
 
-void nkFindSCU::prEventClear(wxCommandEvent& WXUNUSED(event)){
-	my_textPatienID->SetValue(wxT(""));
-	my_textFirstName->SetValue(wxT(""));
-	my_textAccessionNumber->SetValue(wxT(""));
+void nkFindSCU::eventClear(wxCommandEvent& WXUNUSED(event)){
+	text_patien_ID->SetValue(wxT(""));
+	text_first_name->SetValue(wxT(""));
+	text_accession_number->SetValue(wxT(""));
 
-	my_chkStudyDateFrom->SetValue(false);
-	my_cmdStudyDateFrom->Disable();
-	my_textStudyDateFrom->SetValue("");
+	chk_study_date_from->SetValue(false);
+	 cmd_study_date_from->Disable();
+	text_study_date_from->SetValue("");
 
-	my_chkStudyDateTo->SetValue(false);
-	my_cmdStudyDateTo->Disable();
-	my_textStudyDateTo->SetValue("");
+	chk_study_date_to->SetValue(false);
+	cmd_study_date_to->Disable();
+	text_study_date_to->SetValue("");
 
-	my_textstudyDescription->SetValue("");
-	my_textInstitutionName->SetValue("");
+	text_study_description->SetValue("");
+	text_institution_name->SetValue("");
 	
-	prv_wxGridPatients->ClearGrid();
-	prv_wxGridPatients->DeleteRows(0, prv_wxGridPatients->GetNumberRows());
-	my_selectedCell = -1;
+	grid_patients->ClearGrid();
+	grid_patients->DeleteRows(0, grid_patients->GetNumberRows());
+	selected_cell = -1;
 
 }
 
-void nkFindSCU::prEventSearch(wxCommandEvent& WXUNUSED(event)){
+void nkFindSCU::eventSearch(wxCommandEvent& WXUNUSED(event)){
 	int myindexserver = getServer();
 	if(myindexserver ==-1){
 		wxMessageBox(_("Select a DICOM server"),_("Nukak3D: Alert"));
@@ -289,16 +289,16 @@ void nkFindSCU::prEventSearch(wxCommandEvent& WXUNUSED(event)){
 	}
 	wxString my_DicomText = "";
 	wxString a_date = "";
-	if(my_textStudyDateFrom->IsEnabled() || my_textStudyDateTo->IsEnabled()){
-		if((my_textStudyDateFrom->GetValue().Length()>0) || (my_textStudyDateTo->GetValue().Length()>0)){	
-			a_date.Append( my_textStudyDateFrom->GetValue());
+	if(text_study_date_from->IsEnabled() || text_study_date_to->IsEnabled()){
+		if((text_study_date_from->GetValue().Length()>0) || (text_study_date_to->GetValue().Length()>0)){	
+			a_date.Append( text_study_date_from->GetValue());
 			a_date.Append( "-");
-			a_date.Append( my_textStudyDateTo->GetValue());
+			a_date.Append( text_study_date_to->GetValue());
 		}
 	}
 
 	wxString a_patientName = "";
-	a_patientName.Append(my_textFirstName->GetValue());
+	a_patientName.Append(text_first_name->GetValue());
 	a_patientName.Replace(" ", "*");
 	a_patientName.Append("*");
 	
@@ -309,23 +309,23 @@ void nkFindSCU::prEventSearch(wxCommandEvent& WXUNUSED(event)){
 		my_DicomText.Append("] # StudyDate\n");
 	my_DicomText.Append("(0008,0021) DA [] # SeriesDate\n");
 	my_DicomText.Append("(0008,0050) SH [");
-		my_DicomText.Append(my_textAccessionNumber->GetValue());
+		my_DicomText.Append(text_accession_number->GetValue());
 		my_DicomText.Append("] # AccessionNumber\n");
 	//my_DicomText.Append("(0008,0052) CS [STUDY] # QueryRetrieveLevel\n");
 		my_DicomText.Append("(0008,0052) CS [SERIES] # QueryRetrieveLevel\n");
 	my_DicomText.Append("(0008,0061) CS [] # ModalitiesInStudy\n");
 	my_DicomText.Append("(0008,0080) LO [");
-		my_DicomText.Append(my_textInstitutionName->GetValue());
+		my_DicomText.Append(text_institution_name->GetValue());
 		my_DicomText.Append("] # InstitutionName\n");
 	my_DicomText.Append("(0008,0090) PN [] # ReferringPhysiciansName\n");
 	my_DicomText.Append("(0008,1030) LO [");
-		my_DicomText.Append(my_textstudyDescription->GetValue());
+		my_DicomText.Append(text_study_description->GetValue());
 		my_DicomText.Append("] # StudyDescription\n");
 	my_DicomText.Append("(0010,0010) PN [");
 		my_DicomText.Append(a_patientName);
 		my_DicomText.Append("] # PatientsName\n");
 	my_DicomText.Append("(0010,0020) LO [");
-	my_DicomText.Append(my_textPatienID->GetValue());
+	my_DicomText.Append(text_patien_ID->GetValue());
 		my_DicomText.Append("] # PatientID\n");
 	my_DicomText.Append("(0010,0030) DA [] # PatientsBirthDate\n");
 	my_DicomText.Append("(0010,0040) CS [] # PatientsSex\n");
@@ -444,7 +444,7 @@ int nkFindSCU::getServer(){
 	nkListDICOMServer::compatibility_iterator node = prv_listServers.GetFirst();
 	bool not_found = true;
 	int count = -1;
-	wxString name_server = my_listServerLocaltion->GetStringSelection();
+	wxString name_server = list_server_localtion->GetStringSelection();
 	if (! name_server.IsEmpty()){
 		while (node && not_found){
 			count = count + 1;
@@ -466,8 +466,8 @@ void nkFindSCU::analyzeOutput(wxString a_cad){
 	wxString key;
 	wxString value;
 	int mi_filagrilla = -1;
-	prv_wxGridPatients->ClearGrid();
-	prv_wxGridPatients->DeleteRows(0, prv_wxGridPatients->GetNumberRows());
+	grid_patients->ClearGrid();
+	grid_patients->DeleteRows(0, grid_patients->GetNumberRows());
 	for (int i_line = 0; i_line<numberLines; i_line++){
 		cad_line = nkDICOMServer::getParameter(a_cad, '\n', i_line);
 		if(cad_line.Length()>1){
@@ -481,54 +481,54 @@ void nkFindSCU::analyzeOutput(wxString a_cad){
 				key = key.SubString(1,key.Length());
 				if(!cad_line.Contains("no value available")){
 					value = cad_line.SubString(cad_line.Find('[')+1,cad_line.Find(']')-1);
-					if(key.Cmp("0010,0020")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 0,value);
-					if(key.Cmp("0010,0010")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 1,value);
-					if(key.Cmp("0010,0040")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 2,value);
-					if(key.Cmp("0010,1010")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 3,value);
+					if(key.Cmp("0010,0020")==0) grid_patients->SetCellValue(mi_filagrilla, 0,value);
+					if(key.Cmp("0010,0010")==0) grid_patients->SetCellValue(mi_filagrilla, 1,value);
+					if(key.Cmp("0010,0040")==0) grid_patients->SetCellValue(mi_filagrilla, 2,value);
+					if(key.Cmp("0010,1010")==0) grid_patients->SetCellValue(mi_filagrilla, 3,value);
 					
 					if(key.Cmp("0008,0020")==0){
 						value = value.SubString(0,3) + "/" + value.SubString(4,5) + "/" + value.SubString(6,7);
-						prv_wxGridPatients->SetCellValue(mi_filagrilla, 4,value);
+						grid_patients->SetCellValue(mi_filagrilla, 4,value);
 					}
 
-					if(key.Cmp("0008,1030")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 5,value);
-					if(key.Cmp("0008,0050")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 6,value);
-					if(key.Cmp("0008,0061")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 7,value);
-					if(key.Cmp("0008,0080")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 8,value);
-					if(key.Cmp("0020,000D")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 9,value);
-					if(key.Cmp("0020,000d")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 9,value);
-					if(key.Cmp("0020,000E")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 10,value);
-					if(key.Cmp("0020,000e")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 10,value);
-					if(key.Cmp("0020,0010")==0) prv_wxGridPatients->SetCellValue(mi_filagrilla, 11,value);
+					if(key.Cmp("0008,1030")==0) grid_patients->SetCellValue(mi_filagrilla, 5,value);
+					if(key.Cmp("0008,0050")==0) grid_patients->SetCellValue(mi_filagrilla, 6,value);
+					if(key.Cmp("0008,0061")==0) grid_patients->SetCellValue(mi_filagrilla, 7,value);
+					if(key.Cmp("0008,0080")==0) grid_patients->SetCellValue(mi_filagrilla, 8,value);
+					if(key.Cmp("0020,000D")==0) grid_patients->SetCellValue(mi_filagrilla, 9,value);
+					if(key.Cmp("0020,000d")==0) grid_patients->SetCellValue(mi_filagrilla, 9,value);
+					if(key.Cmp("0020,000E")==0) grid_patients->SetCellValue(mi_filagrilla, 10,value);
+					if(key.Cmp("0020,000e")==0) grid_patients->SetCellValue(mi_filagrilla, 10,value);
+					if(key.Cmp("0020,0010")==0) grid_patients->SetCellValue(mi_filagrilla, 11,value);
 					
 				}
 			break;
 			case 'R':
 				mi_filagrilla = mi_filagrilla + 1;
-				prv_wxGridPatients->InsertRows(mi_filagrilla, 1);
+				grid_patients->InsertRows(mi_filagrilla, 1);
 			break;
 			case '-':
 			break;
 			}
 		}
 	}
-	my_selectedCell = -1;
+	selected_cell = -1;
 }
 
-void nkFindSCU::prEventSelectCell(wxGridEvent &event){
-	my_selectedCell = event.GetRow();
+void nkFindSCU::eventSelectCell(wxGridEvent &event){
+	selected_cell = event.GetRow();
 	event.Skip();
 }
 
-void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
-	if(my_selectedCell != -1){
+void nkFindSCU::eventGetStudy(wxCommandEvent& WXUNUSED(event)){
+	if(selected_cell != -1){
 		int myindexserver = getServer();
 		if(myindexserver ==-1){
 			wxMessageBox(_("Select a DICOM server"),_("Nukak3D: Alert"));
 			return;
 		}
 		wxString my_DicomText = "";
-		wxString a_patientName = prv_wxGridPatients->GetCellValue(my_selectedCell, 1);
+		wxString a_patientName = grid_patients->GetCellValue(selected_cell, 1);
 		a_patientName.Replace(" ", "_");
 		
 
@@ -536,22 +536,22 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 		//my_DicomText.Append("(0008,0052) CS [STUDY] # QueryRetrieveLevel\n");
 		my_DicomText.Append("(0008,0052) CS [SERIES] # QueryRetrieveLevel\n");
 		my_DicomText.Append("(0010,0010) PN [");
-			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 1) );
+			my_DicomText.Append( grid_patients->GetCellValue(selected_cell, 1) );
 			my_DicomText.Append("] # PatientsName\n");
 		my_DicomText.Append("(0010,0020) LO [");
-			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 0) );
+			my_DicomText.Append( grid_patients->GetCellValue(selected_cell, 0) );
 			my_DicomText.Append("] # PatientID\n");
 
 		my_DicomText.Append("(0020,000D) UI [");
-		wxLogError("] # StudyInstanceUID\n" + prv_wxGridPatients->GetCellValue(my_selectedCell, 9));
-			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 9) );
+		wxLogError("] # StudyInstanceUID\n" + grid_patients->GetCellValue(selected_cell, 9));
+			my_DicomText.Append( grid_patients->GetCellValue(selected_cell, 9) );
 			my_DicomText.Append("] # StudyInstanceUID\n");
 		my_DicomText.Append("(0020,000E) UI [");
-			wxLogError("] # SeriesInstanceUID\n" + prv_wxGridPatients->GetCellValue(my_selectedCell, 10));
-			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 10) );
+			wxLogError("] # SeriesInstanceUID\n" + grid_patients->GetCellValue(selected_cell, 10));
+			my_DicomText.Append( grid_patients->GetCellValue(selected_cell, 10) );
 			my_DicomText.Append("] # SeriesInstanceUID\n");
 		my_DicomText.Append("(0020,0010) SH [");
-			my_DicomText.Append( prv_wxGridPatients->GetCellValue(my_selectedCell, 11) );
+			my_DicomText.Append( grid_patients->GetCellValue(selected_cell, 11) );
 			my_DicomText.Append("] # StudyID\n");
 
 		wxString outPath = "";
@@ -672,7 +672,7 @@ void nkFindSCU::prEventGetStudy(wxCommandEvent& WXUNUSED(event)){
 					process_infind = myfind->m_textIn;
 					//analyzeOutput(process_infind);
 				}
-				my_parent->prOpenVolumenDicom(outPathPatient);
+				parent->prOpenVolumenDicom(outPathPatient);
 
 			}else{
 				wxMessageBox(_("Select a DICOM server"),_("Nukak3D: Alert"));

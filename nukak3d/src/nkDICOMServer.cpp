@@ -88,7 +88,7 @@ BEGIN_EVENT_TABLE(nkServersDialog, wxDialog)
 	EVT_BUTTON(nkServersDialog::ID_ADD_SERVER, nkServersDialog::eventAddServer)
 	EVT_BUTTON(nkServersDialog::ID_CHANGE_SERVER, nkServersDialog::eventChangeServer)
 	EVT_BUTTON(nkServersDialog::ID_DELETE_SERVER, nkServersDialog::eventDeleteServer)
-	EVT_GRID_SELECT_CELL(nkServersDialog::prEventSelectCell)
+	EVT_GRID_SELECT_CELL(nkServersDialog::eventSelectCell)
 END_EVENT_TABLE()
 
 void nkServersDialog::eventAddServer(wxCommandEvent& WXUNUSED(event)){
@@ -238,7 +238,7 @@ void nkServersDialog::loadServers(){
 	selected_cell = -1;
 }
 
-void nkServersDialog::prEventSelectCell(wxGridEvent &event){
+void nkServersDialog::eventSelectCell(wxGridEvent &event){
 	selected_cell = event.GetRow();
 	event.Skip();
 }
