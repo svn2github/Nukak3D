@@ -46,32 +46,32 @@ nkServersDialog::nkServersDialog(wxWindow *parent,
 						wxString name):
 	wxDialog(parent, id, title, pos, size, style, name){
 
-	prv_wxGridServers = new wxGrid(this,wxID_ANY, wxPoint(0,0), wxSize(400,220));
-	prv_wxGridServers->CreateGrid( 1, 5 );
-	prv_wxGridServers->SetColSize( 0, 100 );
-	prv_wxGridServers->SetColSize( 1, 100 );
-	prv_wxGridServers->SetColSize( 2, 100 );
-	prv_wxGridServers->SetColSize( 3, 100 );
-	prv_wxGridServers->SetColSize( 4, 60 );
-	prv_wxGridServers->SetColLabelValue(0, _("Server Name"));
-	prv_wxGridServers->SetColLabelValue(1, _("Host"));
-	prv_wxGridServers->SetColLabelValue(2, _("AE Title"));
-	prv_wxGridServers->SetColLabelValue(3, _("AE Called"));
-	prv_wxGridServers->SetColLabelValue(4, _("Port"));
-	prv_wxGridServers->SetEditable(false);
-	prv_wxGridServers->ForceRefresh();
+	grid_servers = new wxGrid(this,wxID_ANY, wxPoint(0,0), wxSize(400,220));
+	grid_servers->CreateGrid( 1, 5 );
+	grid_servers->SetColSize( 0, 100 );
+	grid_servers->SetColSize( 1, 100 );
+	grid_servers->SetColSize( 2, 100 );
+	grid_servers->SetColSize( 3, 100 );
+	grid_servers->SetColSize( 4, 60 );
+	grid_servers->SetColLabelValue(0, _("Server Name"));
+	grid_servers->SetColLabelValue(1, _("Host"));
+	grid_servers->SetColLabelValue(2, _("AE Title"));
+	grid_servers->SetColLabelValue(3, _("AE Called"));
+	grid_servers->SetColLabelValue(4, _("Port"));
+	grid_servers->SetEditable(false);
+	grid_servers->ForceRefresh();
 
-	my_cmdAddServer = new wxButton(this,nkServersDialog::ID_ADD_SERVER,_("Add Server"));
-	my_cmdChangeServer = new wxButton(this,nkServersDialog::ID_CHANGE_SERVER,_("Change Server"));
-	my_cmdDeleteServer = new wxButton(this,nkServersDialog::ID_DELETE_SERVER,_("Delete Server"));
+	cmd_add_server = new wxButton(this,nkServersDialog::ID_ADD_SERVER,_("Add Server"));
+	cmd_change_server = new wxButton(this,nkServersDialog::ID_CHANGE_SERVER,_("Change Server"));
+	cmd_delete_server = new wxButton(this,nkServersDialog::ID_DELETE_SERVER,_("Delete Server"));
 
 	wxSizer *sizerCmd = new wxBoxSizer(wxHORIZONTAL);
-	sizerCmd->Add(my_cmdAddServer, 0, wxALL, 5);
-	sizerCmd->Add(my_cmdChangeServer, 0, wxALL, 5);
-	sizerCmd->Add(my_cmdDeleteServer, 0, wxALL, 5);
+	sizerCmd->Add(cmd_add_server, 0, wxALL, 5);
+	sizerCmd->Add(cmd_change_server, 0, wxALL, 5);
+	sizerCmd->Add(cmd_delete_server, 0, wxALL, 5);
 
 	wxSizer *sizerDialog = new wxBoxSizer(wxVERTICAL);
-	sizerDialog->Add(prv_wxGridServers, 1, wxEXPAND | wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
+	sizerDialog->Add(grid_servers, 1, wxEXPAND | wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
 	sizerDialog->Add(sizerCmd, 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
 	sizerDialog->Add(new wxButton(this, wxID_OK, _("Ok")) , 0, wxALIGN_CENTER_HORIZONTAL | wxALL, 5);
 
@@ -124,13 +124,13 @@ void nkServersDialog::eventAddServer(wxCommandEvent& WXUNUSED(event)){
 			(miDlg->obtenerValor(3))<<wxString("|")<<
 			(miDlg->obtenerValor(4))<<wxString("|#");
 
-		my_servers = nkDICOMServer::ReadConfigSystem();
+		str_servers = nkDICOMServer::readConfigSystem();
 		//this->ReadConfigSystem();
-		if(! my_servers.Contains(a_server)){
-			my_servers = my_servers.append(a_server);
+		if(! str_servers.Contains(a_server)){
+			str_servers = str_servers.append(a_server);
 		}
 		//this->WriteConfigSystem();
-		nkDICOMServer::WriteConfigSystem(my_servers );
+		nkDICOMServer::writeConfigSystem(str_servers );
 		loadServers();
 	}
 	miDlg->Destroy();
@@ -139,8 +139,8 @@ void nkServersDialog::eventAddServer(wxCommandEvent& WXUNUSED(event)){
 void nkServersDialog::eventChangeServer(wxCommandEvent& WXUNUSED(event)){
 	int my_rowGrid=0;
 	int my_colGrid=0;
-	int cantRow = prv_wxGridServers->GetNumberRows();
-	if(my_selectedCell != -1 &&  my_selectedCell < cantRow  ){
+	int cantRow = grid_servers->GetNumberRows();
+	if(selected_cell != -1 &&  selected_cell < cantRow  ){
 
 		wxString etiquetas[100];
 		const int num_datos=5;
@@ -159,31 +159,31 @@ void nkServersDialog::eventChangeServer(wxCommandEvent& WXUNUSED(event)){
 													wxDefaultPosition,
 													wxSize(330,(num_datos+4)*20+40));
 		
-		miDlg->cambiarValor(prv_wxGridServers->GetCellValue(my_selectedCell,0) ,0);
-		miDlg->cambiarValor(prv_wxGridServers->GetCellValue(my_selectedCell,1) ,1);
-		miDlg->cambiarValor(prv_wxGridServers->GetCellValue(my_selectedCell,2) ,2);
-		miDlg->cambiarValor(prv_wxGridServers->GetCellValue(my_selectedCell,3) ,3);
-		miDlg->cambiarValor(prv_wxGridServers->GetCellValue(my_selectedCell,4) ,4);
+		miDlg->cambiarValor(grid_servers->GetCellValue(selected_cell,0) ,0);
+		miDlg->cambiarValor(grid_servers->GetCellValue(selected_cell,1) ,1);
+		miDlg->cambiarValor(grid_servers->GetCellValue(selected_cell,2) ,2);
+		miDlg->cambiarValor(grid_servers->GetCellValue(selected_cell,3) ,3);
+		miDlg->cambiarValor(grid_servers->GetCellValue(selected_cell,4) ,4);
 						
 		miDlg->ShowModal(); 
 		if(miDlg->GetReturnCode() == wxID_OK){
 
-			prv_wxGridServers->SetCellValue(my_selectedCell,0, miDlg->obtenerValor(0));
-			prv_wxGridServers->SetCellValue(my_selectedCell,1, miDlg->obtenerValor(1));
-			prv_wxGridServers->SetCellValue(my_selectedCell,2, miDlg->obtenerValor(2));
-			prv_wxGridServers->SetCellValue(my_selectedCell,3, miDlg->obtenerValor(3));
-			prv_wxGridServers->SetCellValue(my_selectedCell,4, miDlg->obtenerValor(4));
+			grid_servers->SetCellValue(selected_cell,0, miDlg->obtenerValor(0));
+			grid_servers->SetCellValue(selected_cell,1, miDlg->obtenerValor(1));
+			grid_servers->SetCellValue(selected_cell,2, miDlg->obtenerValor(2));
+			grid_servers->SetCellValue(selected_cell,3, miDlg->obtenerValor(3));
+			grid_servers->SetCellValue(selected_cell,4, miDlg->obtenerValor(4));
 
-			my_servers = "";
+			str_servers = "";
 			for(my_rowGrid=0; my_rowGrid<cantRow; my_rowGrid++){
 				for(my_colGrid=0; my_colGrid<5; my_colGrid++){
-					my_servers = my_servers.append(prv_wxGridServers->GetCellValue(my_rowGrid, my_colGrid));
-					my_servers = my_servers.append("|");
+					str_servers = str_servers.append(grid_servers->GetCellValue(my_rowGrid, my_colGrid));
+					str_servers = str_servers.append("|");
 				}
-				my_servers = my_servers.append("#");
+				str_servers = str_servers.append("#");
 			}			
 			//this->WriteConfigSystem();
-			nkDICOMServer::WriteConfigSystem(my_servers);
+			nkDICOMServer::writeConfigSystem(str_servers);
 			loadServers();
 		}
 		miDlg->Destroy();
@@ -192,27 +192,27 @@ void nkServersDialog::eventChangeServer(wxCommandEvent& WXUNUSED(event)){
 void nkServersDialog::eventDeleteServer(wxCommandEvent& WXUNUSED(event)){
 	int my_rowGrid=0;
 	int my_colGrid=0;
-	int cantRow = prv_wxGridServers->GetNumberRows();
-	if(my_selectedCell != -1 &&  my_selectedCell < cantRow  ){
+	int cantRow = grid_servers->GetNumberRows();
+	if(selected_cell != -1 &&  selected_cell < cantRow  ){
 		wxString a_server = _("Delete this server: ");
-		a_server.Append(prv_wxGridServers->GetCellValue(my_selectedCell, 0));
+		a_server.Append(grid_servers->GetCellValue(selected_cell, 0));
 			
 		wxMessageDialog * miDlg = new wxMessageDialog(this, a_server, _("Nukak3D: Confirmation"));
 				
 		if(miDlg->ShowModal() == wxID_OK){
 
-			prv_wxGridServers->DeleteRows(my_selectedCell);
-			my_servers = "";
+			grid_servers->DeleteRows(selected_cell);
+			str_servers = "";
 			cantRow = cantRow-1;
 			for(my_rowGrid=0; my_rowGrid<cantRow; my_rowGrid++){
 				for(my_colGrid=0; my_colGrid<5; my_colGrid++){
-					my_servers = my_servers.append(prv_wxGridServers->GetCellValue(my_rowGrid, my_colGrid));
-					my_servers = my_servers.append("|");
+					str_servers = str_servers.append(grid_servers->GetCellValue(my_rowGrid, my_colGrid));
+					str_servers = str_servers.append("|");
 				}
-				my_servers = my_servers.append("#");
+				str_servers = str_servers.append("#");
 			}			
 			//this->WriteConfigSystem();
-			nkDICOMServer::WriteConfigSystem(my_servers);
+			nkDICOMServer::writeConfigSystem(str_servers);
 			loadServers();
 		}
 	}
@@ -220,26 +220,26 @@ void nkServersDialog::eventDeleteServer(wxCommandEvent& WXUNUSED(event)){
 
 
 void nkServersDialog::loadServers(){
-	my_servers = nkDICOMServer::ReadConfigSystem();
-	int n = nkDICOMServer::countServers(my_servers);
+	str_servers = nkDICOMServer::readConfigSystem();
+	int n = nkDICOMServer::countServers(str_servers);
 	wxString a_server, a_param;
-	prv_wxGridServers->ClearGrid();
-	prv_wxGridServers->DeleteRows(0, prv_wxGridServers->GetNumberRows());
-	prv_wxGridServers->InsertRows(0,n);
+	grid_servers->ClearGrid();
+	grid_servers->DeleteRows(0, grid_servers->GetNumberRows());
+	grid_servers->InsertRows(0,n);
 	int mi_filaGrilla;
 	for (mi_filaGrilla = 0;  mi_filaGrilla<n;  mi_filaGrilla++){
-		a_server = nkDICOMServer::getStringServer(my_servers, mi_filaGrilla);
-		prv_wxGridServers->SetCellValue(mi_filaGrilla, 0, nkDICOMServer::getParameterServer(a_server, 0));
-		prv_wxGridServers->SetCellValue(mi_filaGrilla, 1, nkDICOMServer::getParameterServer(a_server, 1));
-		prv_wxGridServers->SetCellValue(mi_filaGrilla, 2, nkDICOMServer::getParameterServer(a_server, 2));
-		prv_wxGridServers->SetCellValue(mi_filaGrilla, 3, nkDICOMServer::getParameterServer(a_server, 3));
-		prv_wxGridServers->SetCellValue(mi_filaGrilla, 4, nkDICOMServer::getParameterServer(a_server, 4));
+		a_server = nkDICOMServer::getStringServer(str_servers, mi_filaGrilla);
+		grid_servers->SetCellValue(mi_filaGrilla, 0, nkDICOMServer::getParameterServer(a_server, 0));
+		grid_servers->SetCellValue(mi_filaGrilla, 1, nkDICOMServer::getParameterServer(a_server, 1));
+		grid_servers->SetCellValue(mi_filaGrilla, 2, nkDICOMServer::getParameterServer(a_server, 2));
+		grid_servers->SetCellValue(mi_filaGrilla, 3, nkDICOMServer::getParameterServer(a_server, 3));
+		grid_servers->SetCellValue(mi_filaGrilla, 4, nkDICOMServer::getParameterServer(a_server, 4));
 	}
-	my_selectedCell = -1;
+	selected_cell = -1;
 }
 
 void nkServersDialog::prEventSelectCell(wxGridEvent &event){
-	my_selectedCell = event.GetRow();
+	selected_cell = event.GetRow();
 	event.Skip();
 }
 
@@ -288,12 +288,12 @@ nkDICOMServer * nkDICOMServer::getDicomServer(wxString my_servers, int index){
 	return myDS;
 }
 
-wxString nkDICOMServer::ReadConfigSystem(){
+wxString nkDICOMServer::readConfigSystem(){
 	wxString my_servers = "";
 	nkUtilities::readConfigBase("DICOM/servers", &my_servers, "");
 	return my_servers;
 }
 
-bool nkDICOMServer::WriteConfigSystem(wxString my_servers){
+bool nkDICOMServer::writeConfigSystem(wxString my_servers){
 	return nkUtilities::writeConfigBase("DICOM/servers", my_servers);
 }

@@ -103,12 +103,12 @@ protected:
 	*/
 	void prEventSelectCell(wxGridEvent &event);
 private:
-	wxGrid * prv_wxGridServers;		//! Grid for dislay servers.
-	wxButton * my_cmdAddServer;		//! Button for Add Server.
-	wxButton * my_cmdChangeServer;	//! Button for Change Server.
-	wxButton * my_cmdDeleteServer;	//! Button for Delete Server.
-	wxString my_servers;			//! Variable for read servers of register.
-	int my_selectedCell;
+	wxGrid * grid_servers;		//! Grid for dislay servers.
+	wxButton * cmd_add_server;		//! Button for Add Server.
+	wxButton * cmd_change_server;	//! Button for Change Server.
+	wxButton * cmd_delete_server;	//! Button for Delete Server.
+	wxString str_servers;			//! Variable for read servers of register.
+	int selected_cell;
 
 	DECLARE_EVENT_TABLE()			//! Macro for manage events.
 };
@@ -165,11 +165,11 @@ public:
 	/**
 	 * @brief Read list of servers of register.
 	*/
-	static wxString ReadConfigSystem();
+	static wxString readConfigSystem();
 	/**
 	 * @brief Write list of servers in register.
 	*/
-	static bool WriteConfigSystem(wxString my_servers);
+	static bool writeConfigSystem(wxString my_servers);
 	wxString name;			//! Name of host
 	wxString host;			//! Network name or ip address.
 	wxString AETitle;		//! AE Title of this client.

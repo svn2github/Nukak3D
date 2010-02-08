@@ -248,7 +248,7 @@ void nkFindSCU::prEventServerLocation(wxCommandEvent& WXUNUSED(event)){
 }
 
 void nkFindSCU::loadServers(){
-	wxString my_servers = nkDICOMServer::ReadConfigSystem();
+	wxString my_servers = nkDICOMServer::readConfigSystem();
 	int cant = nkDICOMServer::countServers(my_servers);
 	int i;
 	my_listServerLocaltion->Clear();
