@@ -85,13 +85,13 @@ nkServersDialog::nkServersDialog(wxWindow *parent,
 }
 
 BEGIN_EVENT_TABLE(nkServersDialog, wxDialog)	
-	EVT_BUTTON(nkServersDialog::ID_ADD_SERVER, nkServersDialog::prEventAddServer)
+	EVT_BUTTON(nkServersDialog::ID_ADD_SERVER, nkServersDialog::eventAddServer)
 	EVT_BUTTON(nkServersDialog::ID_CHANGE_SERVER, nkServersDialog::prEventChangeServer)
 	EVT_BUTTON(nkServersDialog::ID_DELETE_SERVER, nkServersDialog::prEventDeleteServer)
 	EVT_GRID_SELECT_CELL(nkServersDialog::prEventSelectCell)
 END_EVENT_TABLE()
 
-void nkServersDialog::prEventAddServer(wxCommandEvent& WXUNUSED(event)){
+void nkServersDialog::eventAddServer(wxCommandEvent& WXUNUSED(event)){
 	wxString etiquetas[100];
 	const int num_datos=5;
 

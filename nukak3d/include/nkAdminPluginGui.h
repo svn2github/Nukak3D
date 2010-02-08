@@ -90,15 +90,15 @@ protected:
 	/**
 	 * @brief Manager for add plugin path.
 	*/
-	void prEventAddPlugin(wxCommandEvent& WXUNUSED(event));
+	void eventAddPlugin(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Manager for delete plugin path.
 	*/
-	void prEventDeletePlugin(wxCommandEvent& WXUNUSED(event));
+	void eventDeletePlugin(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Capture number of cell selected.
 	*/
-	void prEventSelectCell(wxGridEvent &event);
+	void eventSelectCell(wxGridEvent &event);
 private:
 	wxGrid * prv_wxGridPluginsPaths;		//! Grid for dislay plugin's paths.
 	wxGrid * prv_wxGridPluginsLoaded;		//! Grid for dislay plugin's loaded.

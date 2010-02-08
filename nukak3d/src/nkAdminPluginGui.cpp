@@ -87,12 +87,12 @@ wxDialog(parent, id, title, pos, size, style, name), prvKernel(mnKernel){
 }
 
 BEGIN_EVENT_TABLE(nkAdminPluginGui, wxDialog)	
-	EVT_BUTTON(nkAdminPluginGui::ID_ADD_PLUGIN, nkAdminPluginGui::prEventAddPlugin)
-	EVT_BUTTON(nkAdminPluginGui::ID_DELETE_PLUGIN, nkAdminPluginGui::prEventDeletePlugin)
-	EVT_GRID_SELECT_CELL(nkAdminPluginGui::prEventSelectCell)
+	EVT_BUTTON(nkAdminPluginGui::ID_ADD_PLUGIN, nkAdminPluginGui::eventAddPlugin)
+	EVT_BUTTON(nkAdminPluginGui::ID_DELETE_PLUGIN, nkAdminPluginGui::eventDeletePlugin)
+	EVT_GRID_SELECT_CELL(nkAdminPluginGui::eventSelectCell)
 END_EVENT_TABLE()
 
-void nkAdminPluginGui::prEventAddPlugin(wxCommandEvent& WXUNUSED(event)){
+void nkAdminPluginGui::eventAddPlugin(wxCommandEvent& WXUNUSED(event)){
 	wxDirDialog * myDirDialog = new wxDirDialog(this,_("Open Dir..."));
 
 	int OK = myDirDialog->ShowModal();
@@ -113,7 +113,7 @@ void nkAdminPluginGui::prEventAddPlugin(wxCommandEvent& WXUNUSED(event)){
 	myDirDialog->Destroy();
 }
 
-void nkAdminPluginGui::prEventDeletePlugin(wxCommandEvent& WXUNUSED(event))
+void nkAdminPluginGui::eventDeletePlugin(wxCommandEvent& WXUNUSED(event))
 {
 	int my_rowGrid=0;
 	int my_colGrid=0;
@@ -172,7 +172,7 @@ void nkAdminPluginGui::loadPluginsLoaded(){
 
 }
 
-void nkAdminPluginGui::prEventSelectCell(wxGridEvent &event){
+void nkAdminPluginGui::eventSelectCell(wxGridEvent &event){
 	my_selectedCell = event.GetRow();
 	event.Skip();
 }

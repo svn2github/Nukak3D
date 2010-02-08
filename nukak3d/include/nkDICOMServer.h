@@ -89,7 +89,7 @@ protected:
 	/**
 	 * @brief Manager for add server.
 	*/
-	void prEventAddServer(wxCommandEvent& WXUNUSED(event));
+	void eventAddServer(wxCommandEvent& WXUNUSED(event));
 	/**
 	 * @brief Manager for change server.
 	*/
