@@ -316,7 +316,8 @@ void nkVolViewer::prOpenFile_dicom(wxString a_fileName, wxVtkDICOMImporter* myim
 	#ifdef __WXMAC__
 		typedef itk::GDCMImporter::FloatImageType   DImageType; // vtkInria3D anterior
 	#else //win and unix
-	typedef itk::GDCMImporter::ImageType  DImageType; // vtkInria3D mas reciente
+	//typedef itk::GDCMImporter2::ImageType  DImageType; // vtkInria3D mas reciente
+	typedef itk::Image<wxVtkDICOMImporter::ImageComponentType, 3> DImageType; // vtkInria3D mas reciente
 	#endif
 	
 
@@ -351,19 +352,19 @@ void nkVolViewer::cambiarFormaDeProcesamiento (int un_modo, int textura_o_mrc){
 	if (un_modo == vtkViewImage3D::VOLUME_RENDERING){
 		switch(textura_o_mrc ){
 			case 1:
-				prv_vista3D->SetVolumeMapperToTexture();
+				//prv_vista3D->SetVolumeMapperToTexture();
 				break;
 			case 2:
-				prv_vista3D->SetVolumeMapperToRayCast();
+				//prv_vista3D->SetVolumeMapperToRayCast();
 				prv_vista3D->SetVolumeRayCastFunctionToMIP();
 				break;						
 			case 3:
-				prv_vista3D->SetVolumeMapperToRayCast();
+				//prv_vista3D->SetVolumeMapperToRayCast();
 				prv_vista3D->SetVolumeRayCastFunctionToComposite();
 				break;
 			case 4:
-				prv_vista3D->SetVolumeMapperToRayCast();
-				prv_vista3D->SetVolumeRayCastFunctionToIsosurface();
+				//prv_vista3D->SetVolumeMapperToRayCast();
+				//prv_vista3D->SetVolumeRayCastFunctionToIsosurface();
 				break;
 		}
 	}
@@ -446,11 +447,11 @@ void nkVolViewer::prBoundingBoxOnOff()
 
 void nkVolViewer::BoxWidgetOnOff()
 {
-	if( prv_vista3D->GetBoxWidgetVisibility() )
+	/*if( prv_vista3D->GetBoxWidgetVisibility() )
 		prv_vista3D->BoxWidgetOff();
 	else
 		prv_vista3D->BoxWidgetOn();
-
+*/
 	prv_render3D->Render();
 	prv_wxVtkVista3D->Render();
 	prv_wxVtkVista3D->Refresh();

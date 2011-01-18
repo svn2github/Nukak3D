@@ -718,9 +718,9 @@ void nkLevelSetsPageSeeds::Configure(){
 	prv_vistaCoronal->SetBackgroundColor (0.0,0.0,0.0);
 	prv_vistaSagital->SetBackgroundColor (0.0,0.0,0.0);
 
-	prv_vistaAxial->SetManualTracingOn();
-	prv_vistaCoronal->SetManualTracingOn();
-	prv_vistaSagital->SetManualTracingOn();
+	//prv_vistaAxial->SetManualTracingOn();
+	//prv_vistaCoronal->SetManualTracingOn();
+	//prv_vistaSagital->SetManualTracingOn();
 
 	prv_vistaAxial->AddChild (prv_vistaCoronal);
 	prv_vistaCoronal->AddChild (prv_vistaSagital);

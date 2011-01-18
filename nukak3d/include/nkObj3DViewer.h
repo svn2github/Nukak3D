@@ -67,6 +67,7 @@
 #include <vtkTextActor.h>
 #include <vtkTriangleFilter.h>
 #include <vtkWindowToImageFilter.h>
+#include <vtkrenderer.h>
 
 /** ITK*/
 #include <itkImage.h>

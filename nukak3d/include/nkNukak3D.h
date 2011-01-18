@@ -54,6 +54,7 @@
 #include <wx/imaglist.h>
 #include <wx/intl.h>
 #include <wx/joystick.h>
+#include <wx/treectrl.h>
 #ifndef __WXMSW__
     #include "mondrian.xpm"
 #endif

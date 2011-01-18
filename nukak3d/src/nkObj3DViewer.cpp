@@ -37,6 +37,7 @@
 #include <vtkActor.h>
 #include <vtkProperty.h>
 #include <wx/colordlg.h>
+#include <vtkrenderer.h>
 
 //*****************************************************************************************
 //		CONSTRUCTOR

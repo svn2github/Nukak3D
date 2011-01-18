@@ -115,18 +115,17 @@ IF(APPLE)
 	ImageViewer)
 ELSE(APPLE)
 	SET(LIB_VTKINRIA3D 
-	vtkVisuManagement
-	vtkDataManagement
-	itkAddOn
-	vtkCommon
-    vtkRendering
-    vtkRenderingAddOn
-    vtkDataManagement
-    vtkVisuManagement
-	wxVtk
-	wxAddOn
-	vtkRenderingAddOn
-	ImageViewsWithSlidersLib)
+   vtkVisuManagement
+   vtkDataManagement
+   wxVtk
+   wxAddOn
+   ImageViewer
+   DICOMImporter
+   getoptcompatlib
+   itkIOAddOn
+   vtkRenderingAddOn
+   vtkWidgetsAddOn
+   wxImageViewer)
 ENDIF(APPLE)
 
 IF(APPLE)
